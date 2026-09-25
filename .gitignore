@@ -15,7 +15,7 @@
 
 # NuGet Packages
 *.nupkg
-**/[Pp]ackages/*
+# **/[Pp]ackages/*
 !**/[Pp]ackages/build/
 
 # .NET build artifacts
