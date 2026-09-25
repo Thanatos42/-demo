@@ -1,0 +1,17 @@
+# 知识卡导出索引文件
+schema_version: 1
+locale: zh-CN
+branch: Q0DeR-MaG1C-BrAnCh-Fo2-NoN-GiT-Or-No-C0MmIt
+nodes_managed: true
+exported_at: "2026-09-25T02:00:04Z"
+modules:
+    "":
+        dir_name: 奶茶店模拟经营 Demo 项目入口与运行时引导
+        title: 奶茶店模拟经营 Demo 项目入口与运行时引导
+        scope:
+            - Assets/
+            - ProjectSettings/
+        source_files: []
+        children: []
+        depends_on: []
+        related_to: []

@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1336929249f1e44fbf62a65ba000cb2, type: 3}
+  m_Name: OpeningDialogue
+  m_EditorClassIdentifier: Assembly-CSharp::MilkTeaDialogue
+  lines:
+  - speaker: '{customer}'
+    text: "\u4F60\u597D\uFF0C\u6211\u60F3\u8981\u4E00\u676F{drink}\uFF0C{ice}\u3001{sugar}\u3002"
+    buttonLabel: "\u56DE\u5E94"
+  - speaker: "\u4E3B\u89D2"
+    text: "\u4E86\u89E3\u4E86\uFF0C\u8BF7\u7A0D\u5019\u3002"
+    buttonLabel: "\u5F00\u59CB\u8C03\u914D"

@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbafcde73bb76fa41a86382b9df70b92, type: 3}
+  m_Name: "06_\u62B9\u8336\u7EA2\u8C46\u5976"
+  m_EditorClassIdentifier: Assembly-CSharp::MilkTeaRecipe
+  displayName: "\u62B9\u8336\u7EA2\u8C46\u5976"
+  icon: {fileID: 0}
+  iconLabel: "\u62B9\u8336"
+  teaBase: "\u62B9\u8336"
+  milkBase: "\u9C9C\u5976"
+  topping: "\u7EA2\u8C46"
+  customerPortrait: {fileID: 0}
+  customerName: "\u62B9\u8336\u63A7"

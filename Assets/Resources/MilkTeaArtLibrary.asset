@@ -1,0 +1,74 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c98af478f6ab3bf4ca9b653d8e925f21, type: 3}
+  m_Name: MilkTeaArtLibrary
+  m_EditorClassIdentifier: Assembly-CSharp::MilkTeaArtLibrary
+  uiFont: {fileID: 0}
+  windowBackground: {fileID: 0}
+  dialogueBoxBackground: {fileID: 0}
+  shopScene: {fileID: 0}
+  defaultCustomerPortrait: {fileID: 0}
+  protagonistChibi: {fileID: 0}
+  customerChibi: {fileID: 0}
+  kitchenScene: {fileID: 0}
+  cup: {fileID: 0}
+  lever: {fileID: 0}
+  apartmentScene: {fileID: 0}
+  ingredientIcons:
+  - name: "\u7EA2\u8336"
+    sprite: {fileID: 0}
+  - name: "\u8309\u8389\u7EFF\u8336"
+    sprite: {fileID: 0}
+  - name: "\u62B9\u8336"
+    sprite: {fileID: 0}
+  - name: "\u4E4C\u9F99"
+    sprite: {fileID: 0}
+  - name: "\u9C9C\u5976"
+    sprite: {fileID: 0}
+  - name: "\u6930\u5976"
+    sprite: {fileID: 0}
+  - name: "\u65E0\u5976"
+    sprite: {fileID: 0}
+  - name: "\u73CD\u73E0"
+    sprite: {fileID: 0}
+  - name: "\u9ED1\u7CD6\u73CD\u73E0"
+    sprite: {fileID: 0}
+  - name: "\u829D\u58EB\u5976\u76D6"
+    sprite: {fileID: 0}
+  - name: "\u828B\u6CE5"
+    sprite: {fileID: 0}
+  - name: "\u7EA2\u8C46"
+    sprite: {fileID: 0}
+  - name: "\u8292\u679C\u897F\u7C73"
+    sprite: {fileID: 0}
+  - name: "\u8349\u8393\u829D\u58EB"
+    sprite: {fileID: 0}
+  - name: "\u767E\u9999\u679C\u6930\u679C"
+    sprite: {fileID: 0}
+  - name: "\u6842\u82B1\u7CD6\u6D46"
+    sprite: {fileID: 0}
+  - name: "\u65E0"
+    sprite: {fileID: 0}
+  recipes:
+  - {fileID: 11400000, guid: 207ba34b25dd536469f5502cc878e1a6, type: 2}
+  - {fileID: 11400000, guid: c68dc44fe27e6314b9e1793a3b4026ed, type: 2}
+  - {fileID: 11400000, guid: d4607010fa65a954e84251d9f019eac9, type: 2}
+  - {fileID: 11400000, guid: c4b26b5d898e77444ac6b25c62764101, type: 2}
+  - {fileID: 11400000, guid: bca1901abea2c254899176a8775fb4ee, type: 2}
+  - {fileID: 11400000, guid: 230cb1925de7d674ea5d8ef6319e7dc4, type: 2}
+  - {fileID: 11400000, guid: 127c40e00b1729a44a424392481d7325, type: 2}
+  - {fileID: 11400000, guid: 33ea474629765e641bec0fef41cba2bc, type: 2}
+  - {fileID: 11400000, guid: 966de532d8470534c9f6668d8012a559, type: 2}
+  - {fileID: 11400000, guid: a49b441e02ea557419a710363a961628, type: 2}
+  customers: []
+  defaultOpeningDialogue: {fileID: 11400000, guid: b55707ce4f169db4aa84b21345ed2e22, type: 2}
+  defaultServingDialogue: {fileID: 11400000, guid: e026b5693513d7042970c1e7c289de33, type: 2}
