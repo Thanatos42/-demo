@@ -48,6 +48,16 @@ public sealed class MilkTeaArtLibrary : ScriptableObject
     [Tooltip("游戏 Logo，设置后覆盖占位文字")]
     public Sprite startLogo;
 
+    [Header("按钮皮肤（留空则用纯色占位；建议用九宫格 Sprite）")]
+    [Tooltip("正向主按钮，如开始游戏/进入下一天（对应青色）")]
+    public Sprite buttonPrimary;
+    [Tooltip("次要按钮，如读取存档/翻页/再休息一会儿（对应深蓝）")]
+    public Sprite buttonSecondary;
+    [Tooltip("强调/危险按钮，如跳过/完成/继续（对应珊瑚色）")]
+    public Sprite buttonAccent;
+    [Tooltip("中性/默认按钮，如设置及其他（对应深灰）")]
+    public Sprite buttonNeutral;
+
     [Header("原料图标（按名称匹配，可选）")]
     public List<NamedSprite> ingredientIcons = new List<NamedSprite>();
 

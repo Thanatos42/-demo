@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.Video;
 
 /// <summary>
 /// 一键把奶茶店 Demo 的完整界面生成为场景中的真实、可编辑 GameObject。
@@ -157,6 +158,7 @@ public static class MilkTeaSceneBuilder
         SetRect(portraitPanel.GetComponent<RectTransform>(), 60, 285, 760, 675);
         AddFrame(portraitPanel.transform, mint);
         controller.portraitImage = portraitPanel.GetComponent<Image>();
+        controller.portraitAnimator = portraitPanel.AddComponent<SpriteSequenceAnimator>();
         controller.portraitLabel = CreateText("Portrait Label", portraitPanel.transform, "顾客\n临时立绘", 82, cream,
             TextAnchor.MiddleCenter, new Vector2(80, 180), new Vector2(600, 300), true);
 
@@ -369,10 +371,25 @@ public static class MilkTeaSceneBuilder
 
     private static void BuildAnimationScreen(Transform parent)
     {
+        GameObject videoSurface = new GameObject("Video Surface", typeof(RectTransform), typeof(CanvasRenderer), typeof(RawImage));
+        videoSurface.transform.SetParent(parent, false);
+        Stretch(videoSurface.GetComponent<RectTransform>());
+        RawImage rawImage = videoSurface.GetComponent<RawImage>();
+        rawImage.color = Color.black;
+        rawImage.raycastTarget = false;
+        controller.introVideoImage = rawImage;
+
+        VideoPlayer videoPlayer = videoSurface.AddComponent<VideoPlayer>();
+        videoPlayer.playOnAwake = false;
+        videoPlayer.isLooping = false;
+        videoPlayer.renderMode = VideoRenderMode.APIOnly;
+        videoPlayer.audioOutputMode = VideoAudioOutputMode.Direct;
+        controller.introVideo = videoPlayer;
+
         controller.countdownLabel = CreateText("Countdown", parent, "10", 160, cream, TextAnchor.MiddleCenter,
             new Vector2(660, 460), new Vector2(600, 220), true);
-        CreateText("Intro Hint", parent, "开场动画 · 临时倒计时占位（素材就绪后替换为视频）", 30, gray,
-            TextAnchor.MiddleCenter, new Vector2(460, 330), new Vector2(1000, 50), false);
+        CreateText("Intro Hint", parent, "开场动画 · 未指定视频时用倒计时占位（把视频拖到 Video Player 的 Video Clip）", 26, gray,
+            TextAnchor.MiddleCenter, new Vector2(360, 330), new Vector2(1200, 50), false);
 
         Text skipLabel;
         controller.skipButton = CreateButton("Skip Button", parent, "跳过 ▶▶", new Vector2(1650, 945),
@@ -619,18 +636,74 @@ public static class MilkTeaSceneBuilder
     {
         GameObject gameObject = CreatePanel(name, parent, color);
         SetRect(gameObject.GetComponent<RectTransform>(), position.x, position.y, dimensions.x, dimensions.y);
+        Image image = gameObject.GetComponent<Image>();
         Button button = gameObject.AddComponent<Button>();
-        button.targetGraphic = gameObject.GetComponent<Image>();
+        button.targetGraphic = image;
+
         ColorBlock colors = button.colors;
-        colors.normalColor = color;
-        colors.highlightedColor = Color.Lerp(color, Color.white, 0.18f);
-        colors.pressedColor = Color.Lerp(color, Color.black, 0.18f);
-        colors.disabledColor = Color.Lerp(color, gray, 0.55f);
+        if (ApplyButtonSkin(image, ResolveButtonSkin(color)))
+        {
+            // 已套用皮肤图：底色改白避免染色，仅保留轻微悬停/按下反馈
+            colors.normalColor = Color.white;
+            colors.highlightedColor = new Color(0.92f, 0.92f, 0.92f, 1f);
+            colors.pressedColor = new Color(0.8f, 0.8f, 0.8f, 1f);
+            colors.disabledColor = new Color(0.6f, 0.6f, 0.6f, 1f);
+        }
+        else
+        {
+            // 无皮肤图：沿用纯色占位
+            colors.normalColor = color;
+            colors.highlightedColor = Color.Lerp(color, Color.white, 0.18f);
+            colors.pressedColor = Color.Lerp(color, Color.black, 0.18f);
+            colors.disabledColor = Color.Lerp(color, gray, 0.55f);
+        }
+
         button.colors = colors;
 
         label = CreateText("Label", gameObject.transform, caption, 25, cream, TextAnchor.MiddleCenter,
             Vector2.zero, dimensions, true);
         return button;
+    }
+
+    // 根据按钮占位色映射到语义皮肤槽，未设置时返回 null（则回退纯色）
+    private static Sprite ResolveButtonSkin(Color color)
+    {
+        if (art == null)
+        {
+            return null;
+        }
+
+        if (color == mint)
+        {
+            return art.buttonPrimary;
+        }
+
+        if (color == coral)
+        {
+            return art.buttonAccent;
+        }
+
+        if (color == panelLight)
+        {
+            return art.buttonSecondary;
+        }
+
+        return art.buttonNeutral;
+    }
+
+    // 将皮肤图贴到按钮：有九宫格边框用 Sliced，否则 Simple 拉伸填充（不保比例）
+    private static bool ApplyButtonSkin(Image image, Sprite sprite)
+    {
+        if (image == null || sprite == null)
+        {
+            return false;
+        }
+
+        image.sprite = sprite;
+        image.color = Color.white;
+        image.type = sprite.border != Vector4.zero ? Image.Type.Sliced : Image.Type.Simple;
+        image.preserveAspect = false;
+        return true;
     }
 
     private static void AddFrame(Transform parent, Color color)

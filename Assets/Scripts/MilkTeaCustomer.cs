@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -14,6 +15,12 @@ public sealed class MilkTeaCustomer : ScriptableObject
 
     [Tooltip("该客人的立绘，留空则用点单饮品或美术库中的默认立绘")]
     public Sprite portrait;
+
+    [Tooltip("立绘序列帧：≥2 帧则循环播放动画；留空或仅 1 帧时使用上面的静态立绘")]
+    public List<Sprite> portraitFrames = new List<Sprite>();
+
+    [Tooltip("立绘动画帧率（帧/秒）")]
+    public float portraitFps = 8f;
 
     [Header("点单")]
     [Tooltip("这位客人想要的饮品（决定茶底/奶底/配料的正确答案）")]

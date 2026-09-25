@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Video;
 
 /// <summary>
 /// 原料分类。定义在此文件中，供各 marker 组件与建场工具共同引用。
@@ -65,6 +66,8 @@ public sealed class MilkTeaDemoController : MonoBehaviour
 
     [Header("对话界面")]
     public Image portraitImage;
+    [Tooltip("立绘序列帧播放器（挂在立绘 Image 上）；客人有 ≥2 帧时播放动画")]
+    public SpriteSequenceAnimator portraitAnimator;
     public Text portraitLabel;
     public Text dialogueSpeaker;
     public Text dialogueLine;
@@ -134,10 +137,14 @@ public sealed class MilkTeaDemoController : MonoBehaviour
 
     [Header("开场动画")]
     public GameObject animationScreen;
+    [Tooltip("开场视频播放器；将视频拖到其 Video Clip 即可。未指定时自动回退为倒计时占位")]
+    public VideoPlayer introVideo;
+    [Tooltip("显示视频画面的 RawImage")]
+    public RawImage introVideoImage;
     public Text countdownLabel;
     public Button skipButton;
     public Text skipButtonLabel;
-    [Tooltip("开场动画/倒计时时长（秒），动画素材就绪前用倒计时占位")]
+    [Tooltip("开场动画/倒计时时长（秒），未指定视频时用倒计时占位")]
     public float introCountdownSeconds = 10f;
 
     // 运行时状态反馈用色（仅用于选中高亮 / 糖冰档位着色）
@@ -764,8 +771,28 @@ public sealed class MilkTeaDemoController : MonoBehaviour
 
         animationScreen.SetActive(true);
         introFinished = false;
+
+        if (introVideo != null && introVideo.clip != null)
+        {
+            if (countdownLabel != null)
+            {
+                countdownLabel.gameObject.SetActive(false);
+            }
+
+            introVideo.renderMode = VideoRenderMode.APIOnly;
+            introVideo.isLooping = false;
+            introVideo.playOnAwake = false;
+            introVideo.loopPointReached -= OnIntroVideoEnd;
+            introVideo.loopPointReached += OnIntroVideoEnd;
+            introVideo.prepareCompleted -= OnIntroVideoPrepared;
+            introVideo.prepareCompleted += OnIntroVideoPrepared;
+            introVideo.Prepare();
+            return;
+        }
+
         if (countdownLabel != null)
         {
+            countdownLabel.gameObject.SetActive(true);
             countdownLabel.text = Mathf.CeilToInt(introCountdownSeconds > 0f ? introCountdownSeconds : 10f).ToString();
         }
 
@@ -775,6 +802,22 @@ public sealed class MilkTeaDemoController : MonoBehaviour
         }
 
         introRoutine = StartCoroutine(IntroCountdown());
+    }
+
+    private void OnIntroVideoPrepared(VideoPlayer source)
+    {
+        if (introVideoImage != null)
+        {
+            introVideoImage.texture = source.texture;
+            introVideoImage.color = Color.white;
+        }
+
+        source.Play();
+    }
+
+    private void OnIntroVideoEnd(VideoPlayer source)
+    {
+        FinishIntro();
     }
 
     private IEnumerator IntroCountdown()
@@ -814,6 +857,13 @@ public sealed class MilkTeaDemoController : MonoBehaviour
         }
 
         introFinished = true;
+        if (introVideo != null)
+        {
+            introVideo.loopPointReached -= OnIntroVideoEnd;
+            introVideo.prepareCompleted -= OnIntroVideoPrepared;
+            introVideo.Stop();
+        }
+
         if (animationScreen != null)
         {
             animationScreen.SetActive(false);
@@ -1160,6 +1210,26 @@ public sealed class MilkTeaDemoController : MonoBehaviour
         if (portraitImage == null)
         {
             return;
+        }
+
+        // 序列帧立绘优先：当前客人有 ≥2 帧则循环播放动画
+        if (portraitAnimator != null)
+        {
+            if (currentCustomer != null && currentCustomer.portraitFrames != null
+                && currentCustomer.portraitFrames.Count >= 2)
+            {
+                portraitAnimator.enabled = true;
+                portraitAnimator.Play(currentCustomer.portraitFrames, currentCustomer.portraitFps, true);
+                if (portraitLabel != null)
+                {
+                    portraitLabel.gameObject.SetActive(false);
+                }
+
+                return;
+            }
+
+            // 无序列帧：清空并停掉动画，交回下方静态立绘逻辑
+            portraitAnimator.Clear();
         }
 
         Sprite portrait = recipe != null && recipe.Portrait != null
