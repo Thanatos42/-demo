@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2fb204cac2b2e84f86fc57236a4bf7b, type: 3}
+  m_Name: Customer_B
+  m_EditorClassIdentifier: Assembly-CSharp::MilkTeaCustomer
+  customerName: "\u987E\u5BA2"
+  portrait: {fileID: 21300000, guid: 12890a151141250449f9cebb26bd589e, type: 3}
+  chibi: {fileID: 21300000, guid: ecd6664a0cd467049bc360fbfc500cbb, type: 3}
+  portraitFrames: []
+  portraitFps: 8
+  order: {fileID: 0}
+  sugarLevel: 1
+  iceLevel: 1
+  openingDialogue: {fileID: 0}
+  servingDialogue: {fileID: 0}

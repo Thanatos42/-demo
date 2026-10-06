@@ -12,7 +12,9 @@ using UnityEngine.Video;
 /// 一键把奶茶店 Demo 的完整界面生成为场景中的真实、可编辑 GameObject。
 /// 生成后可在场景里自由拖拽调整位置、挂 Animator 做动画；游戏逻辑由
 /// 运行时的 <see cref="MilkTeaDemoController"/> 通过引用驱动，不再靠代码创建 UI。
-/// 菜单：奶茶店 Demo → 构建演示场景界面。可重复执行（会先清掉旧的一份）。
+/// 菜单：奶茶店 Demo → 构建演示场景界面。可重复执行（已存在的界面会保留手动调整，
+/// 仅创建缺失的界面）。如需强制重建某个界面，先在层级里删掉它再执行。
+/// 菜单：奶茶店 Demo → 强制重建全部界面 —— 清空重来。
 /// </summary>
 public static class MilkTeaSceneBuilder
 {
@@ -38,14 +40,29 @@ public static class MilkTeaSceneBuilder
     [MenuItem("奶茶店 Demo/构建演示场景界面")]
     public static void BuildScene()
     {
+        BuildSceneInternal(forceRebuildAll: false);
+    }
+
+    [MenuItem("奶茶店 Demo/强制重建全部界面")]
+    public static void ForceRebuildAll()
+    {
+        BuildSceneInternal(forceRebuildAll: true);
+    }
+
+    private static void BuildSceneInternal(bool forceRebuildAll)
+    {
         Scene scene = EnsureSceneOpen();
         art = AssetDatabase.LoadAssetAtPath<MilkTeaArtLibrary>(LibraryPath);
         font = art != null && art.uiFont != null ? art.uiFont : GetFallbackFont();
 
-        RemoveExisting(scene);
+        if (forceRebuildAll)
+        {
+            RemoveExisting(scene);
+        }
+
         EnsureCamera();
         EnsureEventSystem();
-        BuildInterface();
+        BuildInterface(scene);
 
         EditorSceneManager.MarkSceneDirty(scene);
         EditorSceneManager.SaveScene(scene);
@@ -84,87 +101,260 @@ public static class MilkTeaSceneBuilder
         }
     }
 
-    private static void BuildInterface()
+    private static void BuildInterface(Scene scene)
     {
-        GameObject canvasObject = new GameObject(RootName, typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster));
-        Canvas canvas = canvasObject.GetComponent<Canvas>();
-        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-        canvas.sortingOrder = 100;
+        // 查找已有 Canvas，没有才新建
+        GameObject canvasObject = null;
+        foreach (GameObject root in scene.GetRootGameObjects())
+        {
+            if (root.name == RootName)
+            {
+                canvasObject = root;
+                break;
+            }
+        }
 
-        CanvasScaler scaler = canvasObject.GetComponent<CanvasScaler>();
-        scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
-        scaler.referenceResolution = new Vector2(1920f, 1080f);
-        scaler.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
-        scaler.matchWidthOrHeight = 0.5f;
+        Transform rootTransform;
+        if (canvasObject != null)
+        {
+            controller = canvasObject.GetComponent<MilkTeaDemoController>();
+            if (controller == null)
+            {
+                controller = canvasObject.AddComponent<MilkTeaDemoController>();
+            }
 
-        controller = canvasObject.AddComponent<MilkTeaDemoController>();
+            Transform contentFind = canvasObject.transform.Find("16:9 Content");
+            rootTransform = contentFind != null ? contentFind : canvasObject.transform;
+        }
+        else
+        {
+            canvasObject = new GameObject(RootName, typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster));
+            Canvas canvas = canvasObject.GetComponent<Canvas>();
+            canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+            canvas.sortingOrder = 100;
 
-        GameObject canvasBackground = CreatePanel("Window Background", canvasObject.transform, background);
-        Stretch(canvasBackground.GetComponent<RectTransform>());
-        ApplySprite(canvasBackground.GetComponent<Image>(), art != null ? art.windowBackground : null);
+            CanvasScaler scaler = canvasObject.GetComponent<CanvasScaler>();
+            scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+            scaler.referenceResolution = new Vector2(1920f, 1080f);
+            scaler.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
+            scaler.matchWidthOrHeight = 0.5f;
 
-        GameObject root = CreatePanel("16:9 Content", canvasObject.transform, background);
-        Stretch(root.GetComponent<RectTransform>());
-        AspectRatioFitter fitter = root.AddComponent<AspectRatioFitter>();
-        fitter.aspectMode = AspectRatioFitter.AspectMode.FitInParent;
-        fitter.aspectRatio = 16f / 9f;
+            controller = canvasObject.AddComponent<MilkTeaDemoController>();
 
-        GameObject dialogueScreen = CreatePanel("Dialogue Screen", root.transform, background);
-        Stretch(dialogueScreen.GetComponent<RectTransform>());
-        controller.dialogueScreen = dialogueScreen;
-        BuildDialogueScreen(dialogueScreen.transform);
+            GameObject canvasBackground = CreatePanel("Window Background", canvasObject.transform, background);
+            Stretch(canvasBackground.GetComponent<RectTransform>());
+            ApplySprite(canvasBackground.GetComponent<Image>(), art != null ? art.windowBackground : null);
 
-        GameObject mixingScreen = CreatePanel("Mixing Screen", root.transform, background);
-        Stretch(mixingScreen.GetComponent<RectTransform>());
-        controller.mixingScreen = mixingScreen;
-        BuildMixingScreen(mixingScreen.transform);
+            GameObject root = CreatePanel("16:9 Content", canvasObject.transform, background);
+            Stretch(root.GetComponent<RectTransform>());
+            AspectRatioFitter fitter = root.AddComponent<AspectRatioFitter>();
+            fitter.aspectMode = AspectRatioFitter.AspectMode.FitInParent;
+            fitter.aspectRatio = 16f / 9f;
+            rootTransform = root.transform;
+        }
 
-        GameObject settlementScreen = CreatePanel("Settlement Screen", root.transform, Hex("#0C1524"));
-        Stretch(settlementScreen.GetComponent<RectTransform>());
-        controller.settlementScreen = settlementScreen;
-        BuildSettlementScreen(settlementScreen.transform);
-        settlementScreen.SetActive(false);
+        // 对每个界面：已存在则保留手动调整，仅重新接线引用；不存在则新建
+        BuildOrPreserveScreen(rootTransform, "Dialogue Screen", background, true, (t) =>
+        {
+            controller.dialogueScreen = t.gameObject;
+            BuildDialogueScreen(t);
+        }, (existing) =>
+        {
+            controller.dialogueScreen = existing.gameObject;
+            RewireDialogueScreen(existing);
+        });
 
-        GameObject restScreen = CreatePanel("Rest Screen", root.transform, Hex("#12100E"));
-        Stretch(restScreen.GetComponent<RectTransform>());
-        controller.restScreen = restScreen;
-        BuildRestScreen(restScreen.transform);
-        restScreen.SetActive(false);
+        BuildOrPreserveScreen(rootTransform, "Mixing Screen", background, true, (t) =>
+        {
+            controller.mixingScreen = t.gameObject;
+            BuildMixingScreen(t);
+        }, (existing) =>
+        {
+            controller.mixingScreen = existing.gameObject;
+            RewireMixingScreen(existing);
+        });
 
-        GameObject startScreen = CreatePanel("Start Screen", root.transform, Hex("#0B1622"));
-        Stretch(startScreen.GetComponent<RectTransform>());
-        controller.startScreen = startScreen;
-        BuildStartScreen(startScreen.transform);
+        BuildOrPreserveScreen(rootTransform, "Settlement Screen", Hex("#0C1524"), false, (t) =>
+        {
+            controller.settlementScreen = t.gameObject;
+            BuildSettlementScreen(t);
+            t.gameObject.SetActive(false);
+        }, (existing) =>
+        {
+            controller.settlementScreen = existing.gameObject;
+            RewireSettlementScreen(existing);
+        });
 
-        GameObject introScreen = CreatePanel("Intro Screen", root.transform, Hex("#000000"));
-        Stretch(introScreen.GetComponent<RectTransform>());
-        controller.animationScreen = introScreen;
-        BuildAnimationScreen(introScreen.transform);
-        introScreen.SetActive(false);
+        BuildOrPreserveScreen(rootTransform, "Rest Screen", Hex("#12100E"), false, (t) =>
+        {
+            controller.restScreen = t.gameObject;
+            BuildRestScreen(t);
+            t.gameObject.SetActive(false);
+        }, (existing) =>
+        {
+            controller.restScreen = existing.gameObject;
+            RewireRestScreen(existing);
+        });
 
-        GameObject settingsPanel = CreatePanel("Settings Panel", root.transform, new Color(0f, 0f, 0f, 0.72f));
-        Stretch(settingsPanel.GetComponent<RectTransform>());
-        controller.settingsPanel = settingsPanel;
-        BuildSettingsPanel(settingsPanel.transform);
-        settingsPanel.SetActive(false);
+        BuildOrPreserveScreen(rootTransform, "Start Screen", Hex("#0B1622"), true, (t) =>
+        {
+            controller.startScreen = t.gameObject;
+            BuildStartScreen(t);
+        }, (existing) =>
+        {
+            controller.startScreen = existing.gameObject;
+            RewireStartScreen(existing);
+        });
+
+        BuildOrPreserveScreen(rootTransform, "Intro Screen", Hex("#000000"), false, (t) =>
+        {
+            controller.animationScreen = t.gameObject;
+            BuildAnimationScreen(t);
+            t.gameObject.SetActive(false);
+        }, (existing) =>
+        {
+            controller.animationScreen = existing.gameObject;
+            RewireIntroScreen(existing);
+        });
+
+        BuildOrPreserveScreen(rootTransform, "Settings Panel", new Color(0f, 0f, 0f, 0.72f), false, (t) =>
+        {
+            controller.settingsPanel = t.gameObject;
+            BuildSettingsPanel(t);
+            t.gameObject.SetActive(false);
+        }, (existing) =>
+        {
+            controller.settingsPanel = existing.gameObject;
+            RewireSettingsPanel(existing);
+        });
     }
+
+    private static void BuildOrPreserveScreen(Transform parent, string screenName, Color color,
+        bool activeByDefault,
+        System.Action<Transform> buildNew,
+        System.Action<Transform> rewireExisting)
+    {
+        Transform existing = parent.Find(screenName);
+        if (existing != null)
+        {
+            rewireExisting(existing);
+            return;
+        }
+
+        GameObject screen = CreatePanel(screenName, parent, color);
+        Stretch(screen.GetComponent<RectTransform>());
+        buildNew(screen.transform);
+    }
+
+    // ======== 保留已有界面时的引用重新接线 ========
+
+    /// <summary>在 parent 及其子层中按 name 查找组件，找不到返回 null。</summary>
+    private static T FindDeep<T>(Transform parent, string name) where T : Component
+    {
+        foreach (T component in parent.GetComponentsInChildren<T>(true))
+        {
+            if (component.gameObject.name == name)
+            {
+                return component;
+            }
+        }
+
+        return null;
+    }
+
+    /// <summary>找按钮内部的 Label 子节点的 Text。</summary>
+    private static Text FindButtonLabel(Transform root, string buttonName)
+    {
+        Button button = FindDeep<Button>(root, buttonName);
+        if (button == null)
+        {
+            return null;
+        }
+
+        Transform label = button.transform.Find("Label");
+        return label != null ? label.GetComponent<Text>() : null;
+    }
+
+    private static void RewireDialogueScreen(Transform root)
+    {
+        controller.dayTitle = FindDeep<Text>(root, "Title");
+        controller.portraitImage = FindDeep<Image>(root, "Customer Portrait");
+        controller.portraitAnimator = FindDeep<SpriteSequenceAnimator>(root, "Customer Portrait");
+        controller.portraitLabel = FindDeep<Text>(root, "Portrait Label");
+        controller.protagonistChibiImage = FindDeep<Image>(root, "Chibi 主角");
+        controller.customerChibiImage = FindDeep<Image>(root, "Chibi 顾客");
+        controller.dialogueSpeaker = FindDeep<Text>(root, "Speaker");
+        controller.dialogueLine = FindDeep<Text>(root, "Line");
+        controller.dialogueButton = FindDeep<Button>(root, "Continue");
+        controller.dialogueButtonLabel = FindButtonLabel(root, "Continue");
+    }
+
+    private static void RewireMixingScreen(Transform root)
+    {
+        controller.orderSpeaker = FindDeep<Text>(root, "Order Speaker");
+        controller.orderLine = FindDeep<Text>(root, "Order Line");
+        controller.prevRecipeButton = FindDeep<Button>(root, "Previous Recipe");
+        controller.nextRecipeButton = FindDeep<Button>(root, "Next Recipe");
+        controller.prevCategoryButton = FindDeep<Button>(root, "Previous Category");
+        controller.nextCategoryButton = FindDeep<Button>(root, "Next Category");
+        controller.leverButton = FindDeep<Button>(root, "Lever Button");
+    }
+
+    private static void RewireSettlementScreen(Transform root)
+    {
+        controller.settlementTitle = FindDeep<Text>(root, "Settlement Title");
+        controller.settlementBody = FindDeep<Text>(root, "Settlement Body");
+        controller.settlementButton = FindDeep<Button>(root, "Settlement Button");
+        controller.settlementButtonLabel = FindButtonLabel(root, "Settlement Button");
+    }
+
+    private static void RewireRestScreen(Transform root)
+    {
+        controller.restHint = FindDeep<Text>(root, "Rest Hint");
+        controller.nextDayButton = FindDeep<Button>(root, "Next Day Button");
+        controller.nextDayButtonLabel = FindButtonLabel(root, "Next Day Button");
+        controller.stayButton = FindDeep<Button>(root, "Stay Button");
+        controller.stayButtonLabel = FindButtonLabel(root, "Stay Button");
+    }
+
+    private static void RewireStartScreen(Transform root)
+    {
+        controller.settingsButton = FindDeep<Button>(root, "Settings Button");
+        controller.startGameButton = FindDeep<Button>(root, "Start Game");
+        controller.loadGameButton = FindDeep<Button>(root, "Load Game");
+        controller.quitGameButton = FindDeep<Button>(root, "Quit Game");
+    }
+
+    private static void RewireIntroScreen(Transform root)
+    {
+        controller.introVideo = FindDeep<VideoPlayer>(root, "Video Surface");
+        controller.introVideoImage = FindDeep<RawImage>(root, "Video Surface");
+        controller.countdownLabel = FindDeep<Text>(root, "Countdown");
+        controller.skipButton = FindDeep<Button>(root, "Skip Button");
+        controller.skipButtonLabel = FindButtonLabel(root, "Skip Button");
+    }
+
+    private static void RewireSettingsPanel(Transform root)
+    {
+        controller.settingsCloseButton = FindDeep<Button>(root, "Settings Close");
+        controller.volumeValueLabel = FindDeep<Text>(root, "Volume Value");
+        controller.volumeDownButton = FindDeep<Button>(root, "Volume Prev");
+        controller.volumeUpButton = FindDeep<Button>(root, "Volume Next");
+        controller.resolutionValueLabel = FindDeep<Text>(root, "Resolution Value");
+        controller.resolutionPrevButton = FindDeep<Button>(root, "Resolution Prev");
+        controller.resolutionNextButton = FindDeep<Button>(root, "Resolution Next");
+        controller.languageValueLabel = FindDeep<Text>(root, "Language Value");
+        controller.languagePrevButton = FindDeep<Button>(root, "Language Prev");
+        controller.languageNextButton = FindDeep<Button>(root, "Language Next");
+    }
+
+    // ======== 各界面构建方法 ========
 
     private static void BuildDialogueScreen(Transform parent)
     {
-        controller.dayTitle = CreateText("Title", parent, "第 1 天 · 营业中", 48, cream, TextAnchor.MiddleCenter,
-            new Vector2(710, 995), new Vector2(500, 66), true);
-
-        GameObject portraitPanel = CreatePanel("Customer Portrait", parent, panel);
-        SetRect(portraitPanel.GetComponent<RectTransform>(), 60, 285, 760, 675);
-        AddFrame(portraitPanel.transform, mint);
-        controller.portraitImage = portraitPanel.GetComponent<Image>();
-        controller.portraitAnimator = portraitPanel.AddComponent<SpriteSequenceAnimator>();
-        controller.portraitLabel = CreateText("Portrait Label", portraitPanel.transform, "顾客\n临时立绘", 82, cream,
-            TextAnchor.MiddleCenter, new Vector2(80, 180), new Vector2(600, 300), true);
-
+        // 全屏店景背景
         GameObject shopPanel = CreatePanel("Shop Overview", parent, panelLight);
-        SetRect(shopPanel.GetComponent<RectTransform>(), 860, 285, 1000, 675);
-        AddFrame(shopPanel.transform, coral);
+        Stretch(shopPanel.GetComponent<RectTransform>());
         Sprite shopScene = art != null ? art.shopScene : null;
         if (shopScene != null)
         {
@@ -172,33 +362,104 @@ public static class MilkTeaSceneBuilder
         }
         else
         {
-            CreateText("Shop Title", shopPanel.transform, "奶茶店 · 俯视小场景", 34, cream,
-                TextAnchor.MiddleCenter, new Vector2(240, 600), new Vector2(520, 55), true);
-            CreatePanelAt("Counter", shopPanel.transform, new Vector2(500, 255), new Vector2(400, 150), Hex("#AF7657"));
-            CreateText("Counter Text", shopPanel.transform, "吧台", 30, cream, TextAnchor.MiddleCenter,
-                new Vector2(500, 300), new Vector2(400, 60), true);
-            CreatePanelAt("Table A", shopPanel.transform, new Vector2(90, 350), new Vector2(190, 115), Hex("#765D8A"));
-            CreatePanelAt("Table B", shopPanel.transform, new Vector2(110, 120), new Vector2(190, 115), Hex("#765D8A"));
-            CreatePanelAt("Kitchen", shopPanel.transform, new Vector2(690, 430), new Vector2(240, 120), Hex("#527A73"));
-            CreateText("Kitchen Text", shopPanel.transform, "后厨", 28, cream, TextAnchor.MiddleCenter,
-                new Vector2(690, 460), new Vector2(240, 50), true);
+            CreateText("Shop Title", shopPanel.transform, "奶茶店 · 俯视场景（拖入背景图到 shopScene 槽位）", 34, cream,
+                TextAnchor.MiddleCenter, new Vector2(560, 540), new Vector2(800, 55), true);
         }
 
-        CreateChibi(shopPanel.transform, "主角", new Vector2(535, 420), mint, art != null ? art.protagonistChibi : null);
-        CreateChibi(shopPanel.transform, "顾客", new Vector2(360, 300), coral, art != null ? art.customerChibi : null);
+        // Q版角色（主角固定；柜台前顾客按当前 MilkTeaCustomer 动态切换）
+        Vector2 protagonistPosition = art != null && art.protagonistChibiPosition != Vector2.zero
+            ? art.protagonistChibiPosition : new Vector2(1120f, 600f);
+        Vector2 protagonistSize = art != null && art.protagonistChibiSize.x > 0f && art.protagonistChibiSize.y > 0f
+            ? art.protagonistChibiSize : new Vector2(150f, 150f);
+        Vector2 customerPosition = art != null && art.customerChibiPosition != Vector2.zero
+            ? art.customerChibiPosition : new Vector2(1360f, 390f);
+        Vector2 customerSize = art != null && art.customerChibiSize.x > 0f && art.customerChibiSize.y > 0f
+            ? art.customerChibiSize : new Vector2(180f, 180f);
+        controller.protagonistChibiImage = CreateChibi(parent, "主角", protagonistPosition, protagonistSize, mint,
+            art != null ? art.protagonistChibi : null);
+        controller.customerChibiImage = CreateChibi(parent, "顾客", customerPosition, customerSize, coral,
+            art != null ? art.customerChibi : null);
 
+        // 顶部天数/营业状态徽章
+        GameObject dayBadge = CreatePanel("Day Badge", parent, Hex("#1A1A1A"));
+        SetRect(dayBadge.GetComponent<RectTransform>(), 710, 940, 500, 110);
+        Sprite dayBg = art != null ? art.dayTitleBackground : null;
+        if (dayBg != null)
+        {
+            Image badgeImage = dayBadge.GetComponent<Image>();
+            badgeImage.sprite = dayBg;
+            badgeImage.color = Color.white;
+            badgeImage.type = dayBg.border != Vector4.zero ? Image.Type.Sliced : Image.Type.Simple;
+            badgeImage.preserveAspect = true;
+        }
+
+        Color titleTextColor = art != null && art.dayTitleTextColor.a > 0.01f
+            ? art.dayTitleTextColor : Hex("#402E24");
+        controller.dayTitle = CreateText("Title", dayBadge.transform, "第 1 天 · 营业中", 36, titleTextColor,
+            TextAnchor.MiddleCenter, Vector2.zero, new Vector2(500, 110), true);
+
+        // 角色立绘（透明背景浮层，覆盖在左侧）
+        GameObject portraitPanel = CreatePanel("Customer Portrait", parent, new Color(0f, 0f, 0f, 0f));
+        SetRect(portraitPanel.GetComponent<RectTransform>(), 0, 80, 700, 900);
+        Image portraitImage = portraitPanel.GetComponent<Image>();
+        portraitImage.raycastTarget = false;
+        controller.portraitImage = portraitImage;
+        controller.portraitAnimator = portraitPanel.AddComponent<SpriteSequenceAnimator>();
+        controller.portraitLabel = CreateText("Portrait Label", portraitPanel.transform, "顾客\n临时立绘", 72, cream,
+            TextAnchor.MiddleCenter, new Vector2(80, 250), new Vector2(540, 300), true);
+
+        // 对话框（底部加宽）
         GameObject dialogueBox = CreatePanel("Dialogue Box", parent, Hex("#172033"));
-        SetRect(dialogueBox.GetComponent<RectTransform>(), 135, 50, 1650, 270);
-        AddFrame(dialogueBox.transform, cream);
+        SetRect(dialogueBox.GetComponent<RectTransform>(), 80, 30, 1760, 300);
         ApplySprite(dialogueBox.GetComponent<Image>(), art != null ? art.dialogueBoxBackground : null);
 
-        controller.dialogueSpeaker = CreateText("Speaker", dialogueBox.transform, string.Empty, 38, mint,
-            TextAnchor.MiddleLeft, new Vector2(45, 185), new Vector2(500, 58), true);
-        controller.dialogueLine = CreateText("Line", dialogueBox.transform, string.Empty, 38, cream,
-            TextAnchor.UpperLeft, new Vector2(45, 72), new Vector2(1370, 110), false);
+        // 说话人名牌
+        GameObject speakerTag = CreatePanel("Speaker Tag", parent, coral);
+        SetRect(speakerTag.GetComponent<RectTransform>(), 150, 280, 260, 60);
+        Sprite tagBg = art != null ? art.speakerTagBackground : null;
+        if (tagBg != null)
+        {
+            Image tagImage = speakerTag.GetComponent<Image>();
+            tagImage.sprite = tagBg;
+            tagImage.color = Color.white;
+            tagImage.type = tagBg.border != Vector4.zero ? Image.Type.Sliced : Image.Type.Simple;
+            tagImage.preserveAspect = false;
+        }
+
+        Color speakerTextColor = art != null && art.speakerTextColor.a > 0.01f
+            ? art.speakerTextColor : cream;
+        controller.dialogueSpeaker = CreateText("Speaker", speakerTag.transform, string.Empty, 32, speakerTextColor,
+            TextAnchor.MiddleCenter, Vector2.zero, new Vector2(260, 60), true);
+
+        Color dialogueTextColor = art != null && art.dialogueTextColor.a > 0.01f
+            ? art.dialogueTextColor : Hex("#52382E");
+        controller.dialogueLine = CreateText("Line", dialogueBox.transform, string.Empty, 36, dialogueTextColor,
+            TextAnchor.UpperLeft, new Vector2(50, 50), new Vector2(1500, 180), false);
+
+        // 继续按钮（支持图标替换，如猫爪）
         Text continueLabel;
-        controller.dialogueButton = CreateButton("Continue", dialogueBox.transform, "继续", new Vector2(1400, 35),
-            new Vector2(200, 90), coral, out continueLabel);
+        controller.dialogueButton = CreateButton("Continue", dialogueBox.transform, "继续", new Vector2(1530, 30),
+            new Vector2(180, 100), coral, out continueLabel);
+        Sprite continueIcon = art != null ? art.continueButtonIcon : null;
+        if (continueIcon != null)
+        {
+            Image btnImage = controller.dialogueButton.GetComponent<Image>();
+            btnImage.sprite = continueIcon;
+            btnImage.color = Color.white;
+            btnImage.type = Image.Type.Simple;
+            btnImage.preserveAspect = true;
+
+            // 图标按钮保持素材原色，避免沿用 CreateButton 的珊瑚红 Color Tint。
+            ColorBlock colors = controller.dialogueButton.colors;
+            colors.normalColor = Color.white;
+            colors.highlightedColor = new Color(0.92f, 0.92f, 0.92f, 1f);
+            colors.pressedColor = new Color(0.8f, 0.8f, 0.8f, 1f);
+            colors.selectedColor = Color.white;
+            colors.disabledColor = new Color(0.6f, 0.6f, 0.6f, 1f);
+            controller.dialogueButton.colors = colors;
+            continueLabel.gameObject.SetActive(false);
+        }
+
         controller.dialogueButtonLabel = continueLabel;
     }
 
@@ -337,33 +598,51 @@ public static class MilkTeaSceneBuilder
     {
         ApplySprite(parent.GetComponent<Image>(), art != null ? art.startBackground : null);
 
-        // 左上角设置入口
+        // 左上角设置入口（有图标则用图标，否则文字）
         Text gearLabel;
         controller.settingsButton = CreateButton("Settings Button", parent, "设置", new Vector2(45, 945),
             new Vector2(120, 90), panel, out gearLabel);
         gearLabel.fontSize = 30;
-        AddFrame(controller.settingsButton.transform, mint);
+        Sprite settingsIcon = art != null ? art.settingsIcon : null;
+        if (settingsIcon != null)
+        {
+            Image settingsBg = controller.settingsButton.GetComponent<Image>();
+            settingsBg.sprite = settingsIcon;
+            settingsBg.color = Color.white;
+            settingsBg.type = Image.Type.Simple;
+            settingsBg.preserveAspect = true;
+            gearLabel.gameObject.SetActive(false);
+        }
+        else
+        {
+            AddFrame(controller.settingsButton.transform, mint);
+        }
 
         // 右侧上方 Logo
         GameObject logo = CreatePanel("Logo", parent, new Color(0f, 0f, 0f, 0.35f));
-        SetRect(logo.GetComponent<RectTransform>(), 1130, 620, 720, 400);
+        SetRect(logo.GetComponent<RectTransform>(), 1090, 600, 760, 420);
         if (!ApplySprite(logo.GetComponent<Image>(), art != null ? art.startLogo : null))
         {
             CreateText("Logo Text", logo.transform, "奶茶店\n模拟经营", 96, cream, TextAnchor.MiddleCenter,
-                Vector2.zero, new Vector2(720, 400), true);
+                Vector2.zero, new Vector2(760, 420), true);
         }
 
-        // 右侧下方按钮
+        // 右侧下方三个按钮（等距分布）
         Text startLabel;
-        controller.startGameButton = CreateButton("Start Game", parent, "开始游戏\nNEW GAME", new Vector2(1270, 450),
-            new Vector2(460, 130), mint, out startLabel);
+        controller.startGameButton = CreateButton("Start Game", parent, "新的游戏", new Vector2(1150, 470),
+            new Vector2(560, 110), mint, out startLabel);
         startLabel.color = dark;
-        startLabel.fontSize = 34;
+        startLabel.fontSize = 38;
 
         Text loadLabel;
-        controller.loadGameButton = CreateButton("Load Game", parent, "读取存档\nCONTINUE", new Vector2(1270, 290),
-            new Vector2(460, 130), panelLight, out loadLabel);
-        loadLabel.fontSize = 34;
+        controller.loadGameButton = CreateButton("Load Game", parent, "读取存档", new Vector2(1150, 330),
+            new Vector2(560, 110), panelLight, out loadLabel);
+        loadLabel.fontSize = 38;
+
+        Text quitLabel;
+        controller.quitGameButton = CreateButton("Quit Game", parent, "退出游戏", new Vector2(1150, 190),
+            new Vector2(560, 110), panel, out quitLabel);
+        quitLabel.fontSize = 38;
 
         CreateText("Version", parent, "奶茶店模拟经营 · Demo", 24, gray, TextAnchor.MiddleLeft,
             new Vector2(45, 45), new Vector2(560, 40), false);
@@ -585,17 +864,24 @@ public static class MilkTeaSceneBuilder
         marker.index = index;
     }
 
-    private static void CreateChibi(Transform parent, string label, Vector2 position, Color color, Sprite sprite)
+    private static Image CreateChibi(Transform parent, string label, Vector2 position, Color color, Sprite sprite)
+    {
+        return CreateChibi(parent, label, position, new Vector2(120f, 120f), color, sprite);
+    }
+
+    private static Image CreateChibi(Transform parent, string label, Vector2 position, Vector2 dimensions,
+        Color color, Sprite sprite)
     {
         GameObject body = CreatePanel("Chibi " + label, parent, color);
-        SetRect(body.GetComponent<RectTransform>(), position.x, position.y, 120, 120);
-        if (ApplySprite(body.GetComponent<Image>(), sprite))
+        SetRect(body.GetComponent<RectTransform>(), position.x, position.y, dimensions.x, dimensions.y);
+        Image image = body.GetComponent<Image>();
+        if (!ApplySprite(image, sprite))
         {
-            return;
+            CreateText("Chibi Label", body.transform, label + "\nQ版", 24, dark,
+                TextAnchor.MiddleCenter, Vector2.zero, dimensions, true);
         }
 
-        CreateText("Chibi Label", body.transform, label + "\nQ版", 24, dark,
-            TextAnchor.MiddleCenter, Vector2.zero, new Vector2(120, 120), true);
+        return image;
     }
 
     private static GameObject CreatePanel(string name, Transform parent, Color color)

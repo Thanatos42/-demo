@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.Video;
 
@@ -69,6 +70,10 @@ public sealed class MilkTeaDemoController : MonoBehaviour
     [Tooltip("立绘序列帧播放器（挂在立绘 Image 上）；客人有 ≥2 帧时播放动画")]
     public SpriteSequenceAnimator portraitAnimator;
     public Text portraitLabel;
+    [Tooltip("背景中固定显示的主角 Q 版小人")]
+    public Image protagonistChibiImage;
+    [Tooltip("柜台前随当前客人切换的 Q 版小人")]
+    public Image customerChibiImage;
     public Text dialogueSpeaker;
     public Text dialogueLine;
     public Button dialogueButton;
@@ -120,6 +125,7 @@ public sealed class MilkTeaDemoController : MonoBehaviour
     public GameObject startScreen;
     public Button startGameButton;
     public Button loadGameButton;
+    public Button quitGameButton;
     public Button settingsButton;
 
     [Header("设置面板")]
@@ -200,11 +206,36 @@ public sealed class MilkTeaDemoController : MonoBehaviour
         art = Resources.Load<MilkTeaArtLibrary>(ArtLibraryResource);
         recipes = BuildRecipes();
         ApplyRuntimeFont();
+        ApplyDialogueVisualSettings();
         WireChoices();
         WireLevels();
         WireNavigation();
         LoadSettings();
         ShowStartScreen();
+    }
+
+    private void Update()
+    {
+        if (!Input.GetKeyDown(KeyCode.Space) || dialogueScreen == null || !dialogueScreen.activeInHierarchy)
+        {
+            return;
+        }
+
+        if (settingsPanel != null && settingsPanel.activeInHierarchy)
+        {
+            return;
+        }
+
+        GameObject selected = EventSystem.current != null ? EventSystem.current.currentSelectedGameObject : null;
+        if (selected != null && selected.GetComponentInParent<InputField>() != null)
+        {
+            return;
+        }
+
+        if (dialogueButton != null && dialogueButton.IsActive() && dialogueButton.IsInteractable())
+        {
+            dialogueButton.onClick.Invoke();
+        }
     }
 
     private void ApplyRuntimeFont()
@@ -342,6 +373,11 @@ public sealed class MilkTeaDemoController : MonoBehaviour
             settingsButton.onClick.AddListener(OpenSettings);
         }
 
+        if (quitGameButton != null)
+        {
+            quitGameButton.onClick.AddListener(QuitGame);
+        }
+
         if (settingsCloseButton != null)
         {
             settingsCloseButton.onClick.AddListener(CloseSettings);
@@ -477,7 +513,8 @@ public sealed class MilkTeaDemoController : MonoBehaviour
         dialogueScreen.SetActive(true);
         ResolveNextOrder();
         UpdateRecipeManual();
-        UpdateCustomerPortrait(activeRecipe);
+        UpdateDialogueChibis();
+        UpdateDialoguePortrait(activeRecipe.CustomerName);
         PlayOpeningDialogue();
     }
 
@@ -555,14 +592,15 @@ public sealed class MilkTeaDemoController : MonoBehaviour
         }
 
         ConfigureDialogue(activeRecipe.CustomerName, Format("你好，我想要一杯{drink}，{ice}、{sugar}。"), "回应",
-            delegate { ConfigureDialogue("主角", "了解了。", "开始调配", EnterMixing); });
+            delegate { ConfigureDialogue(ProtagonistName(), "了解了。", "开始调配", EnterMixing); });
     }
 
     private void ShowServingDialogue()
     {
         mixingScreen.SetActive(false);
         dialogueScreen.SetActive(true);
-        UpdateCustomerPortrait(activeRecipe);
+        UpdateDialogueChibis();
+        UpdateDialoguePortrait(ProtagonistName());
         MilkTeaDialogue dialogue = currentCustomer != null && currentCustomer.servingDialogue != null
             ? currentCustomer.servingDialogue
             : (art != null ? art.defaultServingDialogue : null);
@@ -572,7 +610,7 @@ public sealed class MilkTeaDemoController : MonoBehaviour
             return;
         }
 
-        ConfigureDialogue("主角", "您的奶茶做好了。", "继续",
+        ConfigureDialogue(ProtagonistName(), "您的奶茶做好了。", "继续",
             delegate { ConfigureDialogue(activeRecipe.CustomerName, "谢谢！", "下一位", AdvanceAfterServe); });
     }
 
@@ -757,6 +795,15 @@ public sealed class MilkTeaDemoController : MonoBehaviour
         }
 
         BeginDay();
+    }
+
+    private void QuitGame()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
     }
 
     private void ShowIntro()
@@ -957,6 +1004,8 @@ public sealed class MilkTeaDemoController : MonoBehaviour
 
     private void ConfigureDialogue(string speaker, string line, string buttonText, Action action)
     {
+        UpdateDialoguePortrait(speaker);
+        ApplyDialogueTextColors();
         dialogueSpeaker.text = speaker;
         dialogueLine.text = line;
         dialogueButtonLabel.text = buttonText;
@@ -1181,8 +1230,7 @@ public sealed class MilkTeaDemoController : MonoBehaviour
     private void UpdateRecipeManual()
     {
         Recipe recipe = recipes[manualIndex];
-        bool unlocked = IsUnlocked(manualIndex);
-        bool showSprite = unlocked && recipe.IconSprite != null;
+        bool showSprite = recipe.IconSprite != null;
         if (recipeIconImage != null)
         {
             recipeIconImage.gameObject.SetActive(showSprite);
@@ -1195,9 +1243,9 @@ public sealed class MilkTeaDemoController : MonoBehaviour
         if (recipeIcon != null)
         {
             recipeIcon.gameObject.SetActive(!showSprite);
-            recipeIcon.text = unlocked ? recipe.IconLabel : "?";
-            recipeIcon.fontSize = unlocked ? 30 : 66;
-            recipeIcon.color = unlocked ? mint : yellow;
+            recipeIcon.text = recipe.IconLabel;
+            recipeIcon.fontSize = 30;
+            recipeIcon.color = mint;
         }
 
         recipeDetails.text = recipe.Name + "\n茶底：" + recipe.Tea + "\n奶底：" + recipe.Milk +
@@ -1205,21 +1253,62 @@ public sealed class MilkTeaDemoController : MonoBehaviour
         recipePage.text = (manualIndex + 1) + " / " + recipes.Length;
     }
 
-    private void UpdateCustomerPortrait(Recipe recipe)
+    private string ProtagonistName()
+    {
+        return art != null && !string.IsNullOrEmpty(art.protagonistName)
+            ? art.protagonistName
+            : "主角";
+    }
+
+    private bool IsProtagonistSpeaker(string speaker)
+    {
+        if (string.IsNullOrEmpty(speaker))
+        {
+            return false;
+        }
+
+        string protagonistName = ProtagonistName();
+        return speaker == "主角" || speaker.StartsWith("主角（", StringComparison.Ordinal)
+            || speaker == protagonistName || speaker.StartsWith(protagonistName + "（", StringComparison.Ordinal);
+    }
+
+    private void UpdateDialoguePortrait(string speaker)
     {
         if (portraitImage == null)
         {
             return;
         }
 
-        // 序列帧立绘优先：当前客人有 ≥2 帧则循环播放动画
+        if (IsProtagonistSpeaker(speaker))
+        {
+            ApplyPortrait(
+                art != null ? art.protagonistPortrait : null,
+                art != null ? art.protagonistPortraitFrames : null,
+                art != null ? art.protagonistPortraitFps : 8f,
+                ProtagonistName());
+            return;
+        }
+
+        Sprite customerPortrait = currentCustomer != null && currentCustomer.portrait != null
+            ? currentCustomer.portrait
+            : (activeRecipe != null && activeRecipe.Portrait != null
+                ? activeRecipe.Portrait
+                : (art != null ? art.defaultCustomerPortrait : null));
+        ApplyPortrait(
+            customerPortrait,
+            currentCustomer != null ? currentCustomer.portraitFrames : null,
+            currentCustomer != null ? currentCustomer.portraitFps : 8f,
+            activeRecipe != null ? activeRecipe.CustomerName : "顾客");
+    }
+
+    private void ApplyPortrait(Sprite staticPortrait, IList<Sprite> frames, float fps, string fallbackName)
+    {
         if (portraitAnimator != null)
         {
-            if (currentCustomer != null && currentCustomer.portraitFrames != null
-                && currentCustomer.portraitFrames.Count >= 2)
+            if (HasAtLeastTwoSprites(frames))
             {
                 portraitAnimator.enabled = true;
-                portraitAnimator.Play(currentCustomer.portraitFrames, currentCustomer.portraitFps, true);
+                portraitAnimator.Play(frames, fps, true);
                 if (portraitLabel != null)
                 {
                     portraitLabel.gameObject.SetActive(false);
@@ -1228,28 +1317,172 @@ public sealed class MilkTeaDemoController : MonoBehaviour
                 return;
             }
 
-            // 无序列帧：清空并停掉动画，交回下方静态立绘逻辑
             portraitAnimator.Clear();
         }
 
-        Sprite portrait = recipe != null && recipe.Portrait != null
-            ? recipe.Portrait
-            : (art != null ? art.defaultCustomerPortrait : null);
-        if (ApplySprite(portraitImage, portrait))
+        if (ApplySprite(portraitImage, staticPortrait))
         {
             if (portraitLabel != null)
             {
                 portraitLabel.gameObject.SetActive(false);
             }
+
+            return;
         }
-        else
+
+        portraitImage.sprite = null;
+        portraitImage.color = new Color(0f, 0f, 0f, 0f);
+        if (portraitLabel != null)
         {
-            portraitImage.color = panel;
-            if (portraitLabel != null)
+            portraitLabel.gameObject.SetActive(true);
+            portraitLabel.text = fallbackName + "\n临时立绘";
+        }
+    }
+
+    private static bool HasAtLeastTwoSprites(IList<Sprite> frames)
+    {
+        if (frames == null)
+        {
+            return false;
+        }
+
+        int validCount = 0;
+        for (int i = 0; i < frames.Count; i++)
+        {
+            if (frames[i] != null && ++validCount >= 2)
             {
-                portraitLabel.gameObject.SetActive(true);
-                portraitLabel.text = (recipe != null ? recipe.CustomerName : "顾客") + "\n临时立绘";
+                return true;
             }
+        }
+
+        return false;
+    }
+
+    private void UpdateDialogueChibis()
+    {
+        ApplyDialogueChibiLayout();
+        ApplyChibi(protagonistChibiImage, art != null ? art.protagonistChibi : null,
+            ProtagonistName(), mint);
+
+        Sprite customerChibi = currentCustomer != null && currentCustomer.chibi != null
+            ? currentCustomer.chibi
+            : (art != null ? art.customerChibi : null);
+        string customerName = activeRecipe != null ? activeRecipe.CustomerName : "顾客";
+        ApplyChibi(customerChibiImage, customerChibi, customerName, coral);
+    }
+
+    private void ApplyDialogueVisualSettings()
+    {
+        ApplyDialogueTextColors();
+        ApplyDialogueChibiLayout();
+        ApplyDialogueButtonColors();
+    }
+
+    private void ApplyDialogueButtonColors()
+    {
+        if (dialogueButton == null || art == null || art.continueButtonIcon == null)
+        {
+            return;
+        }
+
+        Image buttonImage = dialogueButton.targetGraphic as Image;
+        if (buttonImage != null)
+        {
+            buttonImage.color = Color.white;
+        }
+
+        ColorBlock colors = dialogueButton.colors;
+        colors.normalColor = Color.white;
+        colors.highlightedColor = new Color(0.92f, 0.92f, 0.92f, 1f);
+        colors.pressedColor = new Color(0.8f, 0.8f, 0.8f, 1f);
+        colors.selectedColor = Color.white;
+        colors.disabledColor = new Color(0.6f, 0.6f, 0.6f, 1f);
+        dialogueButton.colors = colors;
+    }
+
+    private void ApplyDialogueTextColors()
+    {
+        Color lineColor = art != null && art.dialogueTextColor.a > 0.01f
+            ? art.dialogueTextColor : Hex("#52382E");
+        Color speakerColor = art != null && art.speakerTextColor.a > 0.01f
+            ? art.speakerTextColor : cream;
+        Color titleColor = art != null && art.dayTitleTextColor.a > 0.01f
+            ? art.dayTitleTextColor : Hex("#402E24");
+        if (dialogueLine != null)
+        {
+            dialogueLine.color = lineColor;
+        }
+
+        if (dialogueSpeaker != null)
+        {
+            dialogueSpeaker.color = speakerColor;
+        }
+
+        if (dayTitle != null)
+        {
+            dayTitle.color = titleColor;
+        }
+    }
+
+    private void ApplyDialogueChibiLayout()
+    {
+        Vector2 protagonistPosition = art != null && art.protagonistChibiPosition != Vector2.zero
+            ? art.protagonistChibiPosition
+            : new Vector2(1120f, 600f);
+        Vector2 protagonistSize = art != null && art.protagonistChibiSize.x > 0f && art.protagonistChibiSize.y > 0f
+            ? art.protagonistChibiSize
+            : new Vector2(150f, 150f);
+        Vector2 customerPosition = art != null && art.customerChibiPosition != Vector2.zero
+            ? art.customerChibiPosition
+            : new Vector2(1360f, 390f);
+        Vector2 customerSize = art != null && art.customerChibiSize.x > 0f && art.customerChibiSize.y > 0f
+            ? art.customerChibiSize
+            : new Vector2(180f, 180f);
+
+        ApplyDialogueRect(protagonistChibiImage, protagonistPosition, protagonistSize);
+        ApplyDialogueRect(customerChibiImage, customerPosition, customerSize);
+    }
+
+    private static void ApplyDialogueRect(Image image, Vector2 position, Vector2 size)
+    {
+        if (image == null)
+        {
+            return;
+        }
+
+        RectTransform rect = image.rectTransform;
+        rect.anchorMin = Vector2.zero;
+        rect.anchorMax = Vector2.zero;
+        rect.pivot = Vector2.zero;
+        rect.anchoredPosition = position;
+        rect.sizeDelta = size;
+    }
+
+    private static void ApplyChibi(Image image, Sprite sprite, string fallbackName, Color fallbackColor)
+    {
+        if (image == null)
+        {
+            return;
+        }
+
+        Transform labelTransform = image.transform.Find("Chibi Label");
+        Text label = labelTransform != null ? labelTransform.GetComponent<Text>() : null;
+        if (ApplySprite(image, sprite))
+        {
+            if (label != null)
+            {
+                label.gameObject.SetActive(false);
+            }
+
+            return;
+        }
+
+        image.sprite = null;
+        image.color = fallbackColor;
+        if (label != null)
+        {
+            label.gameObject.SetActive(true);
+            label.text = fallbackName + "\nQ版";
         }
     }
 

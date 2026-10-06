@@ -14,15 +14,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MilkTeaArtLibrary
   uiFont: {fileID: 0}
   windowBackground: {fileID: 0}
-  dialogueBoxBackground: {fileID: 0}
-  shopScene: {fileID: 0}
+  dialogueBoxBackground: {fileID: 21300000, guid: 7c773b6126a47e5469e005cbfa6574ac, type: 3}
+  shopScene: {fileID: 21300000, guid: 6cc481ea1e0e28d4992c6cc1228fd1d6, type: 3}
+  protagonistName: "\u4E3B\u89D2"
+  protagonistPortrait: {fileID: 21300000, guid: 3f12f391b887dbd4b993b1f287733689, type: 3}
+  protagonistPortraitFrames: []
+  protagonistPortraitFps: 8
+  protagonistChibi: {fileID: 21300000, guid: 79cc97a30819f904482bc230a169bf79, type: 3}
   defaultCustomerPortrait: {fileID: 0}
-  protagonistChibi: {fileID: 0}
   customerChibi: {fileID: 0}
+  continueButtonIcon: {fileID: 21300000, guid: c683a6e848564ff4b96ae2b6318c8dd4, type: 3}
+  speakerTagBackground: {fileID: 21300000, guid: 33851c69b6fd8a34d8f04d13e1cf29e9, type: 3}
+  dayTitleBackground: {fileID: 21300000, guid: 6ebcfdd09e0ed774abbf1fd0cd8c2f3a, type: 3}
   kitchenScene: {fileID: 0}
   cup: {fileID: 0}
   lever: {fileID: 0}
   apartmentScene: {fileID: 0}
+  startBackground: {fileID: 21300000, guid: 8c96b8de9288f44489b32bb64321efaf, type: 3}
+  startLogo: {fileID: 21300000, guid: b54ae633fc2af2f4e88c6269367183da, type: 3}
+  settingsIcon: {fileID: 21300000, guid: 665b4b301bafa7a43a2d6585092e68e1, type: 3}
+  buttonPrimary: {fileID: 21300000, guid: c03573f7eb4cb3c44aaf08f07e833747, type: 3}
+  buttonSecondary: {fileID: 21300000, guid: 015c3d01d0d757242977c0796ada53d2, type: 3}
+  buttonAccent: {fileID: 0}
+  buttonNeutral: {fileID: 21300000, guid: 2ce4d91eb3710ea40ba874ad74705dd1, type: 3}
   ingredientIcons:
   - name: "\u7EA2\u8336"
     sprite: {fileID: 0}
@@ -69,6 +83,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 33ea474629765e641bec0fef41cba2bc, type: 2}
   - {fileID: 11400000, guid: 966de532d8470534c9f6668d8012a559, type: 2}
   - {fileID: 11400000, guid: a49b441e02ea557419a710363a961628, type: 2}
-  customers: []
+  customers:
+  - {fileID: 11400000, guid: 45d38d2c8c76b994bbf2eca4f8e85265, type: 2}
+  - {fileID: 11400000, guid: a1f296b6daa432b43870dec4b6882dc9, type: 2}
   defaultOpeningDialogue: {fileID: 11400000, guid: b55707ce4f169db4aa84b21345ed2e22, type: 2}
   defaultServingDialogue: {fileID: 11400000, guid: e026b5693513d7042970c1e7c289de33, type: 2}

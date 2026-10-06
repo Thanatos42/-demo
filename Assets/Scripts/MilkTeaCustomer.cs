@@ -16,6 +16,9 @@ public sealed class MilkTeaCustomer : ScriptableObject
     [Tooltip("该客人的立绘，留空则用点单饮品或美术库中的默认立绘")]
     public Sprite portrait;
 
+    [Tooltip("该客人在柜台前显示的专属 Q 版小人，留空则使用美术库中的默认顾客小人")]
+    public Sprite chibi;
+
     [Tooltip("立绘序列帧：≥2 帧则循环播放动画；留空或仅 1 帧时使用上面的静态立绘")]
     public List<Sprite> portraitFrames = new List<Sprite>();
 

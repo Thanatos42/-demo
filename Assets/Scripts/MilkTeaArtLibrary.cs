@@ -26,11 +26,40 @@ public sealed class MilkTeaArtLibrary : ScriptableObject
     public Sprite dialogueBoxBackground;
 
     [Header("对话场景")]
-    [Tooltip("右侧奶茶店俯视整图，设置后覆盖占位色块")]
+    [Tooltip("奶茶店场景整图，作为对话界面全屏背景")]
     public Sprite shopScene;
-    public Sprite defaultCustomerPortrait;
+
+    [Header("主角")]
+    [Tooltip("主角姓名；对话说话人与该名称或“主角”一致时显示主角立绘")]
+    public string protagonistName = "主角";
+    public Sprite protagonistPortrait;
+    [Tooltip("主角立绘序列帧：≥2 帧时优先循环播放")]
+    public List<Sprite> protagonistPortraitFrames = new List<Sprite>();
+    public float protagonistPortraitFps = 8f;
     public Sprite protagonistChibi;
+
+    [Header("默认顾客回退")]
+    public Sprite defaultCustomerPortrait;
     public Sprite customerChibi;
+
+    [Header("对话界面装饰")]
+    [Tooltip("继续按钮图标（如猫爪），设置后覆盖文字“继续”")]
+    public Sprite continueButtonIcon;
+    [Tooltip("说话人名牌背景（丝带/标签样式），设置后覆盖纯色")]
+    public Sprite speakerTagBackground;
+    [Tooltip("天数/营业状态徽章背景（顶部标题栏），设置后覆盖纯色")]
+    public Sprite dayTitleBackground;
+
+    [Header("对话文字颜色")]
+    public Color dialogueTextColor = new Color(0.32f, 0.22f, 0.18f, 1f);
+    public Color speakerTextColor = new Color(1f, 0.96f, 0.84f, 1f);
+    public Color dayTitleTextColor = new Color(0.25f, 0.18f, 0.14f, 1f);
+
+    [Header("对话场景小人布局（1920 × 1080 坐标）")]
+    public Vector2 protagonistChibiPosition = new Vector2(1120f, 600f);
+    public Vector2 protagonistChibiSize = new Vector2(150f, 150f);
+    public Vector2 customerChibiPosition = new Vector2(1360f, 390f);
+    public Vector2 customerChibiSize = new Vector2(180f, 180f);
 
     [Header("调配场景")]
     [Tooltip("左上后厨俯视整图，设置后覆盖占位色块")]
@@ -47,6 +76,8 @@ public sealed class MilkTeaArtLibrary : ScriptableObject
     public Sprite startBackground;
     [Tooltip("游戏 Logo，设置后覆盖占位文字")]
     public Sprite startLogo;
+    [Tooltip("设置按钮图标（左上角小图标），设置后覆盖文字“设置”")]
+    public Sprite settingsIcon;
 
     [Header("按钮皮肤（留空则用纯色占位；建议用九宫格 Sprite）")]
     [Tooltip("正向主按钮，如开始游戏/进入下一天（对应青色）")]
