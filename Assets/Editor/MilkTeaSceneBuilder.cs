@@ -293,11 +293,22 @@ public static class MilkTeaSceneBuilder
     {
         controller.orderSpeaker = FindDeep<Text>(root, "Order Speaker");
         controller.orderLine = FindDeep<Text>(root, "Order Line");
+        controller.recipeIcon = FindDeep<Text>(root, "Recipe Icon Text");
+        controller.recipeIconImage = FindDeep<Image>(root, "Recipe Icon Image");
+        controller.recipeDetails = FindDeep<Text>(root, "Recipe Details");
+        controller.recipePage = FindDeep<Text>(root, "Page");
         controller.prevRecipeButton = FindDeep<Button>(root, "Previous Recipe");
         controller.nextRecipeButton = FindDeep<Button>(root, "Next Recipe");
+        controller.categoryTitle = FindDeep<Text>(root, "Category Title");
+        controller.categoryIcon = FindDeep<Image>(root, "Category Icon");
+        controller.selectionSummary = FindDeep<Text>(root, "Selection Summary");
         controller.prevCategoryButton = FindDeep<Button>(root, "Previous Category");
         controller.nextCategoryButton = FindDeep<Button>(root, "Next Category");
-        controller.leverButton = FindDeep<Button>(root, "Lever Button");
+        controller.machineStatus = FindDeep<Text>(root, "Machine Status");
+        controller.shakeButton = FindDeep<Button>(root, "Shake Button");
+        controller.shakeButtonLabel = FindButtonLabel(root, "Shake Button");
+        controller.sugarStateLabel = FindDeep<Text>(root, "Sugar State");
+        controller.iceStateLabel = FindDeep<Text>(root, "Ice State");
     }
 
     private static void RewireSettlementScreen(Transform root)
@@ -465,12 +476,16 @@ public static class MilkTeaSceneBuilder
 
     private static void BuildMixingScreen(Transform parent)
     {
-        CreateText("Mixing Title", parent, "奶茶调配", 46, cream, TextAnchor.MiddleCenter,
-            new Vector2(445, 1000), new Vector2(560, 60), true);
+        // 全屏底图（含右侧操作区装饰和奶油粉底色）
+        Sprite mixingBg = art != null ? art.mixingBackground : null;
+        if (mixingBg != null)
+        {
+            ApplySprite(parent.GetComponent<Image>(), mixingBg);
+        }
 
+        // 左上后厨场景（叠在底图左侧）
         GameObject kitchenPanel = CreatePanel("Kitchen Overview", parent, panel);
-        SetRect(kitchenPanel.GetComponent<RectTransform>(), 45, 355, 1030, 605);
-        AddFrame(kitchenPanel.transform, mint);
+        SetRect(kitchenPanel.GetComponent<RectTransform>(), 30, 340, 630, 710);
         Sprite kitchenScene = art != null ? art.kitchenScene : null;
         if (kitchenScene != null)
         {
@@ -479,33 +494,60 @@ public static class MilkTeaSceneBuilder
         else
         {
             CreateText("Kitchen Title", kitchenPanel.transform, "后厨 · 俯视场景", 34, cream,
-                TextAnchor.MiddleCenter, new Vector2(280, 530), new Vector2(470, 55), true);
-            CreatePanelAt("Worktop", kitchenPanel.transform, new Vector2(110, 120), new Vector2(810, 145), Hex("#8F664F"));
-            CreatePanelAt("Tea Machine", kitchenPanel.transform, new Vector2(90, 320), new Vector2(210, 140), Hex("#53657A"));
-            CreateText("Tea Machine Label", kitchenPanel.transform, "萃茶机", 27, cream,
-                TextAnchor.MiddleCenter, new Vector2(90, 360), new Vector2(210, 50), true);
-            CreatePanelAt("Milk Station", kitchenPanel.transform, new Vector2(720, 320), new Vector2(210, 140), Hex("#53657A"));
-            CreateText("Milk Station Label", kitchenPanel.transform, "奶底区", 27, cream,
-                TextAnchor.MiddleCenter, new Vector2(720, 360), new Vector2(210, 50), true);
+                TextAnchor.MiddleCenter, new Vector2(100, 530), new Vector2(430, 55), true);
         }
 
-        CreateChibi(kitchenPanel.transform, "主角", new Vector2(470, 255), mint, art != null ? art.protagonistChibi : null);
+        CreateChibi(kitchenPanel.transform, "主角", new Vector2(250, 80), mint, art != null ? art.protagonistChibi : null);
 
+        // 左下对话框（复用 dialogueBoxBackground）
         GameObject orderBox = CreatePanel("Order Reminder", parent, Hex("#172033"));
-        SetRect(orderBox.GetComponent<RectTransform>(), 45, 45, 1030, 270);
-        AddFrame(orderBox.transform, cream);
-        controller.orderSpeaker = CreateText("Order Speaker", orderBox.transform, "顾客需求", 34, coral,
-            TextAnchor.MiddleLeft, new Vector2(38, 185), new Vector2(460, 55), true);
-        controller.orderLine = CreateText("Order Line", orderBox.transform,
-            "经典珍珠奶茶 · 少糖 · 少冰\n茶底、奶底和配料需要由你完成。", 33, cream,
-            TextAnchor.UpperLeft, new Vector2(38, 55), new Vector2(930, 125), false);
+        SetRect(orderBox.GetComponent<RectTransform>(), 30, 30, 630, 280);
+        ApplySprite(orderBox.GetComponent<Image>(), art != null ? art.dialogueBoxBackground : null);
 
-        GameObject operationPanel = CreatePanel("Operation Panel", parent, Hex("#1A2433"));
-        SetRect(operationPanel.GetComponent<RectTransform>(), 1110, 25, 765, 1025);
-        AddFrame(operationPanel.transform, coral);
+        // 说话人名牌（复用 speakerTagBackground）
+        GameObject orderTag = CreatePanel("Order Tag", parent, coral);
+        SetRect(orderTag.GetComponent<RectTransform>(), 60, 260, 200, 50);
+        Sprite tagBg = art != null ? art.speakerTagBackground : null;
+        if (tagBg != null)
+        {
+            Image tagImage = orderTag.GetComponent<Image>();
+            tagImage.sprite = tagBg;
+            tagImage.color = Color.white;
+            tagImage.type = tagBg.border != Vector4.zero ? Image.Type.Sliced : Image.Type.Simple;
+        }
+
+        Color speakerColor = art != null && art.speakerTextColor.a > 0.01f
+            ? art.speakerTextColor : cream;
+        controller.orderSpeaker = CreateText("Order Speaker", orderTag.transform, "顾客需求", 28, speakerColor,
+            TextAnchor.MiddleCenter, Vector2.zero, new Vector2(200, 50), true);
+
+        Color dialogueColor = art != null && art.dialogueTextColor.a > 0.01f
+            ? art.dialogueTextColor : Hex("#52382E");
+        controller.orderLine = CreateText("Order Line", orderBox.transform,
+            "经典珍珠奶茶 · 少糖 · 少冰\n茶底、奶底和配料需要由你完成。", 30, dialogueColor,
+            TextAnchor.UpperLeft, new Vector2(40, 40), new Vector2(550, 170), false);
+
+        // 猫爪装饰（复用 continueButtonIcon，仅装饰）
+        Sprite continueIcon = art != null ? art.continueButtonIcon : null;
+        if (continueIcon != null)
+        {
+            GameObject paw = CreatePanel("Order Paw", orderBox.transform, Color.white);
+            SetRect(paw.GetComponent<RectTransform>(), 530, 10, 80, 80);
+            Image pawImage = paw.GetComponent<Image>();
+            pawImage.sprite = continueIcon;
+            pawImage.type = Image.Type.Simple;
+            pawImage.preserveAspect = true;
+            pawImage.raycastTarget = false;
+        }
+
+        // 右侧操作区容器（透明，仅做布局容器）
+        GameObject operationPanel = CreatePanel("Operation Panel", parent, Color.clear);
+        SetRect(operationPanel.GetComponent<RectTransform>(), 700, 0, 1220, 1080);
+        operationPanel.GetComponent<Image>().raycastTarget = false;
         BuildRecipePanel(operationPanel.transform);
         BuildIngredientPanel(operationPanel.transform);
-        BuildMachinePanel(operationPanel.transform);
+        BuildSugarIcePanel(operationPanel.transform);
+        BuildShakePanel(operationPanel.transform);
     }
 
     private static void BuildSettlementScreen(Transform parent)
@@ -716,47 +758,74 @@ public static class MilkTeaSceneBuilder
 
     private static void BuildRecipePanel(Transform parent)
     {
-        GameObject recipePanel = CreatePanel("Recipe Manual", parent, panel);
-        SetRect(recipePanel.GetComponent<RectTransform>(), 22, 770, 720, 230);
-        CreateText("Recipe Header", recipePanel.transform, "配方手册", 31, cream,
-            TextAnchor.MiddleCenter, new Vector2(245, 176), new Vector2(230, 45), true);
+        GameObject recipePanel = CreatePanel("Recipe Manual", parent, new Color(0f, 0f, 0f, 0.02f));
+        SetRect(recipePanel.GetComponent<RectTransform>(), 20, 700, 1180, 360);
+        recipePanel.GetComponent<Image>().raycastTarget = false;
 
-        GameObject iconCard = CreatePanel("Recipe Icon", recipePanel.transform, dark);
-        SetRect(iconCard.GetComponent<RectTransform>(), 25, 35, 165, 150);
+        CreateText("Recipe Header", recipePanel.transform, "配方详情", 34, Hex("#52382E"),
+            TextAnchor.MiddleCenter, new Vector2(20, 290), new Vector2(220, 50), true);
+
+        // 配方文字信息
+        controller.recipeDetails = CreateText("Recipe Details", recipePanel.transform,
+            string.Empty, 28, Hex("#52382E"),
+            TextAnchor.UpperLeft, new Vector2(20, 160), new Vector2(450, 130), true);
+
+        // 奶茶成品图
+        GameObject iconCard = CreatePanel("Recipe Icon", recipePanel.transform, new Color(0f, 0f, 0f, 0f));
+        SetRect(iconCard.GetComponent<RectTransform>(), 780, 30, 360, 300);
+        iconCard.GetComponent<Image>().raycastTarget = false;
         controller.recipeIcon = CreateText("Recipe Icon Text", iconCard.transform, "?", 66, yellow,
-            TextAnchor.MiddleCenter, Vector2.zero, new Vector2(165, 150), true);
+            TextAnchor.MiddleCenter, Vector2.zero, new Vector2(360, 300), true);
         GameObject iconImageObject = CreatePanel("Recipe Icon Image", iconCard.transform, Color.white);
-        SetRect(iconImageObject.GetComponent<RectTransform>(), 0, 0, 165, 150);
+        SetRect(iconImageObject.GetComponent<RectTransform>(), 0, 0, 360, 300);
         controller.recipeIconImage = iconImageObject.GetComponent<Image>();
         controller.recipeIconImage.preserveAspect = true;
         controller.recipeIconImage.raycastTarget = false;
         iconImageObject.SetActive(false);
 
-        controller.recipeDetails = CreateText("Recipe Details", recipePanel.transform,
-            string.Empty, 25, cream,
-            TextAnchor.MiddleLeft, new Vector2(215, 24), new Vector2(375, 160), true);
-
+        // 左右箭头
         Text unused;
-        controller.prevRecipeButton = CreateButton("Previous Recipe", recipePanel.transform, "◀", new Vector2(600, 105),
-            new Vector2(48, 56), panelLight, out unused);
-        controller.nextRecipeButton = CreateButton("Next Recipe", recipePanel.transform, "▶", new Vector2(656, 105),
-            new Vector2(48, 56), panelLight, out unused);
-        controller.recipePage = CreateText("Page", recipePanel.transform, "1 / 10", 22, mint, TextAnchor.MiddleCenter,
-            new Vector2(600, 48), new Vector2(105, 45), true);
+        controller.prevRecipeButton = CreateButton("Previous Recipe", recipePanel.transform, "◀", new Vector2(700, 140),
+            new Vector2(60, 60), panelLight, out unused);
+        ApplyArrowIcon(controller.prevRecipeButton, art != null ? art.recipePreviousIcon : null);
+        controller.nextRecipeButton = CreateButton("Next Recipe", recipePanel.transform, "▶", new Vector2(1100, 140),
+            new Vector2(60, 60), panelLight, out unused);
+        ApplyArrowIcon(controller.nextRecipeButton, art != null ? art.recipeNextIcon : null);
+
+        controller.recipePage = CreateText("Page", recipePanel.transform, "1 / 10", 22, Hex("#52382E"), TextAnchor.MiddleCenter,
+            new Vector2(880, 10), new Vector2(120, 30), true);
     }
 
     private static void BuildIngredientPanel(Transform parent)
     {
-        GameObject ingredientPanel = CreatePanel("Ingredients", parent, panel);
-        SetRect(ingredientPanel.GetComponent<RectTransform>(), 22, 292, 720, 455);
+        GameObject ingredientPanel = CreatePanel("Ingredients", parent, new Color(0f, 0f, 0f, 0.02f));
+        SetRect(ingredientPanel.GetComponent<RectTransform>(), 20, 200, 740, 480);
+        ingredientPanel.GetComponent<Image>().raycastTarget = false;
 
-        controller.categoryTitle = CreateText("Category Title", ingredientPanel.transform, "原料选择 · 茶底", 31, cream,
-            TextAnchor.MiddleLeft, new Vector2(24, 395), new Vector2(430, 46), true);
+        controller.categoryTitle = CreateText("Category Title", ingredientPanel.transform, "原料选择 · 茶底", 30, Hex("#52382E"),
+            TextAnchor.MiddleLeft, new Vector2(60, 420), new Vector2(400, 46), true);
+
+        // 分类图标（茶叶/牛奶/配料）
+        GameObject categoryIconObj = CreatePanel("Category Icon", ingredientPanel.transform, Color.clear);
+        SetRect(categoryIconObj.GetComponent<RectTransform>(), 10, 418, 46, 46);
+        controller.categoryIcon = categoryIconObj.GetComponent<Image>();
+        controller.categoryIcon.preserveAspect = true;
+        controller.categoryIcon.raycastTarget = false;
+        Sprite teaIcon = art != null ? art.teaCategoryIcon : null;
+        if (teaIcon != null)
+        {
+            controller.categoryIcon.sprite = teaIcon;
+            controller.categoryIcon.color = Color.white;
+        }
+
+        // 上下箭头
         Text unused;
-        controller.prevCategoryButton = CreateButton("Previous Category", ingredientPanel.transform, "▲", new Vector2(590, 392),
-            new Vector2(48, 48), panelLight, out unused);
-        controller.nextCategoryButton = CreateButton("Next Category", ingredientPanel.transform, "▼", new Vector2(650, 392),
-            new Vector2(48, 48), panelLight, out unused);
+        controller.prevCategoryButton = CreateButton("Previous Category", ingredientPanel.transform, "▲", new Vector2(570, 432),
+            new Vector2(56, 48), panelLight, out unused);
+        ApplyArrowIcon(controller.prevCategoryButton, art != null ? art.categoryPreviousIcon : null);
+        controller.nextCategoryButton = CreateButton("Next Category", ingredientPanel.transform, "▼", new Vector2(640, 432),
+            new Vector2(56, 48), panelLight, out unused);
+        ApplyArrowIcon(controller.nextCategoryButton, art != null ? art.categoryNextIcon : null);
 
         BuildChoicePanel(ingredientPanel.transform, IngredientCategory.Tea,
             new[] { "红茶", "茉莉绿茶", "抹茶", "乌龙" }, 4);
@@ -766,22 +835,49 @@ public static class MilkTeaSceneBuilder
             new[] { "珍珠", "黑糖珍珠", "芝士奶盖", "芋泥", "红豆", "芒果西米", "草莓芝士", "百香果椰果", "桂花糖浆", "无" }, 3);
 
         controller.selectionSummary = CreateText("Selection Summary", ingredientPanel.transform,
-            "已选：茶底 — ｜ 奶底 — ｜ 配料 —", 22, mint,
-            TextAnchor.MiddleLeft, new Vector2(24, 133), new Vector2(670, 40), true);
+            "已选：茶底 — ｜ 奶底 — ｜ 配料 —", 22, Hex("#52382E"),
+            TextAnchor.MiddleLeft, new Vector2(20, 0), new Vector2(700, 40), true);
+    }
 
-        CreateText("Sugar Label", ingredientPanel.transform, "糖度", 25, cream,
-            TextAnchor.MiddleLeft, new Vector2(25, 73), new Vector2(85, 45), true);
-        CreateLevelBlock(ingredientPanel.transform, "Sugar 1", new Vector2(120, 74), yellow, true, 0);
-        CreateLevelBlock(ingredientPanel.transform, "Sugar 2", new Vector2(180, 74), yellow, true, 1);
-        CreateText("Sugar State", ingredientPanel.transform, "无糖 / 少糖 / 多糖", 20, gray,
-            TextAnchor.MiddleLeft, new Vector2(250, 75), new Vector2(235, 40), false);
+    private static void BuildSugarIcePanel(Transform parent)
+    {
+        GameObject sugarIcePanel = CreatePanel("Sugar Ice Panel", parent, new Color(0f, 0f, 0f, 0.02f));
+        SetRect(sugarIcePanel.GetComponent<RectTransform>(), 780, 200, 400, 480);
+        sugarIcePanel.GetComponent<Image>().raycastTarget = false;
 
-        CreateText("Ice Label", ingredientPanel.transform, "冰度", 25, cream,
-            TextAnchor.MiddleLeft, new Vector2(25, 20), new Vector2(85, 45), true);
-        CreateLevelBlock(ingredientPanel.transform, "Ice 1", new Vector2(120, 21), blue, false, 0);
-        CreateLevelBlock(ingredientPanel.transform, "Ice 2", new Vector2(180, 21), blue, false, 1);
-        CreateText("Ice State", ingredientPanel.transform, "去冰 / 少冰 / 多冰", 20, gray,
-            TextAnchor.MiddleLeft, new Vector2(250, 22), new Vector2(235, 40), false);
+        // 糖浆
+        Sprite sugarIconSprite = art != null ? art.sugarIcon : null;
+        if (sugarIconSprite != null)
+        {
+            GameObject sugarIconObj = CreatePanel("Sugar Icon", sugarIcePanel.transform, Color.white);
+            SetRect(sugarIconObj.GetComponent<RectTransform>(), 20, 370, 60, 60);
+            ApplySprite(sugarIconObj.GetComponent<Image>(), sugarIconSprite);
+            sugarIconObj.GetComponent<Image>().raycastTarget = false;
+        }
+
+        CreateText("Sugar Label", sugarIcePanel.transform, "糖浆", 28, Hex("#52382E"),
+            TextAnchor.MiddleLeft, new Vector2(90, 375), new Vector2(100, 50), true);
+        CreateLevelBlock(sugarIcePanel.transform, "Sugar 1", new Vector2(200, 378), yellow, true, 0);
+        CreateLevelBlock(sugarIcePanel.transform, "Sugar 2", new Vector2(270, 378), yellow, true, 1);
+        controller.sugarStateLabel = CreateText("Sugar State", sugarIcePanel.transform, "无糖", 24, Hex("#52382E"),
+            TextAnchor.MiddleRight, new Vector2(220, 325), new Vector2(150, 40), true);
+
+        // 冰块
+        Sprite iceIconSprite = art != null ? art.iceIcon : null;
+        if (iceIconSprite != null)
+        {
+            GameObject iceIconObj = CreatePanel("Ice Icon", sugarIcePanel.transform, Color.white);
+            SetRect(iceIconObj.GetComponent<RectTransform>(), 20, 220, 60, 60);
+            ApplySprite(iceIconObj.GetComponent<Image>(), iceIconSprite);
+            iceIconObj.GetComponent<Image>().raycastTarget = false;
+        }
+
+        CreateText("Ice Label", sugarIcePanel.transform, "冰块", 28, Hex("#52382E"),
+            TextAnchor.MiddleLeft, new Vector2(90, 225), new Vector2(100, 50), true);
+        CreateLevelBlock(sugarIcePanel.transform, "Ice 1", new Vector2(200, 228), blue, false, 0);
+        CreateLevelBlock(sugarIcePanel.transform, "Ice 2", new Vector2(270, 228), blue, false, 1);
+        controller.iceStateLabel = CreateText("Ice State", sugarIcePanel.transform, "去冰", 24, Hex("#52382E"),
+            TextAnchor.MiddleRight, new Vector2(220, 175), new Vector2(150, 40), true);
     }
 
     private static void BuildChoicePanel(Transform parent, IngredientCategory category, string[] options, int columns)
@@ -824,28 +920,76 @@ public static class MilkTeaSceneBuilder
         }
     }
 
-    private static void BuildMachinePanel(Transform parent)
+    private static void BuildShakePanel(Transform parent)
     {
-        GameObject machine = CreatePanel("Packing Machine", parent, panel);
-        SetRect(machine.GetComponent<RectTransform>(), 22, 22, 720, 247);
-        controller.machineStatus = CreateText("Machine Status", machine.transform, "请选择原料后拉动拉杆", 27, cream,
-            TextAnchor.MiddleCenter, new Vector2(35, 175), new Vector2(500, 48), true);
+        // 状态文字
+        controller.machineStatus = CreateText("Machine Status", parent, "请选择原料后点击开始摇动", 24, Hex("#52382E"),
+            TextAnchor.MiddleCenter, new Vector2(310, 120), new Vector2(600, 40), true);
 
-        GameObject cup = CreatePanel("Cup", machine.transform, Hex("#D8CBB3"));
-        SetRect(cup.GetComponent<RectTransform>(), 100, 35, 250, 125);
-        if (!ApplySprite(cup.GetComponent<Image>(), art != null ? art.cup : null))
+        // 开始摇动按钮
+        Text shakeLabel;
+        controller.shakeButton = CreateButton("Shake Button", parent, "开始摇动！", new Vector2(310, 20),
+            new Vector2(600, 90), coral, out shakeLabel);
+        shakeLabel.fontSize = 36;
+        shakeLabel.color = Color.white;
+        controller.shakeButtonLabel = shakeLabel;
+
+        Sprite shakeBg = art != null ? art.shakeButtonBackground : null;
+        if (shakeBg != null)
         {
-            CreateText("Cup Label", cup.transform, "饮品打包机", 29, dark,
-                TextAnchor.MiddleCenter, Vector2.zero, new Vector2(250, 125), true);
+            Image btnImage = controller.shakeButton.GetComponent<Image>();
+            btnImage.sprite = shakeBg;
+            btnImage.color = Color.white;
+            btnImage.type = shakeBg.border != Vector4.zero ? Image.Type.Sliced : Image.Type.Simple;
+            btnImage.preserveAspect = false;
+
+            ColorBlock colors = controller.shakeButton.colors;
+            colors.normalColor = Color.white;
+            colors.highlightedColor = new Color(0.92f, 0.92f, 0.92f, 1f);
+            colors.pressedColor = new Color(0.8f, 0.8f, 0.8f, 1f);
+            colors.selectedColor = Color.white;
+            colors.disabledColor = new Color(0.6f, 0.6f, 0.6f, 1f);
+            controller.shakeButton.colors = colors;
         }
 
-        Text leverLabel;
-        controller.leverButton = CreateButton("Lever", machine.transform, "拉杆\n▼", new Vector2(540, 38),
-            new Vector2(120, 150), coral, out leverLabel);
-        leverLabel.fontSize = 27;
-        if (ApplySprite(controller.leverButton.GetComponent<Image>(), art != null ? art.lever : null))
+        Sprite shakeIcon = art != null ? art.shakeButtonIcon : null;
+        if (shakeIcon != null)
         {
-            leverLabel.gameObject.SetActive(false);
+            GameObject iconObj = CreatePanel("Shake Icon", controller.shakeButton.transform, Color.white);
+            SetRect(iconObj.GetComponent<RectTransform>(), 20, 10, 70, 70);
+            Image iconImage = iconObj.GetComponent<Image>();
+            iconImage.sprite = shakeIcon;
+            iconImage.type = Image.Type.Simple;
+            iconImage.preserveAspect = true;
+            iconImage.raycastTarget = false;
+        }
+    }
+
+    private static void ApplyArrowIcon(Button button, Sprite icon)
+    {
+        if (button == null || icon == null)
+        {
+            return;
+        }
+
+        Image image = button.GetComponent<Image>();
+        image.sprite = icon;
+        image.color = Color.white;
+        image.type = Image.Type.Simple;
+        image.preserveAspect = true;
+
+        ColorBlock colors = button.colors;
+        colors.normalColor = Color.white;
+        colors.highlightedColor = new Color(0.92f, 0.92f, 0.92f, 1f);
+        colors.pressedColor = new Color(0.8f, 0.8f, 0.8f, 1f);
+        colors.selectedColor = Color.white;
+        colors.disabledColor = new Color(0.6f, 0.6f, 0.6f, 1f);
+        button.colors = colors;
+
+        Text label = button.GetComponentInChildren<Text>();
+        if (label != null)
+        {
+            label.gameObject.SetActive(false);
         }
     }
 

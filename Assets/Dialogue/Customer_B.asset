@@ -17,7 +17,7 @@ MonoBehaviour:
   chibi: {fileID: 21300000, guid: ecd6664a0cd467049bc360fbfc500cbb, type: 3}
   portraitFrames: []
   portraitFps: 8
-  order: {fileID: 0}
+  order: {fileID: 11400000, guid: b224cbb7a6410464dba280162a30ca0f, type: 2}
   sugarLevel: 1
   iceLevel: 1
   openingDialogue: {fileID: 0}

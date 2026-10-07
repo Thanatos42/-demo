@@ -62,10 +62,42 @@ public sealed class MilkTeaArtLibrary : ScriptableObject
     public Vector2 customerChibiSize = new Vector2(180f, 180f);
 
     [Header("调配场景")]
-    [Tooltip("左上后厨俯视整图，设置后覆盖占位色块")]
+    [Tooltip("调配界面全屏底图（含右侧操作区装饰和底色），设置后覆盖占位色块")]
+    public Sprite mixingBackground;
+    [Tooltip("左上后厨俯视整图，叠在底图左侧")]
     public Sprite kitchenScene;
-    public Sprite cup;
-    public Sprite lever;
+
+    [Header("调配界面图标")]
+    [Tooltip("茶底分类图标（如茶叶）")]
+    public Sprite teaCategoryIcon;
+    [Tooltip("奶底分类图标（如牛奶）")]
+    public Sprite milkCategoryIcon;
+    [Tooltip("配料分类图标（如配料碗）")]
+    public Sprite toppingCategoryIcon;
+    [Tooltip("配方翻页左箭头")]
+    public Sprite recipePreviousIcon;
+    [Tooltip("配方翻页右箭头")]
+    public Sprite recipeNextIcon;
+    [Tooltip("原料分类切换上箭头")]
+    public Sprite categoryPreviousIcon;
+    [Tooltip("原料分类切换下箭头")]
+    public Sprite categoryNextIcon;
+
+    [Header("糖冰格子图标")]
+    public Sprite sugarIcon;
+    public Sprite iceIcon;
+    [Tooltip("未选中的空格子")]
+    public Sprite levelBlockEmpty;
+    [Tooltip("糖度选中格子（粉色）")]
+    public Sprite sugarBlockSelected;
+    [Tooltip("冰度选中格子（蓝色）")]
+    public Sprite iceBlockSelected;
+
+    [Header("调配提交按钮")]
+    [Tooltip("开始摇动按钮底图，设置后覆盖纯色")]
+    public Sprite shakeButtonBackground;
+    [Tooltip("摇杯装饰图标（可选）")]
+    public Sprite shakeButtonIcon;
 
     [Header("休息场景")]
     [Tooltip("右侧出租屋俯视整图，设置后覆盖占位色块")]

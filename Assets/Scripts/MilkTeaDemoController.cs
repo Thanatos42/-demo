@@ -93,13 +93,19 @@ public sealed class MilkTeaDemoController : MonoBehaviour
 
     [Header("调配 · 原料选择")]
     public Text categoryTitle;
+    public Image categoryIcon;
     public Text selectionSummary;
     public Button prevCategoryButton;
     public Button nextCategoryButton;
 
-    [Header("调配 · 打包机")]
+    [Header("调配 · 提交")]
     public Text machineStatus;
-    public Button leverButton;
+    public Button shakeButton;
+    public Text shakeButtonLabel;
+
+    [Header("调配 · 糖冰状态显示")]
+    public Text sugarStateLabel;
+    public Text iceStateLabel;
 
     [Header("结算界面")]
     public GameObject settlementScreen;
@@ -165,7 +171,7 @@ public sealed class MilkTeaDemoController : MonoBehaviour
 
     private MilkTeaArtLibrary art;
     private Recipe[] recipes;
-    private RectTransform leverRect;
+    private RectTransform shakeRect;
 
     private readonly Dictionary<IngredientCategory, GameObject> categoryPanels =
         new Dictionary<IngredientCategory, GameObject>();
@@ -337,10 +343,10 @@ public sealed class MilkTeaDemoController : MonoBehaviour
             nextCategoryButton.onClick.AddListener(delegate { ChangeCategory(1); });
         }
 
-        if (leverButton != null)
+        if (shakeButton != null)
         {
-            leverRect = leverButton.GetComponent<RectTransform>();
-            leverButton.onClick.AddListener(BeginSubmit);
+            shakeRect = shakeButton.GetComponent<RectTransform>();
+            shakeButton.onClick.AddListener(BeginSubmit);
         }
 
         if (settlementButton != null)
@@ -571,9 +577,9 @@ public sealed class MilkTeaDemoController : MonoBehaviour
     {
         dialogueScreen.SetActive(false);
         mixingScreen.SetActive(true);
-        if (leverButton != null)
+        if (shakeButton != null)
         {
-            leverButton.interactable = true;
+            shakeButton.interactable = true;
         }
 
         ClearSelections();
@@ -1034,7 +1040,41 @@ public sealed class MilkTeaDemoController : MonoBehaviour
         }
 
         categoryTitle.text = "原料选择 · " + CategoryName(currentCategory);
+        UpdateCategoryIcon();
         UpdateChoiceVisuals();
+    }
+
+    private void UpdateCategoryIcon()
+    {
+        if (categoryIcon == null || art == null)
+        {
+            return;
+        }
+
+        Sprite icon = null;
+        switch (currentCategory)
+        {
+            case IngredientCategory.Tea:
+                icon = art.teaCategoryIcon;
+                break;
+            case IngredientCategory.Milk:
+                icon = art.milkCategoryIcon;
+                break;
+            case IngredientCategory.Topping:
+                icon = art.toppingCategoryIcon;
+                break;
+        }
+
+        if (icon != null)
+        {
+            categoryIcon.sprite = icon;
+            categoryIcon.color = Color.white;
+            categoryIcon.enabled = true;
+        }
+        else
+        {
+            categoryIcon.enabled = false;
+        }
     }
 
     private void SelectIngredient(IngredientCategory category, string option)
@@ -1120,6 +1160,16 @@ public sealed class MilkTeaDemoController : MonoBehaviour
                 iceBlocks[i].color = i < iceLevel ? blue : gray;
             }
         }
+
+        if (sugarStateLabel != null)
+        {
+            sugarStateLabel.text = SugarName(sugarLevel);
+        }
+
+        if (iceStateLabel != null)
+        {
+            iceStateLabel.text = IceName(iceLevel);
+        }
     }
 
     private void UpdateSelectionSummary()
@@ -1141,26 +1191,37 @@ public sealed class MilkTeaDemoController : MonoBehaviour
     private IEnumerator SubmitRoutine()
     {
         isSubmitting = true;
-        leverButton.interactable = false;
+        if (shakeButton != null)
+        {
+            shakeButton.interactable = false;
+        }
+
         machineStatus.text = "正在封装饮品…";
 
-        float duration = 0.22f;
+        float duration = 0.3f;
+        Vector2 originalPosition = shakeRect != null ? shakeRect.anchoredPosition : Vector2.zero;
         for (float elapsed = 0f; elapsed < duration; elapsed += Time.deltaTime)
         {
             float progress = elapsed / duration;
-            if (leverRect != null)
+            if (shakeRect != null)
             {
-                leverRect.localRotation = Quaternion.Euler(0f, 0f, Mathf.Lerp(0f, -28f, progress));
+                // 左右晃动 + 轻微旋转，围绕中心摇动
+                float wobble = Mathf.Sin(progress * Mathf.PI * 6f) * 12f;
+                float angle = Mathf.Sin(progress * Mathf.PI * 6f) * 5f;
+                shakeRect.anchoredPosition = originalPosition + new Vector2(wobble, 0f);
+                shakeRect.localRotation = Quaternion.Euler(0f, 0f, angle);
             }
 
             yield return null;
         }
 
-        yield return new WaitForSeconds(0.12f);
-        if (leverRect != null)
+        if (shakeRect != null)
         {
-            leverRect.localRotation = Quaternion.identity;
+            shakeRect.anchoredPosition = originalPosition;
+            shakeRect.localRotation = Quaternion.identity;
         }
+
+        yield return new WaitForSeconds(0.15f);
 
         Recipe recipe = activeRecipe;
         bool isCorrect = selectedTea == recipe.Tea && selectedMilk == recipe.Milk &&
@@ -1192,7 +1253,10 @@ public sealed class MilkTeaDemoController : MonoBehaviour
             machineStatus.text = "请重新调配";
             machineStatus.color = coral;
             ClearSelections();
-            leverButton.interactable = true;
+            if (shakeButton != null)
+            {
+                shakeButton.interactable = true;
+            }
         }
 
         isSubmitting = false;
@@ -1206,7 +1270,7 @@ public sealed class MilkTeaDemoController : MonoBehaviour
         sugarLevel = 0;
         iceLevel = 0;
         currentCategory = IngredientCategory.Tea;
-        machineStatus.text = "请选择原料后拉动拉杆";
+        machineStatus.text = "请选择原料后点击开始摇动";
         machineStatus.color = cream;
         UpdateCategoryView();
         UpdateLevelBlocks();

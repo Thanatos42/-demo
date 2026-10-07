@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: "01_\u7ECF\u5178\u73CD\u73E0\u5976\u8336"
   m_EditorClassIdentifier: Assembly-CSharp::MilkTeaRecipe
   displayName: "\u7ECF\u5178\u73CD\u73E0\u5976\u8336"
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 9402e3ab1cfaa6b4fb115ab2d6621d1f, type: 3}
   iconLabel: "\u73CD\u73E0"
   teaBase: "\u7EA2\u8336"
   milkBase: "\u9C9C\u5976"

@@ -1,17 +1,22 @@
+基于对代码的分析，我现在了解了MilkTeaSceneBuilder的重大重构。让我更新UI系统架构文档以反映这些变化：
+
 # UI系统架构
 
 <cite>
 **本文引用的文件**
 - [MilkTeaArtLibrary.cs](file://Assets/Scripts/MilkTeaArtLibrary.cs)
 - [MilkTeaSceneBuilder.cs](file://Assets/Editor/MilkTeaSceneBuilder.cs)
+- [MilkTeaDemoController.cs](file://Assets/Scripts/MilkTeaDemoController.cs)
 </cite>
 
 ## 更新摘要
 **所做更改**
-- 新增按钮皮肤系统章节，详细说明四种按钮类型（主要、次要、强调、中性）的实现
-- 更新CreateButton()方法说明，反映新的皮肤应用逻辑
-- 添加按钮皮肤映射机制的详细分析
-- 扩展视觉样式配置部分，包含九宫格边框支持和颜色状态管理
+- MilkTeaSceneBuilder重构为支持增量更新的场景构建系统
+- 新增BuildOrPreserveScreen方法实现智能屏幕管理
+- 扩展至七个独立屏幕的构建和重连机制
+- 增强UI组件查找机制，支持深度递归查找
+- 新增多个界面构建方法（结算、休息、开始、动画、设置面板）
+- 完善按钮皮肤系统和视觉资源管理
 
 ## 目录
 1. [简介](#简介)
@@ -26,129 +31,285 @@
 10. [附录：扩展新UI组件类型示例](#附录：扩展新ui组件类型示例)
 
 ## 简介
-本技术文档围绕奶茶店模拟经营的UI系统，系统性解析其动态UI构建机制。该系统在运行时通过代码创建Canvas、面板、文本与按钮等UI元素，实现对话界面与调配界面的切换与交互；同时提供响应式布局适配、事件系统保障、字体处理与生命周期管理。**最新更新**：系统现已支持完整的按钮皮肤系统，包含四种语义化按钮类型，提供丰富的视觉反馈和样式定制能力。重点说明以下方法的作用与协作：
-- BuildInterface()：创建主界面结构与Canvas缩放配置
-- BuildDialogueScreen()：构建对话界面（标题、人物立绘占位、店铺小场景、对话框）
-- BuildMixingScreen()：构建调配界面（后厨场景、订单提示、配方手册、原料选择区、机器操作区）
+本技术文档围绕奶茶店模拟经营的UI系统，系统性解析其动态UI构建机制。该系统经过重大重构，现已支持**增量更新的场景构建系统**，通过BuildOrPreserveScreen方法实现智能屏幕管理，支持七个独立界面的构建与重连。**最新更新**：系统采用"保留现有+增量构建"策略，在编辑器中生成可编辑的GameObject，运行时由MilkTeaDemoController驱动逻辑，实现了编辑器构建与运行时解耦的架构模式。重点说明以下核心方法的作用与协作：
+- BuildInterface()：创建Canvas与根容器，协调七个独立屏幕的构建
+- **新增** BuildOrPreserveScreen()：智能判断屏幕存在性，决定新建或重连引用
+- BuildDialogueScreen()/BuildMixingScreen()：对话与调配界面的构建
+- **新增** BuildSettlementScreen()/BuildRestScreen()/BuildStartScreen()/BuildAnimationScreen()/BuildSettingsPanel()：其他功能界面的构建
+- RewireXxxScreen()系列方法：已有界面的引用重连机制
 - CreatePanel()/CreateText()/CreateButton()：程序化创建UI元素的辅助方法
-- **新增**：按钮皮肤系统（主要、次要、强调、中性按钮）
-- 事件系统、字体处理、生命周期管理等支撑能力
+- **增强版** FindDeep()：深度递归查找UI组件的机制
 
 ## 项目结构
-该UI系统由编辑器脚本集中实现，采用"单例引导+运行时构建"的方式：
-- 入口引导：启动时自动创建宿主GameObject并挂载引导脚本
-- 运行时初始化：Awake中完成字体创建、事件系统检查、界面构建与开场对话
-- 界面构建：BuildInterface()负责Canvas与根容器设置，随后分别构建对话与调配两个全屏面板
-- 子模块构建：BuildDialogueScreen()与BuildMixingScreen()各自组织内部UI层次与交互
-- **新增**：按钮皮肤系统通过MilkTeaArtLibrary统一管理四种按钮类型的视觉资源
+该UI系统采用**编辑器构建 + 运行时控制**的双层架构：
+- **编辑器阶段**：MilkTeaSceneBuilder负责在场景中生成完整的UI GameObject层次结构
+- **运行时阶段**：MilkTeaDemoController持有所有UI组件引用，驱动业务逻辑
+- **增量构建**：BuildOrPreserveScreen确保已存在的界面保留手动调整，仅重新连接引用
+- **智能重连**：RewireXxxScreen系列方法通过FindDeep()深度查找重建组件引用
 
 ```mermaid
 graph TB
-A["MilkTeaSceneBuilder<br/>编辑器构建"] --> B["BuildInterface()<br/>创建Canvas与根容器"]
-B --> C["BuildDialogueScreen()<br/>对话界面"]
-B --> D["BuildMixingScreen()<br/>调配界面"]
-C --> E["CreatePanel/CreateText/CreateButton<br/>程序化UI"]
-D --> E
-E --> F["按钮皮肤系统<br/>四种按钮类型"]
-F --> G["MilkTeaArtLibrary<br/>皮肤资源管理"]
-A --> H["EnsureEventSystem()<br/>确保事件系统存在"]
-A --> I["CreateChineseFont()<br/>动态字体"]
+A["MilkTeaSceneBuilder<br/>编辑器构建"] --> B["BuildInterface()<br/>主界面协调"]
+B --> C["BuildOrPreserveScreen()<br/>智能屏幕管理"]
+C --> D["BuildDialogueScreen()<br/>对话界面"]
+C --> E["BuildMixingScreen()<br/>调配界面"]
+C --> F["BuildSettlementScreen()<br/>结算界面"]
+C --> G["BuildRestScreen()<br/>休息界面"]
+C --> H["BuildStartScreen()<br/>开始界面"]
+C --> I["BuildAnimationScreen()<br/>动画界面"]
+C --> J["BuildSettingsPanel()<br/>设置面板"]
+D --> K["RewireDialogueScreen()<br/>引用重连"]
+E --> L["RewireMixingScreen()<br/>引用重连"]
+F --> M["RewireSettlementScreen()<br/>引用重连"]
+G --> N["RewireRestScreen()<br/>引用重连"]
+H --> O["RewireStartScreen()<br/>引用重连"]
+I --> P["RewireIntroScreen()<br/>引用重连"]
+J --> Q["RewireSettingsPanel()<br/>引用重连"]
+K --> R["FindDeep()<br/>深度查找"]
+L --> R
+M --> R
+N --> R
+O --> R
+P --> R
+Q --> R
 ```
 
 图表来源
-- [MilkTeaSceneBuilder.cs:104-219](file://Assets/Editor/MilkTeaSceneBuilder.cs#L104-L219)
-- [MilkTeaSceneBuilder.cs:749-781](file://Assets/Editor/MilkTeaSceneBuilder.cs#L749-L781)
-- [MilkTeaArtLibrary.cs:53-61](file://Assets/Scripts/MilkTeaArtLibrary.cs#L53-L61)
+- [MilkTeaSceneBuilder.cs:104-230](file://Assets/Editor/MilkTeaSceneBuilder.cs#L104-L230)
+- [MilkTeaSceneBuilder.cs:232-349](file://Assets/Editor/MilkTeaSceneBuilder.cs#L232-L349)
 
 章节来源
-- [MilkTeaSceneBuilder.cs:104-219](file://Assets/Editor/MilkTeaSceneBuilder.cs#L104-L219)
+- [MilkTeaSceneBuilder.cs:104-349](file://Assets/Editor/MilkTeaSceneBuilder.cs#L104-L349)
 
 ## 核心组件
-- Canvas与缩放管理
-  - 运行时创建Canvas、CanvasScaler、GraphicRaycaster，设置渲染模式为屏幕覆盖层，排序层级提升，避免被其他UI遮挡
-  - 使用ScaleWithScreenSize模式，参考分辨率1920x1080，按宽度或高度匹配，保证在不同分辨率下比例一致
+- **Canvas与缩放管理**
+  - 运行时创建Canvas、CanvasScaler、GraphicRaycaster，设置渲染模式为屏幕覆盖层，排序层级提升
+  - 使用ScaleWithScreenSize模式，参考分辨率1920x1080，按宽度或高度匹配
   - 根内容容器使用宽高比约束器保持16:9显示，适配不同屏幕尺寸
-- 程序化UI元素创建
+- **增量屏幕管理系统**
+  - **新增** BuildOrPreserveScreen()：检查屏幕是否存在，存在则调用重连方法，不存在则创建并构建
+  - **新增** 七个独立屏幕：对话、调配、结算、休息、开始、动画、设置面板
+  - **新增** 智能重连机制：RewireXxxScreen()系列方法通过FindDeep()重建组件引用
+- **增强的UI组件查找机制**
+  - **新增** FindDeep<T>()：递归遍历子节点，按名称查找指定类型的组件
+  - **新增** FindButtonLabel()：专门查找按钮内部的Label子节点的Text
+  - 支持深层嵌套结构的组件定位，适应复杂的UI层次
+- **程序化UI元素创建**
   - CreatePanel()：创建带RectTransform与Image的面板，设置父节点与颜色
   - CreateText()：创建Text，绑定统一字体、字号、颜色、对齐方式、换行策略
-  - **增强版** CreateButton()：创建Button，支持四种按钮皮肤类型，配置颜色状态（正常、高亮、按下、禁用），附加点击监听，并在中心添加Label
-- **新增** 按钮皮肤系统
+  - **增强版** CreateButton()：创建Button，支持四种按钮皮肤类型，配置颜色状态，附加点击监听
+- **按钮皮肤系统**
   - 四种语义化按钮类型：主要按钮（青色）、次要按钮（深蓝）、强调按钮（珊瑚色）、中性按钮（深灰）
   - 智能皮肤映射：根据按钮颜色自动选择合适的皮肤资源
   - 九宫格边框支持：自动检测Sprite边框属性，选择合适的渲染模式
   - 颜色状态管理：有皮肤时使用白色底色配合轻微反馈，无皮肤时沿用纯色占位
-- 响应式布局适配
+- **响应式布局适配**
   - SetRect()：以锚点左下角为基准设置位置与尺寸，便于绝对定位
   - Stretch()：将RectTransform拉伸至父容器四边，用于背景与全屏面板
   - AspectRatioFitter：强制根容器保持16:9，配合Canvas缩放实现自适应
-- 事件系统与字体处理
-  - EnsureEventSystem()：若场景中不存在EventSystem与StandaloneInputModule则自动创建，确保UI交互可用
-  - CreateChineseFont()：尝试从系统字体创建中文支持字体，失败回退到内置Arial，保证文本可读性
+- **事件系统与字体处理**
+  - EnsureEventSystem()：若场景中不存在EventSystem与StandaloneInputModule则自动创建
+  - CreateChineseFont()：尝试从系统字体创建中文支持字体，失败回退到内置Arial
 
 章节来源
-- [MilkTeaSceneBuilder.cs:104-219](file://Assets/Editor/MilkTeaSceneBuilder.cs#L104-L219)
-- [MilkTeaSceneBuilder.cs:749-781](file://Assets/Editor/MilkTeaSceneBuilder.cs#L749-L781)
-- [MilkTeaArtLibrary.cs:53-61](file://Assets/Scripts/MilkTeaArtLibrary.cs#L53-L61)
+- [MilkTeaSceneBuilder.cs:104-230](file://Assets/Editor/MilkTeaSceneBuilder.cs#L104-L230)
+- [MilkTeaSceneBuilder.cs:232-349](file://Assets/Editor/MilkTeaSceneBuilder.cs#L232-L349)
+- [MilkTeaSceneBuilder.cs:887-952](file://Assets/Editor/MilkTeaSceneBuilder.cs#L887-L952)
 
 ## 架构总览
-下图展示了UI系统的整体架构与数据流：引导脚本负责初始化与构建，Canvas作为根容器承载对话与调配两个全屏面板；用户交互通过按钮触发状态更新与界面切换。**新增**按钮皮肤系统通过MilkTeaArtLibrary统一管理视觉资源，提供统一的样式接口。
+下图展示了重构后的UI系统整体架构：**增量构建引擎**负责智能管理七个独立屏幕的生命周期，**深度查找机制**确保已有界面的组件引用正确重连，**运行时控制器**持有所有UI组件引用并驱动业务逻辑。
 
 ```mermaid
 graph TB
-subgraph "引导与初始化"
+subgraph "编辑器构建阶段"
 Boot["MilkTeaSceneBuilder"]
-Font["CreateChineseFont()"]
-Event["EnsureEventSystem()"]
+Build["BuildInterface()"]
+Smart["BuildOrPreserveScreen()<br/>智能屏幕管理"]
 end
-subgraph "Canvas与布局"
-Canvas["Canvas + Scaler + Raycaster"]
-Root["根容器(16:9)"]
+subgraph "运行时控制阶段"
+Controller["MilkTeaDemoController<br/>业务逻辑驱动"]
+Refs["UI组件引用集合"]
 end
-subgraph "界面"
-Dialogue["BuildDialogueScreen()"]
-Mixing["BuildMixingScreen()"]
+subgraph "七个独立屏幕"
+Dialogue["对话界面"]
+Mixing["调配界面"]
+Settlement["结算界面"]
+Rest["休息界面"]
+Start["开始界面"]
+Animation["动画界面"]
+Settings["设置面板"]
 end
-subgraph "按钮皮肤系统"
-SkinLib["MilkTeaArtLibrary<br/>四种按钮皮肤"]
-SkinMap["ResolveButtonSkin()<br/>颜色映射"]
-SkinApply["ApplyButtonSkin()<br/>皮肤应用"]
+subgraph "查找与重连机制"
+Find["FindDeep()<br/>深度递归查找"]
+Rewire["RewireXxxScreen()<br/>引用重连"]
 end
-Boot --> Font
-Boot --> Event
-Boot --> Canvas
-Canvas --> Root
-Root --> Dialogue
-Root --> Mixing
-Dialogue --> SkinLib
-Mixing --> SkinLib
-SkinLib --> SkinMap
-SkinMap --> SkinApply
+Boot --> Build
+Build --> Smart
+Smart --> Dialogue
+Smart --> Mixing
+Smart --> Settlement
+Smart --> Rest
+Smart --> Start
+Smart --> Animation
+Smart --> Settings
+Dialogue --> Rewire
+Mixing --> Rewire
+Settlement --> Rewire
+Rest --> Rewire
+Start --> Rewire
+Animation --> Rewire
+Settings --> Rewire
+Rewire --> Find
+Find --> Controller
+Controller --> Refs
 ```
 
 图表来源
-- [MilkTeaSceneBuilder.cs:104-219](file://Assets/Editor/MilkTeaSceneBuilder.cs#L104-L219)
-- [MilkTeaSceneBuilder.cs:749-822](file://Assets/Editor/MilkTeaSceneBuilder.cs#L749-L822)
-- [MilkTeaArtLibrary.cs:53-61](file://Assets/Scripts/MilkTeaArtLibrary.cs#L53-L61)
+- [MilkTeaSceneBuilder.cs:104-349](file://Assets/Editor/MilkTeaSceneBuilder.cs#L104-L349)
+- [MilkTeaDemoController.cs:64-152](file://Assets/Scripts/MilkTeaDemoController.cs#L64-L152)
 
 ## 详细组件分析
 
-### BuildInterface()：主界面结构创建
-- 职责
+### BuildInterface()：主界面结构创建与屏幕协调
+- **职责**
   - 创建Canvas对象并挂载必要组件（Canvas、CanvasScaler、GraphicRaycaster）
   - 设置渲染模式与排序层级，确保UI在最上层显示
   - 配置CanvasScaler的缩放模式与参考分辨率，启用宽高匹配策略
   - 创建背景与根内容容器，应用拉伸与宽高比约束
-  - 创建并构建对话、调配、结算、休息、开始、动画等多个全屏面板
-- 关键点
+  - **新增** 协调七个独立屏幕的构建：对话、调配、结算、休息、开始、动画、设置面板
+- **关键改进**
+  - **新增** BuildOrPreserveScreen()调用：每个屏幕都通过此方法进行智能管理
   - 使用Stretch()使背景与根容器铺满Canvas
   - 使用AspectRatioFitter固定16:9内容区域，避免内容变形
-  - 通过CreatePanel()创建面板，并通过各BuildXxxScreen()方法填充内容
 
 章节来源
-- [MilkTeaSceneBuilder.cs:104-219](file://Assets/Editor/MilkTeaSceneBuilder.cs#L104-L219)
+- [MilkTeaSceneBuilder.cs:104-230](file://Assets/Editor/MilkTeaSceneBuilder.cs#L104-L230)
+
+### BuildOrPreserveScreen()：智能屏幕管理系统
+**新增核心功能**：这是本次重构的核心方法，实现了增量更新的场景构建系统
+
+- **工作原理**
+  - 检查父节点下是否存在指定名称的屏幕Transform
+  - 如果存在：调用重连方法（rewireExisting），仅重建组件引用
+  - 如果不存在：创建新屏幕，调用构建方法（buildNew），填充完整内容
+  - 支持默认激活状态控制（activeByDefault参数）
+
+- **支持的七个屏幕**
+  - Dialogue Screen：对话界面（默认激活）
+  - Mixing Screen：调配界面（默认激活）
+  - Settlement Screen：结算界面（默认隐藏）
+  - Rest Screen：休息界面（默认隐藏）
+  - Start Screen：开始界面（默认激活）
+  - Intro Screen：动画界面（默认隐藏）
+  - Settings Panel：设置面板（默认隐藏）
+
+```mermaid
+flowchart TD
+Check{"屏幕是否存在?"}
+Check --> |是| Rewire["调用 RewireXxxScreen()<br/>重建组件引用"]
+Check --> |否| Create["创建新屏幕 GameObject"]
+Create --> Build["调用 BuildXxxScreen()<br/>构建完整内容"]
+Build --> Active{"是否需要默认激活?"}
+Active --> |是| Enable["SetActive(true)"]
+Active --> |否| Disable["SetActive(false)"]
+Rewire --> Done["完成"]
+Enable --> Done
+Disable --> Done
+```
+
+图表来源
+- [MilkTeaSceneBuilder.cs:232-247](file://Assets/Editor/MilkTeaSceneBuilder.cs#L232-L247)
+
+章节来源
+- [MilkTeaSceneBuilder.cs:232-247](file://Assets/Editor/MilkTeaSceneBuilder.cs#L232-L247)
+
+### 增强的UI组件查找机制
+**新增核心功能**：FindDeep()和FindButtonLabel()方法提供了强大的UI组件定位能力
+
+- **FindDeep<T>()方法**
+  - 递归遍历指定Transform的所有子节点（包括inactive节点）
+  - 按GameObject名称精确匹配目标组件
+  - 返回第一个匹配的组件实例，未找到返回null
+  - 泛型设计支持任意Unity组件类型的查找
+
+- **FindButtonLabel()方法**
+  - 专门用于查找Button内部Label子节点的Text组件
+  - 先通过FindDeep<Button()查找按钮
+  - 再在按钮Transform下查找名为"Label"的子节点
+  - 返回Label中的Text组件，便于文本内容操作
+
+- **应用场景**
+  - 重连已有界面的组件引用
+  - 动态查找复杂UI层次中的特定组件
+  - 支持编辑器生成的预制体结构变化
+
+章节来源
+- [MilkTeaSceneBuilder.cs:251-276](file://Assets/Editor/MilkTeaSceneBuilder.cs#L251-L276)
+
+### RewireXxxScreen()系列：引用重连机制
+**新增核心功能**：每个屏幕都有对应的重连方法，确保已有界面的组件引用正确建立
+
+- **RewireDialogueScreen()**
+  - 重连对话界面的所有UI组件引用
+  - 包括标题、立绘、对话框、按钮等10个组件
+
+- **RewireMixingScreen()**
+  - 重连调配界面的交互组件
+  - 包括订单提示、配方导航、原料选择、拉杆按钮等6个组件
+
+- **RewireSettlementScreen()**
+  - 重连结算界面的标题、正文、按钮等4个组件
+
+- **RewireRestScreen()**
+  - 重连休息界面的提示文本、按钮等5个组件
+
+- **RewireStartScreen()**
+  - 重连开始界面的四个按钮：设置、开始游戏、读取存档、退出游戏
+
+- **RewireIntroScreen()**
+  - 重连动画界面的视频播放器、倒计时、跳过按钮等5个组件
+
+- **RewireSettingsPanel()**
+  - 重连设置面板的所有交互组件：关闭按钮、音量控制、分辨率设置、语言切换等12个组件
+
+章节来源
+- [MilkTeaSceneBuilder.cs:278-349](file://Assets/Editor/MilkTeaSceneBuilder.cs#L278-L349)
+
+### 新增界面构建方法
+**新增功能**：除了原有的对话和调配界面，新增了五个功能界面
+
+- **BuildSettlementScreen()**
+  - 创建结算卡片，显示当日营业统计信息
+  - 包含标题、正文文本和"回家休息"按钮
+  - 黄色边框装饰，居中显示
+
+- **BuildRestScreen()**
+  - 创建休息界面，包含手机界面和出租屋场景
+  - 手机界面提供相册、角色资料、对话记录等菜单项
+  - 出租屋场景展示床、书桌等家具
+  - 底部显示休息提示和"进入下一天"/"再休息一会儿"按钮
+
+- **BuildStartScreen()**
+  - 创建开始界面，支持背景图和Logo图片替换
+  - 左上角设置入口，右侧显示游戏Logo
+  - 三个主要按钮：新的游戏、读取存档、退出游戏
+  - 底部显示版本信息
+
+- **BuildAnimationScreen()**
+  - 创建开场动画界面，支持VideoPlayer播放视频
+  - 未指定视频时自动回退为倒计时显示
+  - 右上角提供"跳过"按钮
+
+- **BuildSettingsPanel()**
+  - 创建半透明设置面板，包含音量、分辨率、语言设置
+  - 每行设置包含标签、前后按钮和当前值显示
+  - 底部"完成"按钮关闭面板
+
+章节来源
+- [MilkTeaSceneBuilder.cs:511-698](file://Assets/Editor/MilkTeaSceneBuilder.cs#L511-L698)
 
 ### 按钮皮肤系统：四种按钮类型详解
-**新增功能**：系统现已支持完整的按钮皮肤系统，提供四种语义化的按钮类型：
+**增强功能**：系统现已支持完整的按钮皮肤系统，提供四种语义化的按钮类型：
 
 - **主要按钮（Primary Button）**
   - 颜色：青色（#69D8C5）
@@ -176,242 +337,144 @@ SkinMap --> SkinApply
 - 有皮肤时使用白色底色配合轻微悬停/按下反馈
 - 无皮肤时自动回退到纯色占位模式
 
-```mermaid
-flowchart TD
-Color["按钮颜色"] --> Check{"是否有皮肤资源?"}
-Check --> |是| MapSkin["ResolveButtonSkin()<br/>颜色到皮肤映射"]
-Check --> |否| Fallback["使用纯色占位"]
-MapSkin --> Apply["ApplyButtonSkin()<br/>应用皮肤图"]
-Apply --> NineGrid{"是否九宫格边框?"}
-NineGrid --> |是| Sliced["Image.Type.Sliced<br/>保留边框效果"]
-NineGrid --> |否| Simple["Image.Type.Simple<br/>拉伸填充"]
-Sliced --> Feedback["设置轻微颜色反馈"]
-Simple --> Feedback
-Fallback --> PureColor["使用原始颜色状态"]
-```
-
-图表来源
-- [MilkTeaSceneBuilder.cs:783-822](file://Assets/Editor/MilkTeaSceneBuilder.cs#L783-L822)
-- [MilkTeaArtLibrary.cs:53-61](file://Assets/Scripts/MilkTeaArtLibrary.cs#L53-L61)
-
 章节来源
-- [MilkTeaSceneBuilder.cs:783-822](file://Assets/Editor/MilkTeaSceneBuilder.cs#L783-L822)
-- [MilkTeaArtLibrary.cs:53-61](file://Assets/Scripts/MilkTeaArtLibrary.cs#L53-L61)
-
-### BuildDialogueScreen()：对话界面构建
-- 职责
-  - 创建标题文本、顾客立绘占位面板、店铺俯视小场景（吧台、桌子、后厨、Q版角色）
-  - 创建对话框面板，包含说话人、台词文本与"继续"按钮
-  - 通过ConfigureDialogue()动态设置对话内容与回调
-- 交互流程
-  - ShowOpeningDialogue()进入对话界面并配置初始对话
-  - RespondToCustomer()响应后延迟切换到调配界面
-  - ShowServingDialogue()/ShowCustomerThanks()完成服务流程与重玩循环
-
-```mermaid
-sequenceDiagram
-participant U as "用户"
-participant B as "Bootstrap"
-participant D as "对话界面"
-U->>B : 启动演示
-B->>D : ShowOpeningDialogue()
-D-->>U : 显示"顾客需求"对话框
-U->>D : 点击"回应"
-D->>B : RespondToCustomer()
-B->>B : 等待1.1秒
-B->>D : 隐藏对话界面
-B->>B : 显示调配界面并清空选择
-```
-
-图表来源
-- [MilkTeaSceneBuilder.cs:157-165](file://Assets/Editor/MilkTeaSceneBuilder.cs#L157-L165)
-
-章节来源
-- [MilkTeaSceneBuilder.cs:157-165](file://Assets/Editor/MilkTeaSceneBuilder.cs#L157-L165)
-
-### BuildMixingScreen()：调配界面构建
-- 职责
-  - 创建后厨俯视场景（工作台、萃茶机、奶底区、Q版角色）
-  - 创建订单提示面板，显示当前顾客需求
-  - 创建配方手册、原料选择区、机器操作区
-  - 通过BuildRecipePanel()/BuildIngredientPanel()/BuildMachinePanel()组织子模块
-- 交互要点
-  - 原料选择区支持分类切换与选项勾选，实时更新视觉与摘要
-  - 糖度/冰度通过LevelBlock按钮切换，颜色反馈当前等级
-  - 拉杆按钮触发提交动画与校验逻辑，正确则解锁配方图标并进入服务对话
-
-```mermaid
-flowchart TD
-Start(["开始调配"]) --> SelectCategory["选择原料分类"]
-SelectCategory --> SelectOption["选择具体选项"]
-SelectOption --> UpdateVisuals["更新选中项视觉"]
-UpdateVisuals --> UpdateSummary["更新已选摘要"]
-UpdateSummary --> LevelAdjust{"调整糖度/冰度?"}
-LevelAdjust --> |是| ChangeLevel["切换等级并刷新块颜色"]
-LevelAdjust --> |否| SubmitCheck{"是否提交?"}
-ChangeLevel --> SubmitCheck
-SubmitCheck --> |否| SelectCategory
-SubmitCheck --> |是| SubmitRoutine["拉杆动画与校验"]
-SubmitRoutine --> Correct{"是否正确?"}
-Correct --> |是| Unlock["解锁配方图标并保存"]
-Correct --> |否| Reset["重置选择并提示重新调配"]
-Unlock --> Serve["进入服务对话"]
-Reset --> SelectCategory
-```
-
-图表来源
-- [MilkTeaSceneBuilder.cs:167-175](file://Assets/Editor/MilkTeaSceneBuilder.cs#L167-L175)
-
-章节来源
-- [MilkTeaSceneBuilder.cs:167-175](file://Assets/Editor/MilkTeaSceneBuilder.cs#L167-L175)
-
-### CreatePanel()/CreateText()/CreateButton()：辅助方法与使用模式
-- CreatePanel(name, parent, color)
-  - 创建带有RectTransform与Image的面板，设置父节点与颜色
-  - 常用于背景、容器、按钮底色等
-- CreateText(name, parent, content, size, color, alignment, position, dimensions, bold)
-  - 创建Text并绑定统一字体、字号、颜色、对齐方式、换行策略
-  - 通过SetRect()设置位置与尺寸，bold控制粗体样式
-- **增强版** CreateButton(name, parent, caption, position, dimensions, color, out label)
-  - 创建Button并支持四种按钮皮肤类型（主要、次要、强调、中性）
-  - 智能皮肤映射：根据颜色自动选择合适的皮肤资源
-  - 九宫格边框支持：自动检测Sprite边框属性，选择合适的渲染模式
-  - 颜色状态管理：有皮肤时使用白色底色配合轻微反馈，无皮肤时沿用纯色占位
-  - 可选注册onClick监听，自动在按钮中心创建Label文本
-  - 返回Button引用以便后续操作（如禁用、动画）
-
-使用模式示例（路径引用）
-- 创建面板与文本：[MilkTeaSceneBuilder.cs:716-747](file://Assets/Editor/MilkTeaSceneBuilder.cs#L716-L747)
-- **增强版** 创建按钮与标签：[MilkTeaSceneBuilder.cs:749-781](file://Assets/Editor/MilkTeaSceneBuilder.cs#L749-L781)
-- 组合使用（对话框按钮）：[MilkTeaSceneBuilder.cs:157-165](file://Assets/Editor/MilkTeaSceneBuilder.cs#L157-L165)
-
-章节来源
-- [MilkTeaSceneBuilder.cs:716-781](file://Assets/Editor/MilkTeaSceneBuilder.cs#L716-L781)
+- [MilkTeaSceneBuilder.cs:920-993](file://Assets/Editor/MilkTeaSceneBuilder.cs#L920-L993)
+- [MilkTeaArtLibrary.cs:82-90](file://Assets/Scripts/MilkTeaArtLibrary.cs#L82-L90)
 
 ### 生命周期管理与事件系统配置
-- 生命周期
-  - StartDemo()：运行时首次加载场景时查找是否存在实例，不存在则创建宿主对象并挂载引导脚本
-  - Awake()：标记不销毁、创建字体、确保事件系统、构建界面、展示开场对话
-  - 界面切换：通过SetActive()切换对话与调配面板，协程延时过渡
-- 事件系统
-  - EnsureEventSystem()：检测并创建EventSystem与StandaloneInputModule，确保UI可交互
-  - Button.onClick.AddListener()：为按钮注册点击回调，支持匿名委托与命名方法
-  - ConfigureDialogue()：动态设置对话框文本与按钮行为，移除旧监听并绑定新回调
+- **生命周期**
+  - BuildSceneInternal()：编辑器入口，支持普通构建和强制重建两种模式
+  - EnsureSceneOpen()：确保目标场景打开，不存在则自动创建
+  - RemoveExisting()：强制重建时清理旧的界面结构
+  - 界面切换：通过SetActive()切换各个屏幕，协程延时过渡
+- **事件系统**
+  - EnsureEventSystem()：检测并创建EventSystem与StandaloneInputModule
+  - Button.onClick.AddListener()：为按钮注册点击回调
+  - ConfigureDialogue()：动态设置对话框文本与按钮行为
 
 章节来源
 - [MilkTeaSceneBuilder.cs:52-72](file://Assets/Editor/MilkTeaSceneBuilder.cs#L52-L72)
 
-### 字体处理机制
-- CreateChineseFont()：优先尝试从系统字体创建支持中文的动态字体（微软雅黑、黑体等），失败回退到内置Arial
-- 所有Text均绑定该字体，保证跨平台中文显示一致性
-- 字号与粗细通过CreateText()参数控制，粗体用于标题与强调文本
-
-章节来源
-- [MilkTeaSceneBuilder.cs:888-892](file://Assets/Editor/MilkTeaSceneBuilder.cs#L888-L892)
-
 ## 依赖关系分析
-- 外部依赖
-  - UnityEngine.UI：Canvas、CanvasScaler、GraphicRaycaster、Text、Button、Image、Outline等
+- **外部依赖**
+  - UnityEngine.UI：Canvas、CanvasScaler、GraphicRaycaster、Text、Button、Image等
   - UnityEngine.EventSystems：EventSystem、StandaloneInputModule
-- 内部耦合
-  - Bootstrap集中管理UI构建与状态，低耦合于各子模块（通过Transform传递父节点）
-  - 通过字典缓存类别面板与选项图像，降低重复查找开销
+  - UnityEngine.Video：VideoPlayer、RawImage（用于开场动画）
+- **内部耦合**
+  - MilkTeaSceneBuilder集中管理UI构建与重连，低耦合于各子模块
+  - MilkTeaDemoController持有所有UI组件引用，通过Awake()初始化后驱动业务逻辑
+  - **新增** 通过字典缓存类别面板与选项图像，降低重复查找开销
   - **新增** MilkTeaArtLibrary统一管理按钮皮肤资源，提供统一的样式接口
-- 潜在风险
-  - 单脚本过大可能导致维护成本上升，建议按功能拆分（对话、调配、工具方法）
-  - 硬编码坐标与尺寸不利于多分辨率适配，建议使用相对布局或锚点系统优化
-  - **新增** 按钮皮肤资源缺失时需要良好的降级处理机制
+- **潜在风险**
+  - 单脚本过大可能导致维护成本上升，建议按功能拆分
+  - 硬编码坐标与尺寸不利于多分辨率适配
+  - **新增** 增量构建需要良好的降级处理机制，确保组件查找失败时的容错
 
 ```mermaid
 graph LR
-Boot["Bootstrap"] --> UI["Unity UI 组件"]
-Boot --> EVT["事件系统(EventSystem)"]
-Boot --> FONT["字体管理器(CreateChineseFont)"]
-Boot --> LAYOUT["布局工具(SetRect/Stretch/AspectRatioFitter)"]
-Boot --> SKIN["按钮皮肤系统(MilkTeaArtLibrary)"]
-SKIN --> PRIMARY["主要按钮"]
-SKIN --> SECONDARY["次要按钮"]
-SKIN --> ACCENT["强调按钮"]
-SKIN --> NEUTRAL["中性按钮"]
+Builder["MilkTeaSceneBuilder<br/>编辑器构建"] --> UnityUI["Unity UI 组件"]
+Builder --> EventSys["事件系统(EventSystem)"]
+Builder --> Video["视频系统(VideoPlayer)"]
+Builder --> ArtLib["美术库(MilkTeaArtLibrary)"]
+Controller["MilkTeaDemoController<br/>运行时控制"] --> UIRefs["UI组件引用"]
+Controller --> GameLogic["游戏逻辑"]
+ArtLib --> ButtonSkins["按钮皮肤资源"]
 ```
 
 图表来源
-- [MilkTeaSceneBuilder.cs:104-219](file://Assets/Editor/MilkTeaSceneBuilder.cs#L104-L219)
-- [MilkTeaArtLibrary.cs:53-61](file://Assets/Scripts/MilkTeaArtLibrary.cs#L53-L61)
+- [MilkTeaSceneBuilder.cs:104-349](file://Assets/Editor/MilkTeaSceneBuilder.cs#L104-L349)
+- [MilkTeaDemoController.cs:64-152](file://Assets/Scripts/MilkTeaDemoController.cs#L64-L152)
+- [MilkTeaArtLibrary.cs:82-90](file://Assets/Scripts/MilkTeaArtLibrary.cs#L82-L90)
 
 章节来源
-- [MilkTeaSceneBuilder.cs:104-219](file://Assets/Editor/MilkTeaSceneBuilder.cs#L104-L219)
-- [MilkTeaArtLibrary.cs:53-61](file://Assets/Scripts/MilkTeaArtLibrary.cs#L53-L61)
+- [MilkTeaSceneBuilder.cs:104-349](file://Assets/Editor/MilkTeaSceneBuilder.cs#L104-L349)
+- [MilkTeaArtLibrary.cs:82-90](file://Assets/Scripts/MilkTeaArtLibrary.cs#L82-L90)
 
 ## 性能考量
-- 运行时创建UI对象会带来GC压力，建议在频繁创建场景中使用对象池复用面板与按钮
-- 大量Text与Image的Update或颜色变更可能影响渲染性能，尽量减少每帧修改频率
-- 使用CanvasScaler与AspectRatioFitter进行适配时，注意避免过多嵌套导致的布局计算开销
-- 动画（拉杆旋转）使用协程与增量时间推进，避免阻塞主线程
-- **新增** 按钮皮肤系统通过预加载资源减少运行时开销，九宫格边框检测仅在首次应用时执行
+- **增量构建优势**
+  - BuildOrPreserveScreen()避免重复创建已存在的界面，减少不必要的GameObject销毁与重建
+  - 重连机制仅重建组件引用，不涉及UI层次重建，性能开销极小
+- **运行时优化**
+  - MilkTeaDemoController在Awake()中一次性完成所有组件引用查找和事件绑定
+  - 使用GetComponentsInChildren()批量获取组件，避免频繁查找开销
+- **内存管理**
+  - 大量Text与Image的Update或颜色变更可能影响渲染性能，尽量减少每帧修改频率
+  - 动画（拉杆旋转）使用协程与增量时间推进，避免阻塞主线程
+- **资源加载**
+  - 按钮皮肤系统通过预加载资源减少运行时开销
+  - 九宫格边框检测仅在首次应用时执行
 
 ## 故障排查指南
-- 无事件系统导致按钮不可用
+- **无事件系统导致按钮不可用**
   - 现象：按钮无法点击
   - 排查：确认EnsureEventSystem()是否执行，场景中是否存在EventSystem与StandaloneInputModule
-  - 参考：[MilkTeaSceneBuilder.cs:878-886](file://Assets/Editor/MilkTeaSceneBuilder.cs#L878-L886)
-- 中文显示异常或乱码
+- **中文显示异常或乱码**
   - 现象：文本显示为方框或英文
   - 排查：检查CreateChineseFont()是否成功创建字体，必要时手动指定字体资源
-  - 参考：[MilkTeaSceneBuilder.cs:888-892](file://Assets/Editor/MilkTeaSceneBuilder.cs#L888-L892)
-- 界面错位或比例失真
+- **界面错位或比例失真**
   - 现象：内容超出屏幕或比例不对
   - 排查：检查SetRect()与Stretch()的使用是否正确，根容器是否应用了AspectRatioFitter
-  - 参考：[MilkTeaSceneBuilder.cs:845-861](file://Assets/Editor/MilkTeaSceneBuilder.cs#L845-L861)
-- 按钮点击无效或重复绑定
+- **按钮点击无效或重复绑定**
   - 现象：点击多次触发多个回调
   - 排查：在动态设置对话框时先RemoveAllListeners再AddListener
-  - 参考：[MilkTeaSceneBuilder.cs:348-359](file://Assets/Editor/MilkTeaSceneBuilder.cs#L348-L359)
+- **新增** 增量构建问题
+  - 现象：重连后某些组件引用为空
+  - 排查：检查FindDeep()查找逻辑，确认GameObject名称是否与代码中一致
+  - 参考：[MilkTeaSceneBuilder.cs:251-276](file://Assets/Editor/MilkTeaSceneBuilder.cs#L251-L276)
+- **新增** 屏幕构建失败
+  - 现象：某个界面没有正确显示
+  - 排查：检查BuildOrPreserveScreen()的参数配置，确认screenName与实际GameObject名称一致
+  - 参考：[MilkTeaSceneBuilder.cs:232-247](file://Assets/Editor/MilkTeaSceneBuilder.cs#L232-L247)
 - **新增** 按钮皮肤显示异常
   - 现象：按钮图片或颜色显示不正确
   - 排查：检查MilkTeaArtLibrary中的按钮皮肤资源是否正确配置，确认ResolveButtonSkin()映射逻辑
-  - 参考：[MilkTeaSceneBuilder.cs:783-822](file://Assets/Editor/MilkTeaSceneBuilder.cs#L783-L822)
-  - 参考：[MilkTeaArtLibrary.cs:53-61](file://Assets/Scripts/MilkTeaArtLibrary.cs#L53-L61)
+  - 参考：[MilkTeaSceneBuilder.cs:955-993](file://Assets/Editor/MilkTeaSceneBuilder.cs#L955-L993)
 
 章节来源
-- [MilkTeaSceneBuilder.cs:878-892](file://Assets/Editor/MilkTeaSceneBuilder.cs#L878-L892)
-- [MilkTeaSceneBuilder.cs:783-822](file://Assets/Editor/MilkTeaSceneBuilder.cs#L783-L822)
-- [MilkTeaArtLibrary.cs:53-61](file://Assets/Scripts/MilkTeaArtLibrary.cs#L53-L61)
+- [MilkTeaSceneBuilder.cs:251-276](file://Assets/Editor/MilkTeaSceneBuilder.cs#L251-L276)
+- [MilkTeaSceneBuilder.cs:955-993](file://Assets/Editor/MilkTeaSceneBuilder.cs#L955-L993)
 
 ## 结论
-该UI系统通过单一引导脚本实现了完整的动态UI构建与交互流程，具备响应式布局、事件系统保障与字体处理能力。**最新更新**：系统现已支持完整的按钮皮肤系统，提供四种语义化按钮类型和丰富的视觉反馈机制。其优势在于快速原型与演示友好，适合小规模项目或教学用途。对于更大规模项目，建议将构建逻辑模块化、引入对象池与资源管理，以提升可维护性与性能表现。
+该UI系统经过重大重构，现已成为**支持增量更新的现代化场景构建系统**。通过BuildOrPreserveScreen()方法实现了智能的屏幕生命周期管理，支持七个独立界面的构建与重连。**核心优势**包括：
+- **编辑器友好**：生成可编辑的GameObject，支持拖拽调整和Animator动画
+- **增量构建**：保留手动调整，仅重建缺失部分，大幅提升开发效率
+- **解耦架构**：编辑器构建与运行时控制分离，便于维护和扩展
+- **健壮的重连机制**：通过深度查找确保组件引用正确建立
+- **完善的视觉系统**：支持按钮皮肤、九宫格边框、响应式布局等现代UI特性
+
+对于更大规模项目，建议将构建逻辑进一步模块化、引入对象池与资源管理，以提升可维护性与性能表现。
 
 ## 附录：扩展新UI组件类型示例
-以下示例展示如何在现有框架基础上扩展新的UI组件类型（例如"进度条"或"开关"），遵循统一的创建与配置模式：
+以下示例展示如何在现有框架基础上扩展新的UI组件类型，遵循统一的创建与配置模式：
 
-- 步骤概览
+- **步骤概览**
   - 新增CreateXxx()工厂方法，封装GameObject创建、RectTransform设置、组件添加与样式配置
-  - 在BuildMixingScreen()或BuildDialogueScreen()中调用该方法，传入父Transform与必要参数
+  - 在相应的BuildXxxScreen()方法中调用该方法，传入父Transform与必要参数
   - 如需交互，注册onClick或其他事件监听，并在状态变化时更新UI
   - **新增** 如需支持按钮皮肤，使用CreateButton()方法并传入相应的颜色参数
 
-- 示例：创建"进度条"组件（概念性步骤）
+- **示例：创建"进度条"组件（概念性步骤）**
   - 定义CreateProgressBar(parent, min, max, value, callback)
   - 创建背景面板与前景条面板，设置锚点与尺寸
   - 根据value计算前景条宽度，更新其sizeDelta
   - 注册onChange事件，当value变化时重绘进度条
   - 在调配界面中添加一个示例进度条，用于演示制作进度
 
-- 示例：创建"开关"组件（概念性步骤）
+- **示例：创建"开关"组件（概念性步骤）**
   - 定义CreateToggle(parent, label, onColor, offColor, callback)
   - 创建按钮与标签，配置颜色状态（开/关）
   - 注册onClick事件，切换布尔状态并更新颜色与文本
   - 在配方手册或订单提示中添加开关，用于开启/关闭某些提示
 
-- **新增** 使用按钮皮肤系统的示例
+- **使用按钮皮肤系统的示例**
   - 主要按钮：CreateButton("MainBtn", parent, "确认", position, size, mint, callback)
   - 次要按钮：CreateButton("SecondaryBtn", parent, "取消", position, size, panelLight, callback)
   - 强调按钮：CreateButton("AccentBtn", parent, "删除", position, size, coral, callback)
   - 中性按钮：CreateButton("NeutralBtn", parent, "设置", position, size, gray, callback)
 
-- 参考路径（现有创建模式）
-  - 面板创建：[MilkTeaSceneBuilder.cs:716-729](file://Assets/Editor/MilkTeaSceneBuilder.cs#L716-L729)
-  - 文本创建：[MilkTeaSceneBuilder.cs:731-747](file://Assets/Editor/MilkTeaSceneBuilder.cs#L731-L747)
-  - **增强版** 按钮创建：[MilkTeaSceneBuilder.cs:749-781](file://Assets/Editor/MilkTeaSceneBuilder.cs#L749-L781)
-  - 布局设置：[MilkTeaSceneBuilder.cs:845-861](file://Assets/Editor/MilkTeaSceneBuilder.cs#L845-L861)
-  - 按钮皮肤映射：[MilkTeaSceneBuilder.cs:783-822](file://Assets/Editor/MilkTeaSceneBuilder.cs#L783-L822)
+- **参考路径（现有创建模式）**
+  - 面板创建：[MilkTeaSceneBuilder.cs:887-900](file://Assets/Editor/MilkTeaSceneBuilder.cs#L887-L900)
+  - 文本创建：[MilkTeaSceneBuilder.cs:902-918](file://Assets/Editor/MilkTeaSceneBuilder.cs#L902-L918)
+  - 按钮创建：[MilkTeaSceneBuilder.cs:920-952](file://Assets/Editor/MilkTeaSceneBuilder.cs#L920-L952)
+  - 布局设置：[MilkTeaSceneBuilder.cs:1016-1032](file://Assets/Editor/MilkTeaSceneBuilder.cs#L1016-L1032)
+  - 按钮皮肤映射：[MilkTeaSceneBuilder.cs:955-993](file://Assets/Editor/MilkTeaSceneBuilder.cs#L955-L993)

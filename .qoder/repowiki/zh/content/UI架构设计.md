@@ -17,6 +17,8 @@
 - 实现多屏幕切换系统：对话界面、调配界面、结算界面、休息界面、开始界面、设置面板、开场动画
 - 引入标记组件系统：通过MilkTeaCategoryPanel、MilkTeaChoiceButton、MilkTeaLevelBlock等标记组件实现自动接线
 - 增强资源管理：通过MilkTeaArtLibrary统一管理美术资源，支持占位符回退机制
+- **新增StartScreen目录**：提供完整的开始界面美术素材，包括背景图和按钮图标
+- **扩展UI状态管理**：MilkTeaDemoController新增startScreen、settingsPanel、animationScreen等公共字段，支持更复杂的界面状态控制
 
 ## 目录
 1. [简介](#简介)
@@ -33,11 +35,14 @@
 ## 简介
 本文件面向奶茶店模拟经营的程序化UI构建系统，重点说明通过MilkTeaSceneBuilder在编辑器中自动生成完整UI界面的设计与实现。该系统采用"编辑器构建 + 运行时控制"的分离架构，通过BuildInterface()方法动态创建Canvas、面板、文本、按钮等所有UI元素，并建立完整的屏幕切换和交互逻辑。
 
+**更新** 系统现已支持更复杂的UI状态管理，包括完整的开始界面、设置面板和开场动画功能，通过新增的公共字段实现精细化的界面控制。
+
 ## 项目结构
 - **编辑器构建器**：MilkTeaSceneBuilder负责在编辑器中生成完整的UI场景，包括所有界面和组件
 - **运行时控制器**：MilkTeaDemoController持有对场景中UI组件的引用，驱动业务逻辑
 - **标记组件系统**：通过专用标记组件实现UI与逻辑的松耦合绑定
 - **资源管理系统**：MilkTeaArtLibrary统一管理美术资源，提供占位符回退机制
+- **开始界面素材**：StartScreen目录包含完整的开始界面美术资源
 
 ```mermaid
 graph TB
@@ -46,6 +51,7 @@ B --> C["MilkTeaDemoController<br/>运行时逻辑"]
 C --> D["标记组件<br/>自动接线"]
 E["MilkTeaArtLibrary<br/>资源管理"] --> A
 E --> C
+F["StartScreen<br/>开始界面素材"] --> A
 ```
 
 **图表来源**
@@ -62,6 +68,7 @@ E --> C
 - **多屏幕切换架构**：支持对话界面、调配界面、结算界面、休息界面、开始界面、设置面板、开场动画的无缝切换
 - **标记组件系统**：通过MilkTeaCategoryPanel、MilkTeaChoiceButton、MilkTeaLevelBlock等标记组件实现UI与逻辑的自动绑定
 - **资源回退机制**：当美术资源缺失时自动使用纯色占位符，确保系统稳定性
+- **增强的UI状态管理**：通过公共字段实现精细化的界面控制和状态同步
 
 **章节来源**
 - [MilkTeaSceneBuilder.cs:87-150](file://Assets/Editor/MilkTeaSceneBuilder.cs#L87-L150)
@@ -130,9 +137,48 @@ SaveScene --> End(["完成"])
 - **设置面板**：音量、分辨率、语言设置
 - **开场动画**：视频播放或倒计时占位
 
+**更新** 开始界面现已集成完整的StartScreen目录素材，包括背景图、Logo和按钮图标，提供更丰富的视觉体验。
+
 **章节来源**
 - [MilkTeaSceneBuilder.cs:112-150](file://Assets/Editor/MilkTeaSceneBuilder.cs#L112-L150)
 - [MilkTeaDemoController.cs:447-480](file://Assets/Scripts/MilkTeaDemoController.cs#L447-L480)
+
+### 增强的UI状态管理系统
+MilkTeaDemoController现在拥有更完善的UI状态管理能力：
+
+#### 公共字段管理
+- **startScreen**：开始界面根对象，包含游戏启动相关的所有UI元素
+- **settingsPanel**：设置面板对象，管理音量、分辨率、语言等系统设置
+- **animationScreen**：开场动画对象，支持视频播放和倒计时功能
+
+#### 状态控制方法
+- **ShowStartScreen()**：切换到开始界面，隐藏其他所有界面
+- **ShowIntro()**：显示开场动画，支持视频播放或倒计时
+- **OpenSettings()/CloseSettings()**：控制面板的显示和隐藏
+- **OnStartGame()/OnLoadGame()**：处理游戏启动和存档加载
+
+```mermaid
+stateDiagram-v2
+[*] --> StartScreen
+StartScreen --> IntroAnimation
+StartScreen --> SettingsPanel
+IntroAnimation --> GameLoop
+SettingsPanel --> StartScreen
+GameLoop --> DialogueScreen
+GameLoop --> MixingScreen
+DialogueScreen --> MixingScreen
+MixingScreen --> SettlementScreen
+SettlementScreen --> RestScreen
+RestScreen --> GameLoop
+```
+
+**图表来源**
+- [MilkTeaDemoController.cs:749-777](file://Assets/Scripts/MilkTeaDemoController.cs#L749-L777)
+- [MilkTeaDemoController.cs:809-920](file://Assets/Scripts/MilkTeaDemoController.cs#L809-L920)
+
+**章节来源**
+- [MilkTeaDemoController.cs:124-155](file://Assets/Scripts/MilkTeaDemoController.cs#L124-L155)
+- [MilkTeaDemoController.cs:749-920](file://Assets/Scripts/MilkTeaDemoController.cs#L749-L920)
 
 ### 标记组件系统与自动接线
 通过专用标记组件实现UI与逻辑的松耦合绑定：
@@ -235,6 +281,32 @@ Loop --> |否| End(["完成"])
 - [MilkTeaSceneBuilder.cs:716-720](file://Assets/Editor/MilkTeaSceneBuilder.cs#L716-L720)
 - [MilkTeaDemoController.cs:208-224](file://Assets/Scripts/MilkTeaDemoController.cs#L208-L224)
 
+### 开始界面构建详解
+BuildStartScreen方法专门负责构建游戏的开始界面：
+
+- **背景应用**：尝试应用StartScreen目录中的背景图，失败时使用默认颜色
+- **设置按钮**：左上角设置入口，支持图标或文字显示
+- **Logo区域**：右侧上方显示游戏Logo，支持图片或文字回退
+- **操作按钮**：右侧下方三个主要按钮（新的游戏、读取存档、退出游戏）
+- **版本信息**：底部显示游戏版本信息
+
+**更新** 开始界面现已完全集成StartScreen目录的美术素材，包括背景图和按钮图标，提供更专业的视觉效果。
+
+**章节来源**
+- [MilkTeaSceneBuilder.cs:597-649](file://Assets/Editor/MilkTeaSceneBuilder.cs#L597-L649)
+
+### 开场动画系统
+BuildAnimationScreen方法构建了灵活的开场动画系统：
+
+- **视频播放器**：支持VideoPlayer组件，可播放预设视频
+- **倒计时占位**：未指定视频时自动显示倒计时界面
+- **跳过功能**：允许用户跳过开场动画直接进入游戏
+- **资源回退**：视频资源缺失时的优雅降级处理
+
+**章节来源**
+- [MilkTeaSceneBuilder.cs:651-677](file://Assets/Editor/MilkTeaSceneBuilder.cs#L651-L677)
+- [MilkTeaDemoController.cs:809-920](file://Assets/Scripts/MilkTeaDemoController.cs#L809-L920)
+
 ## 依赖关系分析
 系统采用清晰的依赖层次：
 
@@ -242,6 +314,7 @@ Loop --> |否| End(["完成"])
 - **MilkTeaDemoController**：运行时脚本，依赖UI组件和标记组件
 - **标记组件**：轻量级数据载体，无外部依赖
 - **MilkTeaArtLibrary**：ScriptableObject资源，被构建器和控制器共同使用
+- **StartScreen素材**：独立的美术资源目录，被构建器引用
 
 ```mermaid
 graph TB
@@ -250,6 +323,7 @@ A --> C["Unity UI组件"]
 D["MilkTeaDemoController<br/>运行时控制"] --> E["标记组件"]
 D --> F["MilkTeaArtLibrary<br/>资源管理"]
 G["标记组件<br/>CategoryPanel/ChoiceButton/LevelBlock"] --> D
+H["StartScreen<br/>美术素材"] --> A
 ```
 
 **图表来源**
@@ -266,6 +340,7 @@ G["标记组件<br/>CategoryPanel/ChoiceButton/LevelBlock"] --> D
 - **资源优化**：使用SpriteAtlas和按需加载策略，避免资源浪费
 - **事件管理**：通过标记组件自动绑定事件，避免手动维护大量监听器
 - **内存泄漏防护**：在界面切换时正确管理协程和事件监听器的生命周期
+- **状态缓存**：UI状态变化时只更新必要的组件，减少不必要的重绘
 
 ## 故障排查指南
 - **场景无法构建**：检查是否已打开正确的场景文件，确认MilkTeaArtLibrary资源存在
@@ -273,13 +348,16 @@ G["标记组件<br/>CategoryPanel/ChoiceButton/LevelBlock"] --> D
 - **资源显示异常**：确认MilkTeaArtLibrary中的资源引用是否正确，检查命名匹配
 - **布局错位**：检查RectTransform的锚点和尺寸设置，确认AspectRationFitter配置
 - **字体显示问题**：验证字体资源可用性，检查运行时字体回退逻辑
+- **开始界面不显示**：确认StartScreen目录素材是否正确导入，检查MilkTeaArtLibrary中的startBackground引用
 
 **章节来源**
 - [MilkTeaSceneBuilder.cs:706-720](file://Assets/Editor/MilkTeaSceneBuilder.cs#L706-L720)
 - [MilkTeaDemoController.cs:208-224](file://Assets/Scripts/MilkTeaDemoController.cs#L208-L224)
 
 ## 结论
-该UI架构通过程序化构建实现了高度可维护、易于扩展的界面体系。MilkTeaSceneBuilder作为单一入口集中管理UI生命周期，结合标记组件系统和资源回退机制，在保证开发效率的同时提供了强大的灵活性。这种"编辑器构建 + 运行时控制"的分离架构既满足了可视化编辑的需求，又保持了运行时的性能和稳定性。
+该UI架构通过程序化构建实现了高度可维护、易于扩展的界面体系。MilkTeaSceneBuilder作为单一入口集中管理UI生命周期，结合标记组件系统和资源回退机制，在保证开发效率的同时提供了强大的灵活性。新增的StartScreen目录和增强的UI状态管理系统进一步提升了用户体验和开发便利性。这种"编辑器构建 + 运行时控制"的分离架构既满足了可视化编辑的需求，又保持了运行时的性能和稳定性。
+
+**更新** 随着StartScreen目录的加入和UI状态管理的增强，系统现在能够支持更复杂的游戏流程和用户交互，为未来的功能扩展奠定了坚实的基础。
 
 ## 附录：扩展新UI组件的实践
 
@@ -339,6 +417,7 @@ G["标记组件<br/>CategoryPanel/ChoiceButton/LevelBlock"] --> D
 - **模块化设计**：将相关功能封装为独立的方法，便于维护和测试
 - **资源管理**：通过MilkTeaArtLibrary统一管理所有美术资源
 - **错误处理**：添加适当的日志输出和错误提示，便于调试
+- **状态同步**：确保UI状态与业务逻辑保持一致，避免状态不同步问题
 
 **章节来源**
 - [MilkTeaSceneBuilder.cs:87-150](file://Assets/Editor/MilkTeaSceneBuilder.cs#L87-L150)

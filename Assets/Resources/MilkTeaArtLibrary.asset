@@ -26,9 +26,29 @@ MonoBehaviour:
   continueButtonIcon: {fileID: 21300000, guid: c683a6e848564ff4b96ae2b6318c8dd4, type: 3}
   speakerTagBackground: {fileID: 21300000, guid: 33851c69b6fd8a34d8f04d13e1cf29e9, type: 3}
   dayTitleBackground: {fileID: 21300000, guid: 6ebcfdd09e0ed774abbf1fd0cd8c2f3a, type: 3}
-  kitchenScene: {fileID: 0}
-  cup: {fileID: 0}
-  lever: {fileID: 0}
+  dialogueTextColor: {r: 0.32, g: 0.22, b: 0.18, a: 1}
+  speakerTextColor: {r: 1, g: 0.96, b: 0.84, a: 1}
+  dayTitleTextColor: {r: 0.25, g: 0.18, b: 0.14, a: 1}
+  protagonistChibiPosition: {x: 1120, y: 600}
+  protagonistChibiSize: {x: 150, y: 150}
+  customerChibiPosition: {x: 1360, y: 390}
+  customerChibiSize: {x: 180, y: 180}
+  mixingBackground: {fileID: 21300000, guid: f3a3b3035f9821c4fbe0014c0c4b9832, type: 3}
+  kitchenScene: {fileID: 21300000, guid: 74d2eb53d670f6645a6297553140307f, type: 3}
+  teaCategoryIcon: {fileID: 0}
+  milkCategoryIcon: {fileID: 0}
+  toppingCategoryIcon: {fileID: 0}
+  recipePreviousIcon: {fileID: 21300000, guid: fa6436ee3cd11904596fe624a4bd4533, type: 3}
+  recipeNextIcon: {fileID: 21300000, guid: ee1cf870b5ec1fa4e85292ff5ec82b1d, type: 3}
+  categoryPreviousIcon: {fileID: 21300000, guid: 81c412f20f7cb2d4e963a8de1a3cdec4, type: 3}
+  categoryNextIcon: {fileID: 21300000, guid: e492720bb9fb9914394a2e686ff57d37, type: 3}
+  sugarIcon: {fileID: 21300000, guid: 87698da7153ff2046901ef5d8d1bd5a1, type: 3}
+  iceIcon: {fileID: 21300000, guid: 3ec55d05f017ee64999eb4b0e6911aaf, type: 3}
+  levelBlockEmpty: {fileID: 21300000, guid: 649d40852636f1f41966464dc2e4fffa, type: 3}
+  sugarBlockSelected: {fileID: 21300000, guid: 108d3e7aa143e95449cd653cebc2c40f, type: 3}
+  iceBlockSelected: {fileID: 21300000, guid: 7438f2c53120ce9458baeffa01963612, type: 3}
+  shakeButtonBackground: {fileID: 21300000, guid: 0eebc9aefc1190241b5bf043d577e437, type: 3}
+  shakeButtonIcon: {fileID: 0}
   apartmentScene: {fileID: 0}
   startBackground: {fileID: 21300000, guid: 8c96b8de9288f44489b32bb64321efaf, type: 3}
   startLogo: {fileID: 21300000, guid: b54ae633fc2af2f4e88c6269367183da, type: 3}
@@ -39,13 +59,13 @@ MonoBehaviour:
   buttonNeutral: {fileID: 21300000, guid: 2ce4d91eb3710ea40ba874ad74705dd1, type: 3}
   ingredientIcons:
   - name: "\u7EA2\u8336"
-    sprite: {fileID: 0}
+    sprite: {fileID: 21300000, guid: 2a685a7d62161af4b8c787e55104dcc5, type: 3}
   - name: "\u8309\u8389\u7EFF\u8336"
-    sprite: {fileID: 0}
+    sprite: {fileID: 21300000, guid: ec896a22d86e36146a50d7439eeaa38f, type: 3}
   - name: "\u62B9\u8336"
-    sprite: {fileID: 0}
+    sprite: {fileID: 21300000, guid: 641a559a2b01bc44391b3e23ec5541b7, type: 3}
   - name: "\u4E4C\u9F99"
-    sprite: {fileID: 0}
+    sprite: {fileID: 21300000, guid: 0ad890f0a7501934385cd03550c11f34, type: 3}
   - name: "\u9C9C\u5976"
     sprite: {fileID: 0}
   - name: "\u6930\u5976"
