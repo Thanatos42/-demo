@@ -49,7 +49,19 @@ MonoBehaviour:
   iceBlockSelected: {fileID: 21300000, guid: 7438f2c53120ce9458baeffa01963612, type: 3}
   shakeButtonBackground: {fileID: 21300000, guid: 0eebc9aefc1190241b5bf043d577e437, type: 3}
   shakeButtonIcon: {fileID: 0}
-  apartmentScene: {fileID: 0}
+  apartmentScene: {fileID: 21300000, guid: 71cab00ccbb453645a740c6b1806cf73, type: 3}
+  restCharacter: {fileID: 21300000, guid: 81277da463b1ae94b8c15fd9bf643738, type: 3}
+  phoneFrame: {fileID: 21300000, guid: 0633262397ece944484474fcdba55ab0, type: 3}
+  phoneWallpaper: {fileID: 21300000, guid: 3166d9aeff9069f47a20eaa19b4ee1c4, type: 3}
+  appCharacterIcon: {fileID: 21300000, guid: 7526303ef8a2b2b4d89cf481d9105713, type: 3}
+  appAlbumIcon: {fileID: 21300000, guid: 45dcb838e05d4a84b8cc49a55743416a, type: 3}
+  appMusicIcon: {fileID: 21300000, guid: c051845d77c65734095de4f565aba261, type: 3}
+  appNotesIcon: {fileID: 21300000, guid: 1e9341ff106345c48b9518336bfcb5f9, type: 3}
+  appSettingsIcon: {fileID: 21300000, guid: 7cc54d4ce6520e140ad1a69e0b3985c8, type: 3}
+  openBadge: {fileID: 21300000, guid: bdcfe033b5476d54d99cf81368e0c7ef, type: 3}
+  backButtonIcon: {fileID: 21300000, guid: 912d2230f4fe65d428fd5ad7f516283e, type: 3}
+  settlementBackground: {fileID: 21300000, guid: 9a93e61082556ff41a3f2f05bf951a64, type: 3}
+  settlementCard: {fileID: 21300000, guid: 0b134e855ee73d04490cc12b82e6a88b, type: 3}
   startBackground: {fileID: 21300000, guid: 8c96b8de9288f44489b32bb64321efaf, type: 3}
   startLogo: {fileID: 21300000, guid: b54ae633fc2af2f4e88c6269367183da, type: 3}
   settingsIcon: {fileID: 21300000, guid: 665b4b301bafa7a43a2d6585092e68e1, type: 3}

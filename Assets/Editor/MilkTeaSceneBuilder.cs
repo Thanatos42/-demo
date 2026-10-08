@@ -185,7 +185,7 @@ public static class MilkTeaSceneBuilder
             RewireSettlementScreen(existing);
         });
 
-        BuildOrPreserveScreen(rootTransform, "Rest Screen", Hex("#12100E"), false, (t) =>
+        BuildOrPreserveScreen(rootTransform, "Rest Screen", Hex("#F3E2D3"), false, (t) =>
         {
             controller.restScreen = t.gameObject;
             BuildRestScreen(t);
@@ -324,8 +324,19 @@ public static class MilkTeaSceneBuilder
         controller.restHint = FindDeep<Text>(root, "Rest Hint");
         controller.nextDayButton = FindDeep<Button>(root, "Next Day Button");
         controller.nextDayButtonLabel = FindButtonLabel(root, "Next Day Button");
-        controller.stayButton = FindDeep<Button>(root, "Stay Button");
-        controller.stayButtonLabel = FindButtonLabel(root, "Stay Button");
+        // 新版休息界面已移除"再休息一会儿"按钮，置空避免旧引用残留
+        controller.stayButton = null;
+        controller.stayButtonLabel = null;
+        controller.restBadgeText = FindDeep<Text>(root, "Rest Badge Text");
+        controller.restPhoneClock = FindDeep<Text>(root, "Phone Clock");
+        controller.restAppButtons = new[]
+        {
+            FindDeep<Button>(root, "App Character"),
+            FindDeep<Button>(root, "App Album"),
+            FindDeep<Button>(root, "App Music"),
+            FindDeep<Button>(root, "App Notes"),
+            FindDeep<Button>(root, "App Settings")
+        };
     }
 
     private static void RewireStartScreen(Transform root)
@@ -552,9 +563,23 @@ public static class MilkTeaSceneBuilder
 
     private static void BuildSettlementScreen(Transform parent)
     {
+        // 整屏底图
+        ApplySprite(parent.GetComponent<Image>(), art != null ? art.settlementBackground : null);
+
         GameObject card = CreatePanel("Settlement Card", parent, panel);
         SetRect(card.GetComponent<RectTransform>(), 560, 290, 800, 500);
-        AddFrame(card.transform, yellow);
+        Sprite cardSprite = art != null ? art.settlementCard : null;
+        if (cardSprite != null)
+        {
+            // 已套用卡片底图：覆盖纯色与黄框
+            Image cardImage = card.GetComponent<Image>();
+            ApplySprite(cardImage, cardSprite);
+            cardImage.raycastTarget = false;
+        }
+        else
+        {
+            AddFrame(card.transform, yellow);
+        }
 
         controller.settlementTitle = CreateText("Settlement Title", card.transform, "第 1 天 · 营业结算", 46, cream,
             TextAnchor.MiddleCenter, new Vector2(100, 400), new Vector2(600, 70), true);
@@ -570,70 +595,113 @@ public static class MilkTeaSceneBuilder
 
     private static void BuildRestScreen(Transform parent)
     {
-        CreateText("Rest Title", parent, "回到出租屋 · 休息中", 48, cream, TextAnchor.MiddleCenter,
-            new Vector2(710, 995), new Vector2(500, 66), true);
-
-        // 左侧：手机（后续功能入口占位）
-        GameObject phone = CreatePanel("Phone", parent, Hex("#1B2740"));
-        SetRect(phone.GetComponent<RectTransform>(), 130, 150, 470, 820);
-        AddFrame(phone.transform, mint);
-        CreateText("Phone Clock", phone.transform, "20:30", 34, mint, TextAnchor.MiddleCenter,
-            new Vector2(35, 762), new Vector2(400, 50), true);
-
-        GameObject screen = CreatePanel("Phone Screen", phone.transform, Hex("#101A2E"));
-        SetRect(screen.GetComponent<RectTransform>(), 35, 55, 400, 700);
-        CreateText("Phone Header", screen.transform, "手机", 36, cream, TextAnchor.MiddleCenter,
-            new Vector2(0, 610), new Vector2(400, 60), true);
-        CreateRestMenuEntry(screen.transform, "相册", 500);
-        CreateRestMenuEntry(screen.transform, "角色资料", 410);
-        CreateRestMenuEntry(screen.transform, "对话记录", 320);
-        CreateText("Phone Note", screen.transform, "更多功能敬请期待……", 24, gray, TextAnchor.MiddleCenter,
-            new Vector2(0, 60), new Vector2(400, 60), false);
-
-        // 右侧：出租屋俯视小场景
-        GameObject apartment = CreatePanel("Apartment Overview", parent, panelLight);
-        SetRect(apartment.GetComponent<RectTransform>(), 700, 250, 1140, 600);
-        AddFrame(apartment.transform, coral);
-        Sprite apartmentScene = art != null ? art.apartmentScene : null;
-        if (apartmentScene != null)
+        // 顶部：营业中徽章（图含奶茶杯与营业中字样，DAY/时间由文字动态叠加）
+        GameObject badge = CreatePanel("Open Badge", parent, Color.clear);
+        SetRect(badge.GetComponent<RectTransform>(), 690, 950, 460, 120);
+        Image badgeImage = badge.GetComponent<Image>();
+        badgeImage.raycastTarget = false;
+        Sprite badgeSprite = art != null ? art.openBadge : null;
+        if (badgeSprite != null)
         {
-            ApplySprite(apartment.GetComponent<Image>(), apartmentScene);
+            ApplySprite(badgeImage, badgeSprite);
         }
         else
         {
-            CreateText("Apartment Title", apartment.transform, "出租屋 · 俯视小场景", 34, cream,
-                TextAnchor.MiddleCenter, new Vector2(320, 520), new Vector2(500, 55), true);
-            CreatePanelAt("Bed", apartment.transform, new Vector2(80, 90), new Vector2(360, 240), Hex("#6E5A86"));
-            CreateText("Bed Label", apartment.transform, "床", 30, cream, TextAnchor.MiddleCenter,
-                new Vector2(80, 300), new Vector2(360, 55), true);
-            CreatePanelAt("Desk", apartment.transform, new Vector2(720, 110), new Vector2(340, 170), Hex("#8F664F"));
-            CreateText("Desk Label", apartment.transform, "书桌", 30, cream, TextAnchor.MiddleCenter,
-                new Vector2(720, 300), new Vector2(340, 55), true);
+            CreateText("Badge Fallback", badge.transform, "营业中", 34, cream,
+                TextAnchor.MiddleCenter, Vector2.zero, new Vector2(460, 120), true);
         }
 
-        CreateChibi(apartment.transform, "主角", new Vector2(520, 150), mint, art != null ? art.protagonistChibi : null);
+        controller.restBadgeText = CreateText("Rest Badge Text", badge.transform, "DAY 1   22:00", 30, Hex("#52382E"),
+            TextAnchor.MiddleCenter, new Vector2(160, 8), new Vector2(290, 52), true);
 
-        controller.restHint = CreateText("Rest Hint", parent, "忙碌的一天结束了，回到出租屋歇一歇。\n准备好了就开始新的一天吧。",
-            30, cream, TextAnchor.MiddleCenter, new Vector2(700, 150), new Vector2(1140, 80), false);
+        // 左侧：猫爪手机（外壳+可换壁纸）
+        GameObject phone = CreatePanel("Phone", parent, Hex("#F7D890"));
+        SetRect(phone.GetComponent<RectTransform>(), 80, 40, 590, 980);
+        ApplySprite(phone.GetComponent<Image>(), art != null ? art.phoneFrame : null);
 
+        GameObject wallpaper = CreatePanel("Phone Wallpaper", phone.transform, Hex("#EFE6F2"));
+        SetRect(wallpaper.GetComponent<RectTransform>(), 45, 60, 500, 850);
+        Image wallpaperImage = wallpaper.GetComponent<Image>();
+        ApplySprite(wallpaperImage, art != null ? art.phoneWallpaper : null);
+        wallpaperImage.raycastTarget = false;
+
+        controller.restPhoneClock = CreateText("Phone Clock", wallpaper.transform, "22:00", 30, Hex("#3A3A44"),
+            TextAnchor.MiddleLeft, new Vector2(28, 788), new Vector2(200, 46), true);
+
+        // 手机功能入口（后续逐步开发，点击暂提示）
+        BuildRestAppButton(wallpaper.transform, "App Character", 0);
+        BuildRestAppButton(wallpaper.transform, "App Album", 1);
+        BuildRestAppButton(wallpaper.transform, "App Music", 2);
+        BuildRestAppButton(wallpaper.transform, "App Notes", 3);
+        BuildRestAppButton(wallpaper.transform, "App Settings", 4);
+
+        // 右侧：出租屋俯视整图（床上不画主角，由独立小人层叠加）
+        GameObject apartment = CreatePanel("Apartment Overview", parent, panelLight);
+        SetRect(apartment.GetComponent<RectTransform>(), 650, 45, 1240, 990);
+        Sprite apartmentScene = art != null ? art.apartmentScene : null;
+        if (apartmentScene != null)
+        {
+            Image apartmentImage = apartment.GetComponent<Image>();
+            ApplySprite(apartmentImage, apartmentScene);
+            apartmentImage.raycastTarget = false;
+        }
+        else
+        {
+            AddFrame(apartment.transform, coral);
+            CreateText("Apartment Title", apartment.transform, "出租屋 · 俯视小场景", 34, cream,
+                TextAnchor.MiddleCenter, new Vector2(320, 520), new Vector2(500, 55), true);
+            CreatePanelAt("Bed", apartment.transform, new Vector2(760, 200), new Vector2(400, 260), Hex("#6E5A86"));
+            CreateText("Bed Label", apartment.transform, "床", 30, cream, TextAnchor.MiddleCenter,
+                new Vector2(760, 260), new Vector2(400, 55), true);
+        }
+
+        // 床上休息的主角小人（独立层，便于后续做序列帧动画）
+        GameObject restCharacter = CreatePanel("Rest Character", apartment.transform, Color.white);
+        SetRect(restCharacter.GetComponent<RectTransform>(), 770, 320, 220, 180);
+        Image restCharacterImage = restCharacter.GetComponent<Image>();
+        restCharacterImage.raycastTarget = false;
+        Sprite restCharacterSprite = art != null ? art.restCharacter : null;
+        if (restCharacterSprite != null)
+        {
+            ApplySprite(restCharacterImage, restCharacterSprite);
+        }
+        else
+        {
+            restCharacter.SetActive(false);
+        }
+
+        // 底部提示（功能开发中等临时信息）
+        controller.restHint = CreateText("Rest Hint", parent, string.Empty, 24, Hex("#8A6E5C"),
+            TextAnchor.MiddleCenter, new Vector2(660, 8), new Vector2(600, 42), false);
+
+        // 右下：返回按钮（即进入下一天）
         Text nextDayLabel;
-        controller.nextDayButton = CreateButton("Next Day Button", parent, "进入下一天",
-            new Vector2(1180, 45), new Vector2(320, 96), mint, out nextDayLabel);
-        nextDayLabel.color = dark;
+        controller.nextDayButton = CreateButton("Next Day Button", parent, "返回",
+            new Vector2(1070, 30), new Vector2(290, 85), panelLight, out nextDayLabel);
         controller.nextDayButtonLabel = nextDayLabel;
-
-        Text stayLabel;
-        controller.stayButton = CreateButton("Stay Button", parent, "再休息一会儿",
-            new Vector2(1520, 45), new Vector2(320, 96), panelLight, out stayLabel);
-        controller.stayButtonLabel = stayLabel;
+        ApplyArrowIcon(controller.nextDayButton, art != null ? art.backButtonIcon : null);
     }
 
-    private static void CreateRestMenuEntry(Transform parent, string caption, float y)
+    private static void BuildRestAppButton(Transform parent, string name, int index)
     {
         Text label;
-        Button button = CreateButton("Menu " + caption, parent, caption, new Vector2(30, y),
-            new Vector2(340, 70), panel, out label);
-        button.interactable = false;
+        Button button = CreateButton(name, parent, string.Empty,
+            new Vector2(25 + index * 93f, 640), new Vector2(85, 90), panelLight, out label);
+
+        Sprite icon = null;
+        if (art != null)
+        {
+            switch (index)
+            {
+                case 0: icon = art.appCharacterIcon; break;
+                case 1: icon = art.appAlbumIcon; break;
+                case 2: icon = art.appMusicIcon; break;
+                case 3: icon = art.appNotesIcon; break;
+                case 4: icon = art.appSettingsIcon; break;
+            }
+        }
+
+        ApplyArrowIcon(button, icon);
     }
 
     private static void BuildStartScreen(Transform parent)

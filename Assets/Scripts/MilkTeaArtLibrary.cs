@@ -93,15 +93,45 @@ public sealed class MilkTeaArtLibrary : ScriptableObject
     [Tooltip("冰度选中格子（蓝色）")]
     public Sprite iceBlockSelected;
 
-    [Header("调配提交按钮")]
+    [Header("调配提交按钮 Shake Button")]
     [Tooltip("开始摇动按钮底图，设置后覆盖纯色")]
     public Sprite shakeButtonBackground;
     [Tooltip("摇杯装饰图标（可选）")]
     public Sprite shakeButtonIcon;
 
-    [Header("休息场景")]
-    [Tooltip("右侧出租屋俯视整图，设置后覆盖占位色块")]
+    [Header("休息场景 Rest Scene")]
+    [Tooltip("右侧出租屋俯视整图（床上不画主角），设置后覆盖占位色块")]
     public Sprite apartmentScene;
+    [Tooltip("床上休息的主角小人（躺姿首帧，后续可扩展序列帧动画）")]
+    public Sprite restCharacter;
+    [Tooltip("猫爪手机外壳（屏幕区域留空）")]
+    public Sprite phoneFrame;
+    [Tooltip("手机屏幕壁纸，可更换；状态栏时间由文字动态叠加，不要烧进图")]
+    public Sprite phoneWallpaper;
+
+    [Header("手机功能图标 Rest Apps")]
+    [Tooltip("角色入口图标")]
+    public Sprite appCharacterIcon;
+    [Tooltip("相册入口图标")]
+    public Sprite appAlbumIcon;
+    [Tooltip("音乐入口图标")]
+    public Sprite appMusicIcon;
+    [Tooltip("笔记入口图标")]
+    public Sprite appNotesIcon;
+    [Tooltip("设置入口图标")]
+    public Sprite appSettingsIcon;
+
+    [Header("休息徽章按钮 Rest Badge")]
+    [Tooltip("营业中徽章整图（奶茶杯+底板+营业中字样），DAY与时间由文字叠加")]
+    public Sprite openBadge;
+    [Tooltip("返回按钮整图（含箭头与返回字样）")]
+    public Sprite backButtonIcon;
+
+    [Header("结算界面 Settlement")]
+    [Tooltip("结算界面整屏底图，设置后覆盖占位深色")]
+    public Sprite settlementBackground;
+    [Tooltip("结算卡片底图（含边框装饰），标题数据文字叠加；标题/数据不要烧进图")]
+    public Sprite settlementCard;
 
     [Header("开始界面")]
     [Tooltip("开始菜单背景整图，设置后覆盖占位色块")]

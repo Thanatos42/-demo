@@ -121,6 +121,14 @@ public sealed class MilkTeaDemoController : MonoBehaviour
     public Button stayButton;
     public Text stayButtonLabel;
     public Text restHint;
+    [Tooltip("手机功能入口按钮（角色/相册/音乐/笔记/设置，顺序固定）")]
+    public Button[] restAppButtons;
+    [Tooltip("营业中徽章上的 DAY 与时间文字")]
+    public Text restBadgeText;
+    [Tooltip("手机状态栏时间文字")]
+    public Text restPhoneClock;
+    [Tooltip("休息界面固定的休息时间（暂无时间系统，后续可接）")]
+    private const string RestClockText = "22:00";
 
     [Header("每日循环")]
     public Text dayTitle;
@@ -362,6 +370,21 @@ public sealed class MilkTeaDemoController : MonoBehaviour
         if (stayButton != null)
         {
             stayButton.onClick.AddListener(Stay);
+        }
+
+        if (restAppButtons != null)
+        {
+            string[] appNames = { "角色", "相册", "音乐", "笔记", "设置" };
+            for (int i = 0; i < restAppButtons.Length && i < appNames.Length; i++)
+            {
+                if (restAppButtons[i] == null)
+                {
+                    continue;
+                }
+
+                string appName = appNames[i];
+                restAppButtons[i].onClick.AddListener(() => OnRestAppClicked(appName));
+            }
         }
 
         if (startGameButton != null)
@@ -734,21 +757,40 @@ public sealed class MilkTeaDemoController : MonoBehaviour
         restScreen.SetActive(true);
         if (restHint != null)
         {
-            restHint.text = "忙碌的一天结束了，回到出租屋歇一歇。\n准备好了就开始新的一天吧。";
+            restHint.text = string.Empty;
+        }
+
+        if (restBadgeText != null)
+        {
+            restBadgeText.text = "DAY " + dayNumber + "   " + RestClockText;
+        }
+
+        if (restPhoneClock != null)
+        {
+            restPhoneClock.text = RestClockText;
         }
     }
 
     private void GoNextDay()
     {
+        // 休息界面点"返回"：天数推进，回到开始界面由玩家手动开始新一天
         dayNumber++;
-        BeginDay();
+        ShowStartScreen();
     }
 
     private void Stay()
     {
         if (restHint != null)
         {
-            restHint.text = "再歇一会儿……\n想开始营业时，点「进入下一天」。";
+            restHint.text = "再歇一会儿……\n想开始营业时，点「返回」。";
+        }
+    }
+
+    private void OnRestAppClicked(string appName)
+    {
+        if (restHint != null)
+        {
+            restHint.text = "「" + appName + "」功能开发中，敬请期待！";
         }
     }
 
@@ -1336,6 +1378,10 @@ public sealed class MilkTeaDemoController : MonoBehaviour
             || speaker == protagonistName || speaker.StartsWith(protagonistName + "（", StringComparison.Ordinal);
     }
 
+    private Coroutine portraitBounceRoutine;
+    private Vector2 portraitBounceOrigin;
+    private bool portraitBounceOriginReady;
+
     private void UpdateDialoguePortrait(string speaker)
     {
         if (portraitImage == null)
@@ -1343,6 +1389,7 @@ public sealed class MilkTeaDemoController : MonoBehaviour
             return;
         }
 
+        StartPortraitBounce();
         if (IsProtagonistSpeaker(speaker))
         {
             ApplyPortrait(
@@ -1363,6 +1410,42 @@ public sealed class MilkTeaDemoController : MonoBehaviour
             currentCustomer != null ? currentCustomer.portraitFrames : null,
             currentCustomer != null ? currentCustomer.portraitFps : 8f,
             activeRecipe != null ? activeRecipe.CustomerName : "顾客");
+    }
+
+    /// <summary>说话人切换时立绘上下弹跳一下；连续说话重复触发会先复位再重新弹。</summary>
+    private void StartPortraitBounce()
+    {
+        RectTransform rect = portraitImage.rectTransform;
+        if (portraitBounceRoutine != null)
+        {
+            StopCoroutine(portraitBounceRoutine);
+            rect.anchoredPosition = portraitBounceOrigin;
+        }
+
+        if (!portraitBounceOriginReady)
+        {
+            portraitBounceOrigin = rect.anchoredPosition;
+            portraitBounceOriginReady = true;
+        }
+
+        portraitBounceRoutine = StartCoroutine(BouncePortraitRoutine());
+    }
+
+    private IEnumerator BouncePortraitRoutine()
+    {
+        RectTransform rect = portraitImage.rectTransform;
+        const float duration = 0.25f;
+        const float bounceHeight = 18f;
+        for (float elapsed = 0f; elapsed < duration; elapsed += Time.deltaTime)
+        {
+            float progress = elapsed / duration;
+            float offset = Mathf.Sin(progress * Mathf.PI) * bounceHeight;
+            rect.anchoredPosition = portraitBounceOrigin + new Vector2(0f, offset);
+            yield return null;
+        }
+
+        rect.anchoredPosition = portraitBounceOrigin;
+        portraitBounceRoutine = null;
     }
 
     private void ApplyPortrait(Sprite staticPortrait, IList<Sprite> frames, float fps, string fallbackName)
