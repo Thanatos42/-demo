@@ -1,4 +1,4 @@
-基于对代码的分析，我现在了解了调配界面美术资源更新的具体情况。让我更新UI系统架构文档以反映这些变化：
+基于我对代码的分析，我现在了解了Art Resource Replacement 3.0的具体变更。让我更新UI系统架构文档以反映这些变化：
 
 # UI系统架构
 
@@ -11,10 +11,11 @@
 
 ## 更新摘要
 **所做更改**
-- 调配界面美术资源全面更新，包括新的全屏底图、后厨场景、原料瓶图标等视觉元素
-- 增强了调配界面的用户体验和视觉效果
-- 支持更丰富的视觉反馈和交互体验
-- 优化了UI组件的视觉层次和布局结构
+- **重大更新**：Art Resource Replacement 3.0全面视觉升级，新增休息界面完整资源（角色精灵、背景图片、手机界面）
+- **新增**：结算界面美术资源（结算卡片、背景图），显著提升结算体验
+- **增强**：MilkTeaArtLibrary扩展支持新的视觉元素，包括休息场景、手机功能图标、返回按钮等
+- **优化**：UI组件的视觉层次和布局结构，提供更丰富的用户体验
+- **完善**：支持更复杂的界面交互和视觉反馈机制
 
 ## 目录
 1. [简介](#简介)
@@ -29,7 +30,7 @@
 10. [附录：扩展新UI组件类型示例](#附录：扩展新ui组件类型示例)
 
 ## 简介
-本技术文档围绕奶茶店模拟经营的UI系统，系统性解析其动态UI构建机制。该系统经过重大重构，现已支持**增量更新的场景构建系统**，通过BuildOrPreserveScreen方法实现智能屏幕管理，支持七个独立界面的构建与重连。**最新更新**：调配界面美术资源已全面升级，包括新的全屏底图、后厨场景、原料瓶图标、控制按钮等视觉元素，显著提升了调配界面的用户体验和视觉效果。重点说明以下核心方法的作用与协作：
+本技术文档围绕奶茶店模拟经营的UI系统，系统性解析其动态UI构建机制。该系统经过重大重构，现已支持**增量更新的场景构建系统**，通过BuildOrPreserveScreen方法实现智能屏幕管理，支持七个独立界面的构建与重连。**最新重大更新**：Art Resource Replacement 3.0带来了全面的视觉升级，包括完整的休息界面资源（角色精灵、出租屋背景、猫爪手机界面）、结算界面美术资源（结算卡片、背景图），以及增强的MilkTeaArtLibrary支持新的视觉元素。重点说明以下核心方法的作用与协作：
 - BuildInterface()：创建Canvas与根容器，协调七个独立屏幕的构建
 - **新增** BuildOrPreserveScreen()：智能判断屏幕存在性，决定新建或重连引用
 - BuildDialogueScreen()/BuildMixingScreen()：对话与调配界面的构建
@@ -50,9 +51,9 @@ graph TB
 A["MilkTeaSceneBuilder<br/>编辑器构建"] --> B["BuildInterface()<br/>主界面协调"]
 B --> C["BuildOrPreserveScreen()<br/>智能屏幕管理"]
 C --> D["BuildDialogueScreen()<br/>对话界面"]
-C --> E["BuildMixingScreen()<br/>调配界面美术资源已更新"]
-C --> F["BuildSettlementScreen()<br/>结算界面"]
-C --> G["BuildRestScreen()<br/>休息界面"]
+C --> E["BuildMixingScreen()<br/>调配界面"]
+C --> F["BuildSettlementScreen()<br/>结算界面 - 新增美术资源"]
+C --> G["BuildRestScreen()<br/>休息界面 - 全新完整资源"]
 C --> H["BuildStartScreen()<br/>开始界面"]
 C --> I["BuildAnimationScreen()<br/>动画界面"]
 C --> J["BuildSettingsPanel()<br/>设置面板"]
@@ -130,9 +131,9 @@ Refs["UI组件引用集合"]
 end
 subgraph "七个独立屏幕"
 Dialogue["对话界面"]
-Mixing["调配界面<br/>美术资源已更新"]
-Settlement["结算界面"]
-Rest["休息界面"]
+Mixing["调配界面"]
+Settlement["结算界面<br/>新增美术资源"]
+Rest["休息界面<br/>全新完整资源"]
 Start["开始界面"]
 Animation["动画界面"]
 Settings["设置面板"]
@@ -194,9 +195,9 @@ Controller --> Refs
 
 - **支持的七个屏幕**
   - Dialogue Screen：对话界面（默认激活）
-  - Mixing Screen：调配界面（默认激活，**美术资源已更新**）
-  - Settlement Screen：结算界面（默认隐藏）
-  - Rest Screen：休息界面（默认隐藏）
+  - Mixing Screen：调配界面（默认激活）
+  - Settlement Screen：结算界面（默认隐藏，**新增美术资源**）
+  - Rest Screen：休息界面（默认隐藏，**全新完整资源**）
   - Start Screen：开始界面（默认激活）
   - Intro Screen：动画界面（默认隐藏）
   - Settings Panel：设置面板（默认隐藏）
@@ -260,6 +261,7 @@ Disable --> Done
 
 - **RewireRestScreen()**
   - 重连休息界面的提示文本、按钮等5个组件
+  - **重要更新**：新版休息界面已移除"再休息一会儿"按钮，置空避免旧引用残留
 
 - **RewireStartScreen()**
   - 重连开始界面的四个按钮：设置、开始游戏、读取存档、退出游戏
@@ -278,14 +280,17 @@ Disable --> Done
 
 - **BuildSettlementScreen()**
   - 创建结算卡片，显示当日营业统计信息
-  - 包含标题、正文文本和"回家休息"按钮
+  - **新增美术资源支持**：整屏底图和结算卡片底图，包含边框装饰
+  - 标题数据文字叠加，标题/数据不要烧进图
   - 黄色边框装饰，居中显示
 
 - **BuildRestScreen()**
-  - 创建休息界面，包含手机界面和出租屋场景
-  - 手机界面提供相册、角色资料、对话记录等菜单项
-  - 出租屋场景展示床、书桌等家具
-  - 底部显示休息提示和"进入下一天"/"再休息一会儿"按钮
+  - **全新完整资源**：创建休息界面，包含手机界面和出租屋场景
+  - **手机界面**：提供相册、角色资料、对话记录等菜单项，支持可更换壁纸
+  - **出租屋场景**：展示床、书桌等家具，床上放置休息的主角小人
+  - **营业中徽章**：含奶茶杯+底板+营业中字样，DAY与时间由文字叠加
+  - **返回按钮**：带箭头与返回字样的整图
+  - 底部显示休息提示和"返回"/"进入下一天"按钮
 
 - **BuildStartScreen()**
   - 创建开始界面，支持背景图和Logo图片替换
@@ -306,58 +311,63 @@ Disable --> Done
 章节来源
 - [MilkTeaSceneBuilder.cs:511-698](file://Assets/Editor/MilkTeaSceneBuilder.cs#L511-L698)
 
-### 调配界面美术资源更新详解
-**重要更新**：调配界面已获得全面的美术资源升级，显著提升了用户体验和视觉效果
+### Art Resource Replacement 3.0 视觉升级详解
+**重大更新**：Art Resource Replacement 3.0带来了全面的视觉资源升级，显著提升了用户体验
 
-#### 全屏底图与后厨场景
-- **mixingBackground**：全新的全屏底图，包含右侧操作区装饰和奶油粉底色
-- **kitchenScene**：左上后厨俯视整图，叠在底图左侧，提供更丰富的视觉层次
+#### 休息界面完整资源
+- **apartmentScene**：右侧出租屋俯视整图，床上不画主角，由独立小人层叠加
+- **restCharacter**：床上休息的主角小人（躺姿首帧，后续可扩展序列帧动画）
+- **phoneFrame**：猫爪手机外壳（屏幕区域留空）
+- **phoneWallpaper**：手机屏幕壁纸，可更换；状态栏时间由文字动态叠加
+- **openBadge**：营业中徽章整图（奶茶杯+底板+营业中字样），DAY与时间由文字叠加
+- **backButtonIcon**：返回按钮整图（含箭头与返回字样）
 
-#### 原料图标系统
-- **teaCategoryIcon/milkCategoryIcon/toppingCategoryIcon**：分类图标，分别代表茶底、奶底、配料
-- **ingredientIcons**：详细的原料图标列表，包括红茶瓶、抹茶瓶、乌龙茶瓶、绿茶瓶等
-- **sugarIcon/iceIcon**：糖浆和冰块的专用图标
+#### 手机功能图标
+- **appCharacterIcon**：角色入口图标
+- **appAlbumIcon**：相册入口图标
+- **appMusicIcon**：音乐入口图标
+- **appNotesIcon**：笔记入口图标
+- **appSettingsIcon**：设置入口图标
 
-#### 控制按钮与交互元素
-- **shakeButtonBackground/shakeButtonIcon**：开始摇动按钮的背景图和装饰图标
-- **recipePreviousIcon/recipeNextIcon**：配方翻页箭头图标
-- **categoryPreviousIcon/categoryNextIcon**：原料分类切换箭头图标
-- **levelBlockEmpty/sugarBlockSelected/iceBlockSelected**：糖冰格子状态图标
+#### 结算界面美术资源
+- **settlementBackground**：结算界面整屏底图，设置后覆盖占位深色
+- **settlementCard**：结算卡片底图（含边框装饰），标题数据文字叠加；标题/数据不要烧进图
 
-#### 视觉增强特性
-- **九宫格边框支持**：自动检测Sprite边框属性，选择合适的渲染模式
-- **透明度控制**：支持半透明背景和前景叠加效果
-- **响应式布局**：配合Canvas缩放实现自适应显示
+#### MilkTeaArtLibrary增强支持
+- **新增字段**：支持休息场景、手机界面、结算界面等所有新资源的统一管理
+- **向后兼容**：所有新增字段均为可选，未设置时自动回退到纯色占位
+- **资源管理**：统一的资源加载和管理机制，支持逐个拖拽替换素材
 
 ```mermaid
 graph TB
-subgraph "调配界面美术资源"
-Bg["mixingBackground<br/>全屏底图"]
-Kitchen["kitchenScene<br/>后厨场景"]
-Ingredients["ingredientIcons<br/>原料图标集"]
-Controls["controlIcons<br/>控制按钮图标"]
-States["stateIcons<br/>状态图标"]
+subgraph "休息界面资源"
+Apartment["apartmentScene<br/>出租屋俯视整图"]
+RestChar["restCharacter<br/>床上休息主角"]
+PhoneFrame["phoneFrame<br/>猫爪手机外壳"]
+PhoneWall["phoneWallpaper<br/>可更换壁纸"]
+OpenBadge["openBadge<br/>营业中徽章"]
+BackBtn["backButtonIcon<br/>返回按钮整图"]
 end
-subgraph "视觉层次"
-Layer1["底层：全屏底图"]
-Layer2["中层：后厨场景"]
-Layer3["上层：交互控件"]
-Layer4["顶层：状态反馈"]
+subgraph "手机功能图标"
+AppChar["appCharacterIcon<br/>角色图标"]
+AppAlbum["appAlbumIcon<br/>相册图标"]
+AppMusic["appMusicIcon<br/>音乐图标"]
+AppNotes["appNotesIcon<br/>笔记图标"]
+AppSettings["appSettingsIcon<br/>设置图标"]
 end
-Bg --> Layer1
-Kitchen --> Layer2
-Ingredients --> Layer3
-Controls --> Layer3
-States --> Layer4
+subgraph "结算界面资源"
+SettleBg["settlementBackground<br/>结算背景"]
+SettleCard["settlementCard<br/>结算卡片"]
+end
 ```
 
 图表来源
-- [MilkTeaArtLibrary.cs:64-100](file://Assets/Scripts/MilkTeaArtLibrary.cs#L64-L100)
-- [MilkTeaSceneBuilder.cs:488-562](file://Assets/Editor/MilkTeaSceneBuilder.cs#L488-L562)
+- [MilkTeaArtLibrary.cs:102-134](file://Assets/Scripts/MilkTeaArtLibrary.cs#L102-L134)
+- [MilkTeaSceneBuilder.cs:596-683](file://Assets/Editor/MilkTeaSceneBuilder.cs#L596-L683)
 
 章节来源
-- [MilkTeaArtLibrary.cs:64-100](file://Assets/Scripts/MilkTeaArtLibrary.cs#L64-L100)
-- [MilkTeaSceneBuilder.cs:488-562](file://Assets/Editor/MilkTeaSceneBuilder.cs#L488-L562)
+- [MilkTeaArtLibrary.cs:102-134](file://Assets/Scripts/MilkTeaArtLibrary.cs#L102-L134)
+- [MilkTeaSceneBuilder.cs:596-683](file://Assets/Editor/MilkTeaSceneBuilder.cs#L596-L683)
 
 ### 生命周期管理与事件系统配置
 - **生命周期**
@@ -397,17 +407,18 @@ Builder --> ArtLib["美术库(MilkTeaArtLibrary)"]
 Controller["MilkTeaDemoController<br/>运行时控制"] --> UIRefs["UI组件引用"]
 Controller --> GameLogic["游戏逻辑"]
 ArtLib --> ButtonSkins["按钮皮肤资源"]
-ArtLib --> MixingAssets["调配界面美术资源"]
+ArtLib --> RestAssets["休息界面资源"]
+ArtLib --> SettlementAssets["结算界面资源"]
 ```
 
 图表来源
 - [MilkTeaSceneBuilder.cs:104-349](file://Assets/Editor/MilkTeaSceneBuilder.cs#L104-L349)
 - [MilkTeaDemoController.cs:64-152](file://Assets/Scripts/MilkTeaDemoController.cs#L64-L152)
-- [MilkTeaArtLibrary.cs:64-100](file://Assets/Scripts/MilkTeaArtLibrary.cs#L64-L100)
+- [MilkTeaArtLibrary.cs:102-134](file://Assets/Scripts/MilkTeaArtLibrary.cs#L102-L134)
 
 章节来源
 - [MilkTeaSceneBuilder.cs:104-349](file://Assets/Editor/MilkTeaSceneBuilder.cs#L104-L349)
-- [MilkTeaArtLibrary.cs:64-100](file://Assets/Scripts/MilkTeaArtLibrary.cs#L64-L100)
+- [MilkTeaArtLibrary.cs:102-134](file://Assets/Scripts/MilkTeaArtLibrary.cs#L102-L134)
 
 ## 性能考量
 - **增量构建优势**
@@ -422,7 +433,7 @@ ArtLib --> MixingAssets["调配界面美术资源"]
 - **资源加载**
   - 按钮皮肤系统通过预加载资源减少运行时开销
   - 九宫格边框检测仅在首次应用时执行
-  - **新增** 调配界面美术资源采用分层加载，优先加载关键视觉元素
+  - **新增** 休息界面和结算界面资源采用分层加载，优先加载关键视觉元素
 
 ## 故障排查指南
 - **无事件系统导致按钮不可用**
@@ -449,24 +460,28 @@ ArtLib --> MixingAssets["调配界面美术资源"]
   - 现象：按钮图片或颜色显示不正确
   - 排查：检查MilkTeaArtLibrary中的按钮皮肤资源是否正确配置，确认ResolveButtonSkin()映射逻辑
   - 参考：[MilkTeaSceneBuilder.cs:955-993](file://Assets/Editor/MilkTeaSceneBuilder.cs#L955-L993)
-- **新增** 调配界面美术资源问题
-  - 现象：调配界面背景或图标不显示
-  - 排查：检查MilkTeaArtLibrary中的mixingBackground、kitchenScene等资源是否正确配置
-  - 参考：[MilkTeaArtLibrary.cs:64-100](file://Assets/Scripts/MilkTeaArtLibrary.cs#L64-L100)
+- **新增** 休息界面资源问题
+  - 现象：休息界面背景或手机界面不显示
+  - 排查：检查MilkTeaArtLibrary中的apartmentScene、phoneFrame等资源是否正确配置
+  - 参考：[MilkTeaArtLibrary.cs:102-134](file://Assets/Scripts/MilkTeaArtLibrary.cs#L102-L134)
+- **新增** 结算界面资源问题
+  - 现象：结算界面背景或卡片不显示
+  - 排查：检查MilkTeaArtLibrary中的settlementBackground、settlementCard等资源是否正确配置
+  - 参考：[MilkTeaArtLibrary.cs:130-134](file://Assets/Scripts/MilkTeaArtLibrary.cs#L130-L134)
 
 章节来源
 - [MilkTeaSceneBuilder.cs:251-276](file://Assets/Editor/MilkTeaSceneBuilder.cs#L251-L276)
 - [MilkTeaSceneBuilder.cs:955-993](file://Assets/Editor/MilkTeaSceneBuilder.cs#L955-L993)
-- [MilkTeaArtLibrary.cs:64-100](file://Assets/Scripts/MilkTeaArtLibrary.cs#L64-L100)
+- [MilkTeaArtLibrary.cs:102-134](file://Assets/Scripts/MilkTeaArtLibrary.cs#L102-L134)
 
 ## 结论
-该UI系统经过重大重构，现已成为**支持增量更新的现代化场景构建系统**。通过BuildOrPreserveScreen()方法实现了智能的屏幕生命周期管理，支持七个独立界面的构建与重连。**核心优势**包括：
+该UI系统经过重大重构，现已成为**支持增量更新的现代化场景构建系统**。通过BuildOrPreserveScreen()方法实现了智能的屏幕生命周期管理，支持七个独立界面的构建与重连。**Art Resource Replacement 3.0的重大更新**进一步增强了系统的视觉表现力，特别是休息界面和结算界面的完整美术资源支持。**核心优势**包括：
 - **编辑器友好**：生成可编辑的GameObject，支持拖拽调整和Animator动画
 - **增量构建**：保留手动调整，仅重建缺失部分，大幅提升开发效率
 - **解耦架构**：编辑器构建与运行时控制分离，便于维护和扩展
 - **健壮的重连机制**：通过深度查找确保组件引用正确建立
 - **完善的视觉系统**：支持按钮皮肤、九宫格边框、响应式布局等现代UI特性
-- **最新升级**：调配界面美术资源全面更新，显著提升用户体验和视觉效果
+- **最新重大升级**：Art Resource Replacement 3.0带来休息界面完整资源和结算界面美术资源，显著提升用户体验
 
 对于更大规模项目，建议将构建逻辑进一步模块化、引入对象池与资源管理，以提升可维护性与性能表现。
 
@@ -499,8 +514,8 @@ ArtLib --> MixingAssets["调配界面美术资源"]
   - 中性按钮：CreateButton("NeutralBtn", parent, "设置", position, size, gray, callback)
 
 - **参考路径（现有创建模式）**
-  - 面板创建：[MilkTeaSceneBuilder.cs:887-900](file://Assets/Editor/MilkTeaSceneBuilder.cs#L887-L900)
-  - 文本创建：[MilkTeaSceneBuilder.cs:902-918](file://Assets/Editor/MilkTeaSceneBuilder.cs#L902-L918)
-  - 按钮创建：[MilkTeaSceneBuilder.cs:920-952](file://Assets/Editor/MilkTeaSceneBuilder.cs#L920-L952)
-  - 布局设置：[MilkTeaSceneBuilder.cs:1016-1032](file://Assets/Editor/MilkTeaSceneBuilder.cs#L1016-L1032)
-  - 按钮皮肤映射：[MilkTeaSceneBuilder.cs:955-993](file://Assets/Editor/MilkTeaSceneBuilder.cs#L955-L993)
+  - 面板创建：[MilkTeaSceneBuilder.cs:1099-1105](file://Assets/Editor/MilkTeaSceneBuilder.cs#L1099-L1105)
+  - 文本创建：[MilkTeaSceneBuilder.cs:1114-1130](file://Assets/Editor/MilkTeaSceneBuilder.cs#L1114-L1130)
+  - 按钮创建：[MilkTeaSceneBuilder.cs:1132-1164](file://Assets/Editor/MilkTeaSceneBuilder.cs#L1132-L1164)
+  - 布局设置：[MilkTeaSceneBuilder.cs:1228-1244](file://Assets/Editor/MilkTeaSceneBuilder.cs#L1228-L1244)
+  - 按钮皮肤映射：[MilkTeaSceneBuilder.cs:1167-1205](file://Assets/Editor/MilkTeaSceneBuilder.cs#L1167-L1205)
