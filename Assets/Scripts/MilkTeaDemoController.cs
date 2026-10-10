@@ -1507,7 +1507,8 @@ public sealed class MilkTeaDemoController : MonoBehaviour
 
     private void UpdateDialogueChibis()
     {
-        ApplyDialogueChibiLayout();
+        // 布局只在 Awake 的 ApplyDialogueVisualSettings 里套用一次，这里只换图；
+        // 反复套用会把 Play 模式下拖动的小人位置冲回美术库旧值，导致同步工具记录不到变化。
         ApplyChibi(protagonistChibiImage, art != null ? art.protagonistChibi : null,
             ProtagonistName(), mint);
 

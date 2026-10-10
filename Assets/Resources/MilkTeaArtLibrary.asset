@@ -29,10 +29,10 @@ MonoBehaviour:
   dialogueTextColor: {r: 0.32, g: 0.22, b: 0.18, a: 1}
   speakerTextColor: {r: 1, g: 0.96, b: 0.84, a: 1}
   dayTitleTextColor: {r: 0.25, g: 0.18, b: 0.14, a: 1}
-  protagonistChibiPosition: {x: 1120, y: 600}
-  protagonistChibiSize: {x: 150, y: 150}
-  customerChibiPosition: {x: 1360, y: 390}
-  customerChibiSize: {x: 180, y: 180}
+  protagonistChibiPosition: {x: 1120, y: 543}
+  protagonistChibiSize: {x: 296.715, y: 296.715}
+  customerChibiPosition: {x: 1386, y: 317}
+  customerChibiSize: {x: 309.402, y: 309.402}
   mixingBackground: {fileID: 21300000, guid: f3a3b3035f9821c4fbe0014c0c4b9832, type: 3}
   kitchenScene: {fileID: 21300000, guid: 74d2eb53d670f6645a6297553140307f, type: 3}
   teaCategoryIcon: {fileID: 0}

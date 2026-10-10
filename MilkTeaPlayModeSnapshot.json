@@ -1,0 +1,6088 @@
+{
+    "items": [
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Dialogue Screen/Chibi 主角",
+            "target": 1,
+            "positionField": "protagonistChibiPosition",
+            "sizeField": "protagonistChibiSize",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 1120.0,
+                "y": 543.0
+            },
+            "sizeDelta": {
+                "x": 296.7149963378906,
+                "y": 296.7149963378906
+            },
+            "localScale": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Dialogue Screen/Chibi 顾客",
+            "target": 1,
+            "positionField": "customerChibiPosition",
+            "sizeField": "customerChibiSize",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 1386.0,
+                "y": 317.0
+            },
+            "sizeDelta": {
+                "x": 309.4020080566406,
+                "y": 309.4020080566406
+            },
+            "localScale": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Dialogue Screen",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 1.0,
+                "y": 1.0
+            },
+            "pivot": {
+                "x": 0.5,
+                "y": 0.5
+            },
+            "anchoredPosition": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "sizeDelta": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Dialogue Screen/Shop Overview",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 1.0,
+                "y": 1.0
+            },
+            "pivot": {
+                "x": 0.5,
+                "y": 0.5
+            },
+            "anchoredPosition": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "sizeDelta": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Dialogue Screen/Chibi 顾客/Chibi Label",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "sizeDelta": {
+                "x": 120.0,
+                "y": 120.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Dialogue Screen/Day Badge",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 737.0,
+                "y": 893.0
+            },
+            "sizeDelta": {
+                "x": 500.0,
+                "y": 110.0
+            },
+            "localScale": {
+                "x": 1.5454524755477906,
+                "y": 1.5454524755477906,
+                "z": 1.5454524755477906
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Dialogue Screen/Day Badge/Title",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 28.0,
+                "y": 16.0
+            },
+            "sizeDelta": {
+                "x": 500.0,
+                "y": 110.0
+            },
+            "localScale": {
+                "x": 0.7289400100708008,
+                "y": 0.7289400100708008,
+                "z": 0.7289400100708008
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Dialogue Screen/Customer Portrait",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 119.0,
+                "y": 5.0
+            },
+            "sizeDelta": {
+                "x": 700.0,
+                "y": 900.0
+            },
+            "localScale": {
+                "x": 1.1354999542236329,
+                "y": 1.1354999542236329,
+                "z": 1.1354999542236329
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Dialogue Screen/Customer Portrait/Portrait Label",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 80.0,
+                "y": 250.0
+            },
+            "sizeDelta": {
+                "x": 540.0,
+                "y": 300.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Dialogue Screen/Dialogue Box",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 389.0,
+                "y": 5.0
+            },
+            "sizeDelta": {
+                "x": 1760.0,
+                "y": 300.0
+            },
+            "localScale": {
+                "x": 1.0632163286209107,
+                "y": 1.1490628719329835,
+                "z": 1.1490628719329835
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Dialogue Screen/Dialogue Box/Line",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 132.0,
+                "y": 10.0
+            },
+            "sizeDelta": {
+                "x": 1500.0,
+                "y": 180.0
+            },
+            "localScale": {
+                "x": 1.2608102560043336,
+                "y": 1.1865990161895753,
+                "z": 1.2608102560043336
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Dialogue Screen/Dialogue Box/Continue",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 1111.0,
+                "y": 0.0
+            },
+            "sizeDelta": {
+                "x": 180.0,
+                "y": 100.0
+            },
+            "localScale": {
+                "x": 1.483199954032898,
+                "y": 1.483199954032898,
+                "z": 1.483199954032898
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Dialogue Screen/Dialogue Box/Continue/Label",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "sizeDelta": {
+                "x": 180.0,
+                "y": 100.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Dialogue Screen/Speaker Tag",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 445.0,
+                "y": 291.0
+            },
+            "sizeDelta": {
+                "x": 260.0,
+                "y": 60.0
+            },
+            "localScale": {
+                "x": 1.3098224401474,
+                "y": 2.160900115966797,
+                "z": 2.160900115966797
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Dialogue Screen/Speaker Tag/Speaker",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 8.0,
+                "y": 1.0
+            },
+            "sizeDelta": {
+                "x": 260.0,
+                "y": 60.0
+            },
+            "localScale": {
+                "x": 1.0438348054885865,
+                "y": 0.768545389175415,
+                "z": 0.8703699707984924
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 3.264538526535034
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 1.0,
+                "y": 1.0
+            },
+            "pivot": {
+                "x": 0.5,
+                "y": 0.5
+            },
+            "anchoredPosition": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "sizeDelta": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Kitchen Overview",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 30.0,
+                "y": 340.0
+            },
+            "sizeDelta": {
+                "x": 630.0,
+                "y": 710.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Kitchen Overview/Chibi 主角",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 250.0,
+                "y": 80.0
+            },
+            "sizeDelta": {
+                "x": 120.0,
+                "y": 120.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Order Reminder",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 30.0,
+                "y": 30.0
+            },
+            "sizeDelta": {
+                "x": 630.0,
+                "y": 280.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Order Reminder/Order Line",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 40.0,
+                "y": 40.0
+            },
+            "sizeDelta": {
+                "x": 550.0,
+                "y": 170.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Order Reminder/Order Paw",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 530.0,
+                "y": 10.0
+            },
+            "sizeDelta": {
+                "x": 80.0,
+                "y": 80.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Order Tag",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 60.0,
+                "y": 260.0
+            },
+            "sizeDelta": {
+                "x": 200.0,
+                "y": 50.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Order Tag/Order Speaker",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "sizeDelta": {
+                "x": 200.0,
+                "y": 50.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 700.0,
+                "y": 0.0
+            },
+            "sizeDelta": {
+                "x": 1220.0,
+                "y": 1080.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Recipe Manual",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 20.0,
+                "y": 700.0
+            },
+            "sizeDelta": {
+                "x": 1180.0,
+                "y": 360.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Recipe Manual/Recipe Header",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 20.0,
+                "y": 290.0
+            },
+            "sizeDelta": {
+                "x": 220.0,
+                "y": 50.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Recipe Manual/Recipe Details",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 20.0,
+                "y": 160.0
+            },
+            "sizeDelta": {
+                "x": 450.0,
+                "y": 130.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Recipe Manual/Recipe Icon",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 780.0,
+                "y": 30.0
+            },
+            "sizeDelta": {
+                "x": 360.0,
+                "y": 300.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Recipe Manual/Recipe Icon/Recipe Icon Text",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "sizeDelta": {
+                "x": 360.0,
+                "y": 300.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Recipe Manual/Recipe Icon/Recipe Icon Image",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "sizeDelta": {
+                "x": 360.0,
+                "y": 300.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Recipe Manual/Previous Recipe",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 700.0,
+                "y": 140.0
+            },
+            "sizeDelta": {
+                "x": 60.0,
+                "y": 60.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Recipe Manual/Previous Recipe/Label",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "sizeDelta": {
+                "x": 60.0,
+                "y": 60.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Recipe Manual/Next Recipe",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 1100.0,
+                "y": 140.0
+            },
+            "sizeDelta": {
+                "x": 60.0,
+                "y": 60.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Recipe Manual/Next Recipe/Label",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "sizeDelta": {
+                "x": 60.0,
+                "y": 60.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Recipe Manual/Page",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 880.0,
+                "y": 10.0
+            },
+            "sizeDelta": {
+                "x": 120.0,
+                "y": 30.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Ingredients",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 20.0,
+                "y": 200.0
+            },
+            "sizeDelta": {
+                "x": 740.0,
+                "y": 480.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Ingredients/Category Title",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 60.0,
+                "y": 420.0
+            },
+            "sizeDelta": {
+                "x": 400.0,
+                "y": 46.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Ingredients/Category Icon",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 10.0,
+                "y": 418.0
+            },
+            "sizeDelta": {
+                "x": 46.0,
+                "y": 46.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Ingredients/Previous Category",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 570.0,
+                "y": 432.0
+            },
+            "sizeDelta": {
+                "x": 56.0,
+                "y": 48.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Ingredients/Previous Category/Label",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "sizeDelta": {
+                "x": 56.0,
+                "y": 48.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Ingredients/Next Category",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 640.0,
+                "y": 432.0
+            },
+            "sizeDelta": {
+                "x": 56.0,
+                "y": 48.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Ingredients/Next Category/Label",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "sizeDelta": {
+                "x": 56.0,
+                "y": 48.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Ingredients/Tea Choices",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 24.0,
+                "y": 170.0
+            },
+            "sizeDelta": {
+                "x": 672.0,
+                "y": 205.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Ingredients/Tea Choices/红茶",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 0.0,
+                "y": 147.0
+            },
+            "sizeDelta": {
+                "x": 160.5,
+                "y": 58.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Ingredients/Tea Choices/红茶/Label",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "sizeDelta": {
+                "x": 160.5,
+                "y": 58.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Ingredients/Tea Choices/红茶/红茶 Icon",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 60.25,
+                "y": 14.0
+            },
+            "sizeDelta": {
+                "x": 40.0,
+                "y": 40.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Ingredients/Tea Choices/茉莉绿茶",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 170.5,
+                "y": 147.0
+            },
+            "sizeDelta": {
+                "x": 160.5,
+                "y": 58.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Ingredients/Tea Choices/茉莉绿茶/Label",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "sizeDelta": {
+                "x": 160.5,
+                "y": 58.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Ingredients/Tea Choices/茉莉绿茶/茉莉绿茶 Icon",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 60.25,
+                "y": 14.0
+            },
+            "sizeDelta": {
+                "x": 40.0,
+                "y": 40.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Ingredients/Tea Choices/抹茶",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 341.0,
+                "y": 147.0
+            },
+            "sizeDelta": {
+                "x": 160.5,
+                "y": 58.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Ingredients/Tea Choices/抹茶/Label",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "sizeDelta": {
+                "x": 160.5,
+                "y": 58.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Ingredients/Tea Choices/抹茶/抹茶 Icon",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 60.25,
+                "y": 14.0
+            },
+            "sizeDelta": {
+                "x": 40.0,
+                "y": 40.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Ingredients/Tea Choices/乌龙",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 511.5,
+                "y": 147.0
+            },
+            "sizeDelta": {
+                "x": 160.5,
+                "y": 58.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Ingredients/Tea Choices/乌龙/Label",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "sizeDelta": {
+                "x": 160.5,
+                "y": 58.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Ingredients/Tea Choices/乌龙/乌龙 Icon",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 60.25,
+                "y": 14.0
+            },
+            "sizeDelta": {
+                "x": 40.0,
+                "y": 40.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Ingredients/Milk Choices",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 24.0,
+                "y": 170.0
+            },
+            "sizeDelta": {
+                "x": 672.0,
+                "y": 205.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Ingredients/Milk Choices/鲜奶",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 0.0,
+                "y": 147.0
+            },
+            "sizeDelta": {
+                "x": 217.3333282470703,
+                "y": 58.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Ingredients/Milk Choices/鲜奶/Label",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "sizeDelta": {
+                "x": 217.3333282470703,
+                "y": 58.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Ingredients/Milk Choices/椰奶",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 227.3333282470703,
+                "y": 147.0
+            },
+            "sizeDelta": {
+                "x": 217.3333282470703,
+                "y": 58.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Ingredients/Milk Choices/椰奶/Label",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "sizeDelta": {
+                "x": 217.3333282470703,
+                "y": 58.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Ingredients/Milk Choices/无奶",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 454.6666564941406,
+                "y": 147.0
+            },
+            "sizeDelta": {
+                "x": 217.3333282470703,
+                "y": 58.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Ingredients/Milk Choices/无奶/Label",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "sizeDelta": {
+                "x": 217.3333282470703,
+                "y": 58.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Ingredients/Topping Choices",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 24.0,
+                "y": 170.0
+            },
+            "sizeDelta": {
+                "x": 672.0,
+                "y": 205.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Ingredients/Topping Choices/珍珠",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 0.0,
+                "y": 161.25
+            },
+            "sizeDelta": {
+                "x": 217.3333282470703,
+                "y": 43.75
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Ingredients/Topping Choices/珍珠/Label",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "sizeDelta": {
+                "x": 217.3333282470703,
+                "y": 43.75
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Ingredients/Topping Choices/黑糖珍珠",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 227.3333282470703,
+                "y": 161.25
+            },
+            "sizeDelta": {
+                "x": 217.3333282470703,
+                "y": 43.75
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Ingredients/Topping Choices/黑糖珍珠/Label",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "sizeDelta": {
+                "x": 217.3333282470703,
+                "y": 43.75
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Ingredients/Topping Choices/芝士奶盖",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 454.6666564941406,
+                "y": 161.25
+            },
+            "sizeDelta": {
+                "x": 217.3333282470703,
+                "y": 43.75
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Ingredients/Topping Choices/芝士奶盖/Label",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "sizeDelta": {
+                "x": 217.3333282470703,
+                "y": 43.75
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Ingredients/Topping Choices/芋泥",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 0.0,
+                "y": 107.5
+            },
+            "sizeDelta": {
+                "x": 217.3333282470703,
+                "y": 43.75
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Ingredients/Topping Choices/芋泥/Label",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "sizeDelta": {
+                "x": 217.3333282470703,
+                "y": 43.75
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Ingredients/Topping Choices/红豆",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 227.3333282470703,
+                "y": 107.5
+            },
+            "sizeDelta": {
+                "x": 217.3333282470703,
+                "y": 43.75
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Ingredients/Topping Choices/红豆/Label",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "sizeDelta": {
+                "x": 217.3333282470703,
+                "y": 43.75
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Ingredients/Topping Choices/芒果西米",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 454.6666564941406,
+                "y": 107.5
+            },
+            "sizeDelta": {
+                "x": 217.3333282470703,
+                "y": 43.75
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Ingredients/Topping Choices/芒果西米/Label",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "sizeDelta": {
+                "x": 217.3333282470703,
+                "y": 43.75
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Ingredients/Topping Choices/草莓芝士",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 0.0,
+                "y": 53.75
+            },
+            "sizeDelta": {
+                "x": 217.3333282470703,
+                "y": 43.75
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Ingredients/Topping Choices/草莓芝士/Label",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "sizeDelta": {
+                "x": 217.3333282470703,
+                "y": 43.75
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Ingredients/Topping Choices/百香果椰果",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 227.3333282470703,
+                "y": 53.75
+            },
+            "sizeDelta": {
+                "x": 217.3333282470703,
+                "y": 43.75
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Ingredients/Topping Choices/百香果椰果/Label",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "sizeDelta": {
+                "x": 217.3333282470703,
+                "y": 43.75
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Ingredients/Topping Choices/桂花糖浆",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 454.6666564941406,
+                "y": 53.75
+            },
+            "sizeDelta": {
+                "x": 217.3333282470703,
+                "y": 43.75
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Ingredients/Topping Choices/桂花糖浆/Label",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "sizeDelta": {
+                "x": 217.3333282470703,
+                "y": 43.75
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Ingredients/Topping Choices/无",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "sizeDelta": {
+                "x": 217.3333282470703,
+                "y": 43.75
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Ingredients/Topping Choices/无/Label",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "sizeDelta": {
+                "x": 217.3333282470703,
+                "y": 43.75
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Ingredients/Selection Summary",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 20.0,
+                "y": 0.0
+            },
+            "sizeDelta": {
+                "x": 700.0,
+                "y": 40.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Sugar Ice Panel",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 780.0,
+                "y": 200.0
+            },
+            "sizeDelta": {
+                "x": 400.0,
+                "y": 480.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Sugar Ice Panel/Sugar Icon",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 20.0,
+                "y": 370.0
+            },
+            "sizeDelta": {
+                "x": 60.0,
+                "y": 60.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Sugar Ice Panel/Sugar Label",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 90.0,
+                "y": 375.0
+            },
+            "sizeDelta": {
+                "x": 100.0,
+                "y": 50.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Sugar Ice Panel/Sugar 1",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 200.0,
+                "y": 378.0
+            },
+            "sizeDelta": {
+                "x": 48.0,
+                "y": 42.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Sugar Ice Panel/Sugar 1/Label",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "sizeDelta": {
+                "x": 48.0,
+                "y": 42.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Sugar Ice Panel/Sugar 2",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 270.0,
+                "y": 378.0
+            },
+            "sizeDelta": {
+                "x": 48.0,
+                "y": 42.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Sugar Ice Panel/Sugar 2/Label",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "sizeDelta": {
+                "x": 48.0,
+                "y": 42.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Sugar Ice Panel/Sugar State",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 220.0,
+                "y": 325.0
+            },
+            "sizeDelta": {
+                "x": 150.0,
+                "y": 40.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Sugar Ice Panel/Ice Icon",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 20.0,
+                "y": 220.0
+            },
+            "sizeDelta": {
+                "x": 60.0,
+                "y": 60.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Sugar Ice Panel/Ice Label",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 90.0,
+                "y": 225.0
+            },
+            "sizeDelta": {
+                "x": 100.0,
+                "y": 50.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Sugar Ice Panel/Ice 1",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 200.0,
+                "y": 228.0
+            },
+            "sizeDelta": {
+                "x": 48.0,
+                "y": 42.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Sugar Ice Panel/Ice 1/Label",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "sizeDelta": {
+                "x": 48.0,
+                "y": 42.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Sugar Ice Panel/Ice 2",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 270.0,
+                "y": 228.0
+            },
+            "sizeDelta": {
+                "x": 48.0,
+                "y": 42.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Sugar Ice Panel/Ice 2/Label",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "sizeDelta": {
+                "x": 48.0,
+                "y": 42.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Sugar Ice Panel/Ice State",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 220.0,
+                "y": 175.0
+            },
+            "sizeDelta": {
+                "x": 150.0,
+                "y": 40.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Machine Status",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 310.0,
+                "y": 120.0
+            },
+            "sizeDelta": {
+                "x": 600.0,
+                "y": 40.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Shake Button",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 310.0,
+                "y": 20.0
+            },
+            "sizeDelta": {
+                "x": 600.0,
+                "y": 90.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Mixing Screen/Operation Panel/Shake Button/Label",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "sizeDelta": {
+                "x": 600.0,
+                "y": 90.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Rest Screen",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 1.0,
+                "y": 1.0
+            },
+            "pivot": {
+                "x": 0.5,
+                "y": 0.5
+            },
+            "anchoredPosition": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "sizeDelta": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Rest Screen/Open Badge",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 690.0,
+                "y": 950.0
+            },
+            "sizeDelta": {
+                "x": 460.0,
+                "y": 120.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Rest Screen/Open Badge/Rest Badge Text",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 160.0,
+                "y": 8.0
+            },
+            "sizeDelta": {
+                "x": 290.0,
+                "y": 52.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Rest Screen/Phone",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 80.0,
+                "y": 40.0
+            },
+            "sizeDelta": {
+                "x": 590.0,
+                "y": 980.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Rest Screen/Phone/Phone Wallpaper",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 45.0,
+                "y": 60.0
+            },
+            "sizeDelta": {
+                "x": 500.0,
+                "y": 850.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Rest Screen/Phone/Phone Wallpaper/Phone Clock",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 28.0,
+                "y": 788.0
+            },
+            "sizeDelta": {
+                "x": 200.0,
+                "y": 46.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Rest Screen/Phone/Phone Wallpaper/App Character",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 25.0,
+                "y": 640.0
+            },
+            "sizeDelta": {
+                "x": 85.0,
+                "y": 90.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Rest Screen/Phone/Phone Wallpaper/App Character/Label",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "sizeDelta": {
+                "x": 85.0,
+                "y": 90.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Rest Screen/Phone/Phone Wallpaper/App Album",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 118.0,
+                "y": 640.0
+            },
+            "sizeDelta": {
+                "x": 85.0,
+                "y": 90.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Rest Screen/Phone/Phone Wallpaper/App Album/Label",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "sizeDelta": {
+                "x": 85.0,
+                "y": 90.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Rest Screen/Phone/Phone Wallpaper/App Music",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 211.0,
+                "y": 640.0
+            },
+            "sizeDelta": {
+                "x": 85.0,
+                "y": 90.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Rest Screen/Phone/Phone Wallpaper/App Music/Label",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "sizeDelta": {
+                "x": 85.0,
+                "y": 90.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Rest Screen/Phone/Phone Wallpaper/App Notes",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 304.0,
+                "y": 640.0
+            },
+            "sizeDelta": {
+                "x": 85.0,
+                "y": 90.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Rest Screen/Phone/Phone Wallpaper/App Notes/Label",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "sizeDelta": {
+                "x": 85.0,
+                "y": 90.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Rest Screen/Phone/Phone Wallpaper/App Settings",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 397.0,
+                "y": 640.0
+            },
+            "sizeDelta": {
+                "x": 85.0,
+                "y": 90.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Rest Screen/Phone/Phone Wallpaper/App Settings/Label",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "sizeDelta": {
+                "x": 85.0,
+                "y": 90.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Rest Screen/Apartment Overview",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 650.0,
+                "y": 45.0
+            },
+            "sizeDelta": {
+                "x": 1240.0,
+                "y": 990.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Rest Screen/Apartment Overview/Rest Character",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 770.0,
+                "y": 320.0
+            },
+            "sizeDelta": {
+                "x": 220.0,
+                "y": 180.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Rest Screen/Rest Hint",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 660.0,
+                "y": 8.0
+            },
+            "sizeDelta": {
+                "x": 600.0,
+                "y": 42.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Rest Screen/Next Day Button",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 1070.0,
+                "y": 30.0
+            },
+            "sizeDelta": {
+                "x": 290.0,
+                "y": 85.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Rest Screen/Next Day Button/Label",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "sizeDelta": {
+                "x": 290.0,
+                "y": 85.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Settlement Screen",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 1.0,
+                "y": 1.0
+            },
+            "pivot": {
+                "x": 0.5,
+                "y": 0.5
+            },
+            "anchoredPosition": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "sizeDelta": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Settlement Screen/Settlement Card",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 560.0,
+                "y": 290.0
+            },
+            "sizeDelta": {
+                "x": 800.0,
+                "y": 500.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Settlement Screen/Settlement Card/Settlement Title",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 100.0,
+                "y": 400.0
+            },
+            "sizeDelta": {
+                "x": 600.0,
+                "y": 70.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Settlement Screen/Settlement Card/Settlement Body",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 100.0,
+                "y": 150.0
+            },
+            "sizeDelta": {
+                "x": 600.0,
+                "y": 220.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Settlement Screen/Settlement Card/Settlement Button",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 280.0,
+                "y": 40.0
+            },
+            "sizeDelta": {
+                "x": 240.0,
+                "y": 90.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Settlement Screen/Settlement Card/Settlement Button/Label",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "sizeDelta": {
+                "x": 240.0,
+                "y": 90.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Start Screen",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 1.0,
+                "y": 1.0
+            },
+            "pivot": {
+                "x": 0.5,
+                "y": 0.5
+            },
+            "anchoredPosition": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "sizeDelta": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Start Screen/Settings Button",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.5
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.5
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 45.0,
+                "y": 318.95513916015627
+            },
+            "sizeDelta": {
+                "x": 168.1999969482422,
+                "y": 199.7080078125
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Start Screen/Settings Button/Label",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "sizeDelta": {
+                "x": 120.0,
+                "y": 90.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Start Screen/Logo",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 1245.0,
+                "y": 638.6599731445313
+            },
+            "sizeDelta": {
+                "x": 760.0,
+                "y": 420.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Start Screen/Start Game",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 1338.0,
+                "y": 453.0
+            },
+            "sizeDelta": {
+                "x": 499.1789855957031,
+                "y": 170.468994140625
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Start Screen/Start Game/Label",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": -9.0,
+                "y": 30.235000610351564
+            },
+            "sizeDelta": {
+                "x": 560.0,
+                "y": 110.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Start Screen/Load Game",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 1338.0,
+                "y": 258.0
+            },
+            "sizeDelta": {
+                "x": 499.1789855957031,
+                "y": 170.468994140625
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Start Screen/Load Game/Label",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": -10.0,
+                "y": 30.235000610351564
+            },
+            "sizeDelta": {
+                "x": 560.0,
+                "y": 110.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Start Screen/Quit Game",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 1338.0,
+                "y": 59.0
+            },
+            "sizeDelta": {
+                "x": 499.1789855957031,
+                "y": 170.468994140625
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Start Screen/Quit Game/Label",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 0.0,
+                "y": 30.235000610351564
+            },
+            "sizeDelta": {
+                "x": 560.0,
+                "y": 110.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Start Screen/Version",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 45.0,
+                "y": 45.0
+            },
+            "sizeDelta": {
+                "x": 560.0,
+                "y": 40.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Intro Screen",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 1.0,
+                "y": 1.0
+            },
+            "pivot": {
+                "x": 0.5,
+                "y": 0.5
+            },
+            "anchoredPosition": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "sizeDelta": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Intro Screen/Video Surface",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 1.0,
+                "y": 1.0
+            },
+            "pivot": {
+                "x": 0.5,
+                "y": 0.5
+            },
+            "anchoredPosition": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "sizeDelta": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Intro Screen/Countdown",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 660.0,
+                "y": 460.0
+            },
+            "sizeDelta": {
+                "x": 600.0,
+                "y": 220.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Intro Screen/Intro Hint",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 360.0,
+                "y": 330.0
+            },
+            "sizeDelta": {
+                "x": 1200.0,
+                "y": 50.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Intro Screen/Skip Button",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 1650.0,
+                "y": 945.0
+            },
+            "sizeDelta": {
+                "x": 230.0,
+                "y": 92.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Intro Screen/Skip Button/Label",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "sizeDelta": {
+                "x": 230.0,
+                "y": 92.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Settings Panel",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 1.0,
+                "y": 1.0
+            },
+            "pivot": {
+                "x": 0.5,
+                "y": 0.5
+            },
+            "anchoredPosition": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "sizeDelta": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Settings Panel/Settings Card",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 560.0,
+                "y": 240.0
+            },
+            "sizeDelta": {
+                "x": 800.0,
+                "y": 600.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Settings Panel/Settings Card/Settings Title",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 100.0,
+                "y": 500.0
+            },
+            "sizeDelta": {
+                "x": 600.0,
+                "y": 66.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Settings Panel/Settings Card/Volume Label",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 60.0,
+                "y": 400.0
+            },
+            "sizeDelta": {
+                "x": 200.0,
+                "y": 60.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Settings Panel/Settings Card/Volume Prev",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 300.0,
+                "y": 400.0
+            },
+            "sizeDelta": {
+                "x": 64.0,
+                "y": 60.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Settings Panel/Settings Card/Volume Prev/Label",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "sizeDelta": {
+                "x": 64.0,
+                "y": 60.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Settings Panel/Settings Card/Volume Value",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 374.0,
+                "y": 400.0
+            },
+            "sizeDelta": {
+                "x": 300.0,
+                "y": 60.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Settings Panel/Settings Card/Volume Next",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 674.0,
+                "y": 400.0
+            },
+            "sizeDelta": {
+                "x": 64.0,
+                "y": 60.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Settings Panel/Settings Card/Volume Next/Label",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "sizeDelta": {
+                "x": 64.0,
+                "y": 60.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Settings Panel/Settings Card/Resolution Label",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 60.0,
+                "y": 290.0
+            },
+            "sizeDelta": {
+                "x": 200.0,
+                "y": 60.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Settings Panel/Settings Card/Resolution Prev",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 300.0,
+                "y": 290.0
+            },
+            "sizeDelta": {
+                "x": 64.0,
+                "y": 60.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Settings Panel/Settings Card/Resolution Prev/Label",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "sizeDelta": {
+                "x": 64.0,
+                "y": 60.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Settings Panel/Settings Card/Resolution Value",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 374.0,
+                "y": 290.0
+            },
+            "sizeDelta": {
+                "x": 300.0,
+                "y": 60.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Settings Panel/Settings Card/Resolution Next",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 674.0,
+                "y": 290.0
+            },
+            "sizeDelta": {
+                "x": 64.0,
+                "y": 60.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Settings Panel/Settings Card/Resolution Next/Label",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "sizeDelta": {
+                "x": 64.0,
+                "y": 60.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Settings Panel/Settings Card/Language Label",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 60.0,
+                "y": 180.0
+            },
+            "sizeDelta": {
+                "x": 200.0,
+                "y": 60.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Settings Panel/Settings Card/Language Prev",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 300.0,
+                "y": 180.0
+            },
+            "sizeDelta": {
+                "x": 64.0,
+                "y": 60.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Settings Panel/Settings Card/Language Prev/Label",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "sizeDelta": {
+                "x": 64.0,
+                "y": 60.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Settings Panel/Settings Card/Language Value",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 374.0,
+                "y": 180.0
+            },
+            "sizeDelta": {
+                "x": 300.0,
+                "y": 60.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Settings Panel/Settings Card/Language Next",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 674.0,
+                "y": 180.0
+            },
+            "sizeDelta": {
+                "x": 64.0,
+                "y": 60.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Settings Panel/Settings Card/Language Next/Label",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "sizeDelta": {
+                "x": 64.0,
+                "y": 60.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Settings Panel/Settings Card/Settings Close",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 300.0,
+                "y": 45.0
+            },
+            "sizeDelta": {
+                "x": 200.0,
+                "y": 90.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Settings Panel/Settings Card/Settings Close/Label",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "sizeDelta": {
+                "x": 200.0,
+                "y": 90.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        }
+    ]
+}
