@@ -295,6 +295,18 @@ public static class MilkTeaSceneBuilder
         controller.orderLine = FindDeep<Text>(root, "Order Line");
         controller.recipeIcon = FindDeep<Text>(root, "Recipe Icon Text");
         controller.recipeIconImage = FindDeep<Image>(root, "Recipe Icon Image");
+        // 成品图居中归位：中底锚点 + 中心轴心，避免左下轴心缩放导致图像偏左；preserveAspect 保证图内容居中
+        if (controller.recipeIconImage != null)
+        {
+            RectTransform iconRect = controller.recipeIconImage.rectTransform;
+            iconRect.anchorMin = new Vector2(0.5f, 0f);
+            iconRect.anchorMax = new Vector2(0.5f, 0f);
+            iconRect.pivot = new Vector2(0.5f, 0.5f);
+            iconRect.anchoredPosition = new Vector2(0f, 150f);
+            iconRect.sizeDelta = new Vector2(360f, 300f);
+            iconRect.localScale = Vector3.one;
+            controller.recipeIconImage.preserveAspect = true;
+        }
         controller.recipeDetails = FindDeep<Text>(root, "Recipe Details");
         controller.recipePage = FindDeep<Text>(root, "Page");
         controller.prevRecipeButton = FindDeep<Button>(root, "Previous Recipe");
@@ -304,9 +316,23 @@ public static class MilkTeaSceneBuilder
         controller.selectionSummary = FindDeep<Text>(root, "Selection Summary");
         controller.prevCategoryButton = FindDeep<Button>(root, "Previous Category");
         controller.nextCategoryButton = FindDeep<Button>(root, "Next Category");
+        // 修复旧场景：分类面板容器是透明 Image，默认拦截射线，会盖住旁边箭头的点击
+        foreach (string panelName in new[] { "Tea Choices", "Milk Choices", "Topping Choices" })
+        {
+            Image panelBackground = FindDeep<Image>(root, panelName);
+            if (panelBackground != null)
+            {
+                panelBackground.raycastTarget = false;
+            }
+        }
         controller.machineStatus = FindDeep<Text>(root, "Machine Status");
         controller.shakeButton = FindDeep<Button>(root, "Shake Button");
         controller.shakeButtonLabel = FindButtonLabel(root, "Shake Button");
+        // 摇动按钮背景图自带文字，隐藏建场生成的文字层（想恢复勾选激活即可）
+        if (controller.shakeButtonLabel != null)
+        {
+            controller.shakeButtonLabel.gameObject.SetActive(false);
+        }
         controller.sugarStateLabel = FindDeep<Text>(root, "Sugar State");
         controller.iceStateLabel = FindDeep<Text>(root, "Ice State");
     }
@@ -952,6 +978,8 @@ public static class MilkTeaSceneBuilder
     {
         GameObject choicePanel = CreatePanel(category + " Choices", parent, Color.clear);
         SetRect(choicePanel.GetComponent<RectTransform>(), 24, 170, 672, 205);
+        // 容器只做布局：透明 Image 默认仍会拦截点击射线，关掉它，防止面板盖住附近的箭头/按钮
+        choicePanel.GetComponent<Image>().raycastTarget = false;
         MilkTeaCategoryPanel categoryMarker = choicePanel.AddComponent<MilkTeaCategoryPanel>();
         categoryMarker.category = category;
 
@@ -1010,6 +1038,8 @@ public static class MilkTeaSceneBuilder
             btnImage.color = Color.white;
             btnImage.type = shakeBg.border != Vector4.zero ? Image.Type.Sliced : Image.Type.Simple;
             btnImage.preserveAspect = false;
+            // 背景图自带文字，隐藏生成的文字层避免重影；无图时保留文字作兜底
+            shakeLabel.gameObject.SetActive(false);
 
             ColorBlock colors = controller.shakeButton.colors;
             colors.normalColor = Color.white;
