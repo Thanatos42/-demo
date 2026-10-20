@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2fb204cac2b2e84f86fc57236a4bf7b, type: 3}
+  m_Name: Customer
+  m_EditorClassIdentifier: Assembly-CSharp::MilkTeaCustomer
+  customerName: "\u5C0F\u96EA"
+  character: {fileID: 11400000, guid: eb9d06ca865ee1a42a86f5dfb115479c, type: 2}
+  portrait: {fileID: 0}
+  chibi: {fileID: 0}
+  portraitFrames: []
+  portraitFps: 8
+  order: {fileID: 0}
+  sugarLevel: 1
+  iceLevel: 1
+  orderPool:
+  - order: {fileID: 11400000, guid: 207ba34b25dd536469f5502cc878e1a6, type: 2}
+    sugarLevel: 0
+    iceLevel: 0
+  - order: {fileID: 11400000, guid: c68dc44fe27e6314b9e1793a3b4026ed, type: 2}
+    sugarLevel: 0
+    iceLevel: 0
+  openingDialogue: {fileID: 11400000, guid: 25363859c84038c44ab12d492e74ad54, type: 2}
+  servingDialogue: {fileID: 11400000, guid: 234eec231bf962346ad214f0b3549cbb, type: 2}
+  servingBadDialogue: {fileID: 11400000, guid: 2695a5ca64b258042889247f747e7289, type: 2}

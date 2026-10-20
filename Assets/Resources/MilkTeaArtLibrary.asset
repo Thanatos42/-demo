@@ -21,6 +21,9 @@ MonoBehaviour:
   protagonistPortraitFrames: []
   protagonistPortraitFps: 8
   protagonistChibi: {fileID: 21300000, guid: 79cc97a30819f904482bc230a169bf79, type: 3}
+  characters:
+  - {fileID: 11400000, guid: eb9d06ca865ee1a42a86f5dfb115479c, type: 2}
+  protagonistCharacter: {fileID: 0}
   defaultCustomerPortrait: {fileID: 0}
   customerChibi: {fileID: 0}
   continueButtonIcon: {fileID: 21300000, guid: c683a6e848564ff4b96ae2b6318c8dd4, type: 3}
@@ -116,7 +119,17 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 966de532d8470534c9f6668d8012a559, type: 2}
   - {fileID: 11400000, guid: a49b441e02ea557419a710363a961628, type: 2}
   customers:
-  - {fileID: 11400000, guid: 45d38d2c8c76b994bbf2eca4f8e85265, type: 2}
+  - {fileID: 11400000, guid: f1f22c96178987242a019257560dec18, type: 2}
   - {fileID: 11400000, guid: a1f296b6daa432b43870dec4b6882dc9, type: 2}
+  chapters: []
+  startChapterIndex: 0
+  startDayIndex: 0
+  socialContent: {fileID: 0}
+  bgmStart: {fileID: 0}
+  bgmDialogue: {fileID: 0}
+  bgmMixing: {fileID: 0}
+  bgmSettlement: {fileID: 0}
+  bgmRest: {fileID: 0}
+  animations: []
   defaultOpeningDialogue: {fileID: 11400000, guid: b55707ce4f169db4aa84b21345ed2e22, type: 2}
   defaultServingDialogue: {fileID: 11400000, guid: e026b5693513d7042970c1e7c289de33, type: 2}

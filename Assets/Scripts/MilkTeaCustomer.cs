@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -5,18 +6,38 @@ using UnityEngine;
 /// 一位客人及其点单。把若干 <see cref="MilkTeaCustomer"/> 拖进
 /// <see cref="MilkTeaArtLibrary"/> 的 customers 列表后，Demo 会按顺序让他们出场
 /// （列表为空则回退为从配方里随机点单）。
+/// 立绘与表情差分推荐通过 <see cref="character"/> 引用角色资产；配置点单池后每次出场随机点单。
 /// 可在 Unity 中右键 Create → 奶茶店 Demo → 客人 创建。
 /// </summary>
 [CreateAssetMenu(fileName = "Customer", menuName = "奶茶店 Demo/客人", order = 3)]
 public sealed class MilkTeaCustomer : ScriptableObject
 {
+    /// <summary>点单池条目：该客人出场时随机抽一条作为本单需求。</summary>
+    [Serializable]
+    public sealed class OrderEntry
+    {
+        [Tooltip("本单饮品（决定茶底/奶底/配料的正确答案）")]
+        public MilkTeaRecipe order;
+
+        [Tooltip("糖度：0 无糖 / 1 少糖 / 2 多糖")]
+        [Range(0, 2)]
+        public int sugarLevel = 1;
+
+        [Tooltip("冰度：0 去冰 / 1 少冰 / 2 多冰")]
+        [Range(0, 2)]
+        public int iceLevel = 1;
+    }
+
     [Header("身份")]
     public string customerName = "顾客";
+
+    [Tooltip("关联角色资产：立绘与表情差分从这里取，推荐优先使用；留空则回退下方立绘字段")]
+    public MilkTeaCharacter character;
 
     [Tooltip("该客人的立绘，留空则用点单饮品或美术库中的默认立绘")]
     public Sprite portrait;
 
-    [Tooltip("该客人在柜台前显示的专属 Q 版小人，留空则使用美术库中的默认顾客小人")]
+    [Tooltip("该客人在柜台前显示的专属 Q 版小人，留空则使用角色资产或美术库中的默认顾客小人")]
     public Sprite chibi;
 
     [Tooltip("立绘序列帧：≥2 帧则循环播放动画；留空或仅 1 帧时使用上面的静态立绘")]
@@ -25,7 +46,7 @@ public sealed class MilkTeaCustomer : ScriptableObject
     [Tooltip("立绘动画帧率（帧/秒）")]
     public float portraitFps = 8f;
 
-    [Header("点单")]
+    [Header("固定点单（未配置点单池时使用）")]
     [Tooltip("这位客人想要的饮品（决定茶底/奶底/配料的正确答案）")]
     public MilkTeaRecipe order;
 
@@ -37,10 +58,17 @@ public sealed class MilkTeaCustomer : ScriptableObject
     [Range(0, 2)]
     public int iceLevel = 1;
 
+    [Header("点单池（可选）")]
+    [Tooltip("配置后每次出场随机抽一条作为本单需求，实现每次点单内容不同；留空则使用固定点单")]
+    public List<OrderEntry> orderPool = new List<OrderEntry>();
+
     [Header("对话（可选，留空用美术库中的默认对话）")]
     [Tooltip("进店点单时播放的对话")]
     public MilkTeaDialogue openingDialogue;
 
-    [Tooltip("做对之后交付时播放的对话")]
+    [Tooltip("做对交付时播放的对话")]
     public MilkTeaDialogue servingDialogue;
+
+    [Tooltip("本单曾做错后交付时播放的对话；留空则与做对共用 servingDialogue")]
+    public MilkTeaDialogue servingBadDialogue;
 }

@@ -38,6 +38,12 @@ public sealed class MilkTeaArtLibrary : ScriptableObject
     public float protagonistPortraitFps = 8f;
     public Sprite protagonistChibi;
 
+    [Header("角色注册表")]
+    [Tooltip("所有可参与对话的角色（主角/店员/客人等）。对话行“说话人”与角色名一致时，立绘与表情差分按名生效")]
+    public List<MilkTeaCharacter> characters = new List<MilkTeaCharacter>();
+    [Tooltip("主角对应的角色资产（可选）；配置后主角台词优先用它解析立绘与表情差分")]
+    public MilkTeaCharacter protagonistCharacter;
+
     [Header("默认顾客回退")]
     public Sprite defaultCustomerPortrait;
     public Sprite customerChibi;
@@ -157,11 +163,58 @@ public sealed class MilkTeaArtLibrary : ScriptableObject
     [Header("配方列表（决定 Demo 中出现的奶茶）")]
     public List<MilkTeaRecipe> recipes = new List<MilkTeaRecipe>();
 
-    [Header("客人出场表（留空则从配方中随机点单）")]
-    [Tooltip("填入客人后，Demo 会按列表顺序循环让他们出场")]
+    [Header("客人出场表（日程未启用时的兜底）")]
+    [Tooltip("未配置章节日程时：填入客人则按列表顺序循环出场；列表为空则从配方随机点单")]
     public List<MilkTeaCustomer> customers = new List<MilkTeaCustomer>();
 
-    [Header("默认对话（客人未单独设置时使用，留空则用内置台词）")]
+    [Header("章节日程（可选，配置后接管出场）")]
+    [Tooltip("章节资产列表：按“章→天→出场条目”推进剧情；留空则维持上方客人出场表行为")]
+    public List<MilkTeaChapter> chapters = new List<MilkTeaChapter>();
+
+    [Tooltip("游戏起始进度：从第几个章节开始（配合 startDayIndex 做测试跳进度）")]
+    public int startChapterIndex;
+
+    [Tooltip("游戏起始进度：起始章节内从第几天开始（0 = 第 1 天）")]
+    public int startDayIndex;
+
+    [Header("手机内容库（可选）")]
+    [Tooltip("朋友圈动态与 CG 图鉴；留空则手机内这两个 App 显示为空")]
+    public MilkTeaSocialContent socialContent;
+
+    [Header("背景音乐（可选，营业期各界面循环）")]
+    [Tooltip("开始界面 BGM")]
+    public AudioClip bgmStart;
+    [Tooltip("对话界面 BGM（章节未覆盖 bgm 时生效）")]
+    public AudioClip bgmDialogue;
+    [Tooltip("调配界面 BGM（章节未覆盖 bgm 时生效）")]
+    public AudioClip bgmMixing;
+    [Tooltip("结算界面 BGM（章节未覆盖 bgm 时生效）")]
+    public AudioClip bgmSettlement;
+    [Tooltip("休息界面 BGM（章节未覆盖 bgm 时生效）")]
+    public AudioClip bgmRest;
+
+    [Header("序列帧动画库（对话行 PlayAnimation 按名引用）")]
+    [Tooltip("命名的序列帧动画：对话行演出事件选 PlayAnimation 并填 targetName=名称即可在立绘区播放")]
+    public List<NamedFrames> animations = new List<NamedFrames>();
+
+    [Serializable]
+    public sealed class NamedFrames
+    {
+        [Tooltip("动画名；对话行 PlayAnimation 事件的 targetName 与此一致")]
+        public string name = "动画";
+
+        [Tooltip("序列帧列表（至少 2 帧）")]
+        public List<Sprite> frames = new List<Sprite>();
+
+        [Tooltip("播放帧率（帧/秒）")]
+        public float fps = 8f;
+
+        [Tooltip("是否循环；否则播完停在最后一帧")]
+        public bool loop;
+    }
+
+    [Header("默认对话")]
+    [Tooltip("客人未单独设置对话时使用，留空则用内置台词")]
     public MilkTeaDialogue defaultOpeningDialogue;
     public MilkTeaDialogue defaultServingDialogue;
 

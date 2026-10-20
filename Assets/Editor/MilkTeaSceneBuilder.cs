@@ -43,6 +43,14 @@ public static class MilkTeaSceneBuilder
         BuildSceneInternal(forceRebuildAll: false);
     }
 
+    [MenuItem("奶茶店 Demo/重置开场动画标记")]
+    private static void ResetIntroPlayedFlag()
+    {
+        PlayerPrefs.DeleteKey(MilkTeaDemoController.IntroPlayedKey);
+        PlayerPrefs.Save();
+        Debug.Log("[奶茶店 Demo] 已重置开场动画标记，下次点「开始营业」将重新播放开场动画。");
+    }
+
     [MenuItem("奶茶店 Demo/强制重建全部界面")]
     public static void ForceRebuildAll()
     {
@@ -275,6 +283,101 @@ public static class MilkTeaSceneBuilder
         return label != null ? label.GetComponent<Text>() : null;
     }
 
+    /// <summary>确保对话界面有全屏 CG 演出浮层（旧场景补建，新建直接生成）；缺失才创建，不覆盖手动调整。</summary>
+    private static void EnsureCgOverlay(Transform dialogueRoot)
+    {
+        Transform existing = dialogueRoot.Find("Cg Overlay");
+        GameObject overlay;
+        if (existing != null)
+        {
+            overlay = existing.gameObject;
+        }
+        else
+        {
+            overlay = CreatePanel("Cg Overlay", dialogueRoot, new Color(0f, 0f, 0f, 0.88f));
+            Stretch(overlay.GetComponent<RectTransform>());
+            // 不拦截点击：浮层开着时，点击穿透到“继续”按钮，第一次点关 CG，第二次推进行
+            overlay.GetComponent<Image>().raycastTarget = false;
+            GameObject cgImage = CreatePanel("Cg Image", overlay.transform, Color.white);
+            SetRect(cgImage.GetComponent<RectTransform>(), 260, 140, 1400, 800);
+            cgImage.GetComponent<Image>().raycastTarget = false;
+            CreateText("Cg Hint", overlay.transform, "点击「继续」返回对话", 30, cream,
+                TextAnchor.MiddleCenter, new Vector2(0, 80), new Vector2(500, 50), true);
+            overlay.SetActive(false);
+        }
+
+        controller.cgOverlay = overlay;
+        controller.cgOverlayImage = FindDeep<Image>(overlay.transform, "Cg Image");
+        controller.cgOverlayHint = FindDeep<Text>(overlay.transform, "Cg Hint");
+    }
+
+    /// <summary>确保手机里有两个 App 面板（朋友圈/相册）；缺失才创建，不覆盖手动调整。</summary>
+    private static void EnsurePhoneAppPanels(Transform wallpaper)
+    {
+        if (wallpaper.Find("App Moments Panel") == null)
+        {
+            GameObject panel = CreatePanel("App Moments Panel", wallpaper, Hex("#2A2F3A"));
+            SetRect(panel.GetComponent<RectTransform>(), 0, 0, 500, 850);
+            CreateText("Panel Title", panel.transform, "朋友圈", 34, cream,
+                TextAnchor.MiddleCenter, new Vector2(0, 790), new Vector2(300, 60), true);
+            controller.appMomentsContent = CreateScrollView(panel.transform, "Moments Scroll", new Vector2(15, 20), new Vector2(470, 740));
+            CreateAppCloseButton(panel.transform);
+            panel.SetActive(false);
+        }
+
+        if (wallpaper.Find("App Album Panel") == null)
+        {
+            GameObject panel = CreatePanel("App Album Panel", wallpaper, Hex("#2A2F3A"));
+            SetRect(panel.GetComponent<RectTransform>(), 0, 0, 500, 850);
+            CreateText("Panel Title", panel.transform, "相册", 34, cream,
+                TextAnchor.MiddleCenter, new Vector2(0, 790), new Vector2(300, 60), true);
+            controller.appAlbumContent = CreateScrollView(panel.transform, "Album Scroll", new Vector2(15, 20), new Vector2(470, 740));
+            CreateAppCloseButton(panel.transform);
+            panel.SetActive(false);
+        }
+
+        Transform moments = wallpaper.Find("App Moments Panel");
+        controller.appMomentsPanel = moments != null ? moments.gameObject : null;
+        Transform album = wallpaper.Find("App Album Panel");
+        controller.appAlbumPanel = album != null ? album.gameObject : null;
+    }
+
+    private static void CreateAppCloseButton(Transform panel)
+    {
+        Text label;
+        CreateButton("App Close Button", panel, "×", new Vector2(428, 776), new Vector2(56, 56), panelLight, out label);
+        label.fontSize = 32;
+    }
+
+    /// <summary>创建带裁剪的纵向滚动区，返回 Content（运行时往里填条目）。</summary>
+    private static RectTransform CreateScrollView(Transform parent, string name, Vector2 position, Vector2 size)
+    {
+        GameObject scroll = CreatePanel(name, parent, new Color(0f, 0f, 0f, 0.25f));
+        SetRect(scroll.GetComponent<RectTransform>(), position.x, position.y, size.x, size.y);
+        ScrollRect scrollRect = scroll.AddComponent<ScrollRect>();
+        scrollRect.horizontal = false;
+        scrollRect.vertical = true;
+        scrollRect.movementType = ScrollRect.MovementType.Clamped;
+        scrollRect.scrollSensitivity = 40f;
+
+        GameObject viewport = new GameObject("Viewport", typeof(RectTransform), typeof(RectMask2D));
+        viewport.transform.SetParent(scroll.transform, false);
+        RectTransform viewportRect = viewport.GetComponent<RectTransform>();
+        Stretch(viewportRect);
+        scrollRect.viewport = viewportRect;
+
+        GameObject content = new GameObject("Content", typeof(RectTransform));
+        content.transform.SetParent(viewport.transform, false);
+        RectTransform contentRect = content.GetComponent<RectTransform>();
+        contentRect.anchorMin = new Vector2(0f, 1f);
+        contentRect.anchorMax = new Vector2(1f, 1f);
+        contentRect.pivot = new Vector2(0.5f, 1f);
+        contentRect.offsetMin = new Vector2(0f, contentRect.offsetMin.y);
+        contentRect.offsetMax = new Vector2(0f, contentRect.offsetMax.y);
+        scrollRect.content = contentRect;
+        return contentRect;
+    }
+
     private static void RewireDialogueScreen(Transform root)
     {
         controller.dayTitle = FindDeep<Text>(root, "Title");
@@ -287,6 +390,7 @@ public static class MilkTeaSceneBuilder
         controller.dialogueLine = FindDeep<Text>(root, "Line");
         controller.dialogueButton = FindDeep<Button>(root, "Continue");
         controller.dialogueButtonLabel = FindButtonLabel(root, "Continue");
+        EnsureCgOverlay(root);
     }
 
     private static void RewireMixingScreen(Transform root)
@@ -363,6 +467,12 @@ public static class MilkTeaSceneBuilder
             FindDeep<Button>(root, "App Notes"),
             FindDeep<Button>(root, "App Settings")
         };
+        // 手机 App 面板（朋友圈/相册）缺失时补建，不覆盖已有调整
+        Transform restWallpaper = FindDeep<Transform>(root, "Phone Wallpaper");
+        if (restWallpaper != null)
+        {
+            EnsurePhoneAppPanels(restWallpaper);
+        }
     }
 
     private static void RewireStartScreen(Transform root)
@@ -509,6 +619,7 @@ public static class MilkTeaSceneBuilder
         }
 
         controller.dialogueButtonLabel = continueLabel;
+        EnsureCgOverlay(parent);
     }
 
     private static void BuildMixingScreen(Transform parent)
@@ -660,6 +771,7 @@ public static class MilkTeaSceneBuilder
         BuildRestAppButton(wallpaper.transform, "App Music", 2);
         BuildRestAppButton(wallpaper.transform, "App Notes", 3);
         BuildRestAppButton(wallpaper.transform, "App Settings", 4);
+        EnsurePhoneAppPanels(wallpaper.transform);
 
         // 右侧：出租屋俯视整图（床上不画主角，由独立小人层叠加）
         GameObject apartment = CreatePanel("Apartment Overview", parent, panelLight);

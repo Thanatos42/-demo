@@ -1,0 +1,69 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1336929249f1e44fbf62a65ba000cb2, type: 3}
+  m_Name: "\u5BF9\u8BDD\u6D4B\u8BD51.0"
+  m_EditorClassIdentifier: Assembly-CSharp::MilkTeaDialogue
+  lines:
+  - speaker: "\u65C1\u767D"
+    text: "\u5348\u540E"
+    buttonLabel: 
+    expression: 
+    voiceClip: {fileID: 0}
+    events: []
+  - speaker: "\u4E3B\u89D2"
+    text: "\u4ECA\u5929\u5929\u6C14\u4E0D\u9519"
+    buttonLabel: 
+    expression: 
+    voiceClip: {fileID: 0}
+    events:
+    - type: 0
+      targetName: 
+      audioClip: {fileID: 0}
+    - type: 0
+      targetName: 
+      audioClip: {fileID: 0}
+  - speaker: "\u5C0F\u96EA"
+    text: "\u4F60\u597D"
+    buttonLabel: 
+    expression: 
+    voiceClip: {fileID: 0}
+    events:
+    - type: 0
+      targetName: 
+      audioClip: {fileID: 0}
+    - type: 0
+      targetName: 
+      audioClip: {fileID: 0}
+  - speaker: "\u5C0F\u96EA"
+    text: "\u8BF7\u7ED9\u6211\u4E00\u676F\u5976\u8336"
+    buttonLabel: 
+    expression: 
+    voiceClip: {fileID: 0}
+    events:
+    - type: 0
+      targetName: 
+      audioClip: {fileID: 0}
+    - type: 0
+      targetName: 
+      audioClip: {fileID: 0}
+  - speaker: "\u5C0F\u96EA"
+    text: "\u597D\u5417"
+    buttonLabel: 
+    expression: 
+    voiceClip: {fileID: 0}
+    events:
+    - type: 0
+      targetName: 
+      audioClip: {fileID: 0}
+    - type: 0
+      targetName: 
+      audioClip: {fileID: 0}

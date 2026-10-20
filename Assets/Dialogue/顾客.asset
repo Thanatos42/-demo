@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b2fb204cac2b2e84f86fc57236a4bf7b, type: 3}
-  m_Name: Customer_B
+  m_Name: "\u987E\u5BA2"
   m_EditorClassIdentifier: Assembly-CSharp::MilkTeaCustomer
   customerName: "\u987E\u5BA2"
   portrait: {fileID: 21300000, guid: 12890a151141250449f9cebb26bd589e, type: 3}

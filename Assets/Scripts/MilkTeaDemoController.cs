@@ -77,6 +77,10 @@ public sealed class MilkTeaDemoController : MonoBehaviour
     public Text dialogueSpeaker;
     public Text dialogueLine;
     public Button dialogueButton;
+    [Tooltip("语音专用 AudioSource；留空时运行时自动创建（独占通道，新语音打断旧语音）")]
+    public AudioSource voiceSource;
+    [Tooltip("效果音 AudioSource；留空时运行时自动创建")]
+    public AudioSource sfxSource;
     public Text dialogueButtonLabel;
 
     [Header("调配 · 需求提示")]
@@ -123,12 +127,32 @@ public sealed class MilkTeaDemoController : MonoBehaviour
     public Text restHint;
     [Tooltip("手机功能入口按钮（角色/相册/音乐/笔记/设置，顺序固定）")]
     public Button[] restAppButtons;
+    [Tooltip("休息界面手机 · 朋友圈面板（角色App，默认隐藏，由建场工具生成）")]
+    public GameObject appMomentsPanel;
+    [Tooltip("休息界面手机 · 相册面板（相册App，默认隐藏）")]
+    public GameObject appAlbumPanel;
+    [Tooltip("朋友圈条目容器（滚动区 Content）")]
+    public RectTransform appMomentsContent;
+    [Tooltip("相册格子容器（滚动区 Content）")]
+    public RectTransform appAlbumContent;
     [Tooltip("营业中徽章上的 DAY 与时间文字")]
     public Text restBadgeText;
     [Tooltip("手机状态栏时间文字")]
     public Text restPhoneClock;
     [Tooltip("休息界面固定的休息时间（暂无时间系统，后续可接）")]
     private const string RestClockText = "22:00";
+
+    [Header("对话 · 全屏 CG 演出（由建场工具生成）")]
+    [Tooltip("全屏 CG 浮层根节点（对话行 ShowCg 事件时弹出，点击按钮关闭）")]
+    public GameObject cgOverlay;
+    [Tooltip("全屏 CG 图片")]
+    public Image cgOverlayImage;
+    [Tooltip("全屏 CG 底部提示文字")]
+    public Text cgOverlayHint;
+
+    [Header("背景音乐（留空时运行时自动创建通道）")]
+    [Tooltip("BGM 专用 AudioSource（循环播放，切界面换曲）")]
+    public AudioSource bgmSource;
 
     [Header("每日循环")]
     public Text dayTitle;
@@ -204,6 +228,20 @@ public sealed class MilkTeaDemoController : MonoBehaviour
     private MilkTeaCustomer currentCustomer;
     private int customerCursor = -1;
     private int dayNumber = 1;
+
+    // ---- 章节日程状态机：日程模式按 章→天→出场条目 推进；未配置日程时这些游标不动 ----
+    // 当天出场序号直接用 servedToday（已完成单数）：第 N 位客人对应出场表第 N-1 条
+    private int scheduleChapterIndex;
+    private int scheduleDayIndex;
+    private MilkTeaChapter.Appearance currentAppearance;
+
+    // ---- 存档与解锁：CG/朋友圈等已解锁内容 ID 集合，随自动存档持久化 ----
+    private readonly HashSet<string> unlockedContentIds = new HashSet<string>();
+
+    // ---- 全屏 CG 演出与 BGM 运行态 ----
+    private bool cgOverlayOpen;
+    private AudioClip currentBgm;
+
     private int servedToday;
     private int perfectToday;
     private int mistakesToday;
@@ -215,10 +253,23 @@ public sealed class MilkTeaDemoController : MonoBehaviour
     private Coroutine introRoutine;
     private bool introFinished;
 
+    /// <summary>开场动画“已看过”的存档键；重置入口：菜单「奶茶店 Demo/重置开场动画标记」。</summary>
+    public const string IntroPlayedKey = "MilkTeaIntroPlayed";
+
     private void Awake()
     {
         art = Resources.Load<MilkTeaArtLibrary>(ArtLibraryResource);
+        EnsureAudioChannels();
         recipes = BuildRecipes();
+        // 测试跳进度：起始章/天取美术库配置（编辑器窗口可改）
+        scheduleChapterIndex = art != null ? Mathf.Max(0, art.startChapterIndex) : 0;
+        scheduleDayIndex = art != null ? Mathf.Max(0, art.startDayIndex) : 0;
+        // 恢复已解锁内容（CG 等）；进度本身在点"读取存档"时才恢复
+        MilkTeaSaveSystem.SaveData cached = MilkTeaSaveSystem.Load(MilkTeaSaveSystem.AutoSaveSlot);
+        if (cached != null && cached.unlockedIds != null)
+        {
+            unlockedContentIds.UnionWith(cached.unlockedIds);
+        }
         ApplyRuntimeFont();
         ApplyDialogueVisualSettings();
         WireChoices();
@@ -230,6 +281,22 @@ public sealed class MilkTeaDemoController : MonoBehaviour
 
     private void Update()
     {
+#if UNITY_EDITOR
+        // 测试快捷键：F9 直接结束当天进结算；F10 推进到下一天（回到开始界面）
+        if (Input.GetKeyDown(KeyCode.F9))
+        {
+            servedToday = CustomersToday();
+            ShowSettlement();
+            return;
+        }
+
+        if (Input.GetKeyDown(KeyCode.F10))
+        {
+            GoNextDay();
+            return;
+        }
+#endif
+
         if (!Input.GetKeyDown(KeyCode.Space) || dialogueScreen == null || !dialogueScreen.activeInHierarchy)
         {
             return;
@@ -387,6 +454,9 @@ public sealed class MilkTeaDemoController : MonoBehaviour
             }
         }
 
+        BindAppCloseButton(appMomentsPanel);
+        BindAppCloseButton(appAlbumPanel);
+
         if (startGameButton != null)
         {
             startGameButton.onClick.AddListener(OnStartGame);
@@ -540,38 +610,43 @@ public sealed class MilkTeaDemoController : MonoBehaviour
 
         mixingScreen.SetActive(false);
         dialogueScreen.SetActive(true);
+        PlayBgm(ResolveBgm(art != null ? art.bgmDialogue : null));
         ResolveNextOrder();
         UpdateRecipeManual();
         UpdateDialogueChibis();
-        UpdateDialoguePortrait(activeRecipe.CustomerName);
+        UpdateDialoguePortrait(activeRecipe.CustomerName, null);
         PlayOpeningDialogue();
     }
 
     private void ResolveNextOrder()
     {
         currentOrderHadMistake = false;
+        currentAppearance = null;
+
+        // 日程模式：美术库配置了章节时，按“章→天→出场条目”依次出场，条目字段覆盖客人资产
+        if (ScheduleMode && ResolveScheduleOrder())
+        {
+            return;
+        }
+
         if (art != null && art.customers != null && art.customers.Count > 0)
         {
             customerCursor = (customerCursor + 1) % art.customers.Count;
             MilkTeaCustomer customer = art.customers[customerCursor];
-            if (customer != null && customer.order != null)
+            if (customer != null)
             {
-                currentCustomer = customer;
-                activeRecipe = new Recipe
+                // 点单池随机抽取实现“每次点单可能不同”；池空或条目无效时回退固定点单
+                MilkTeaCustomer.OrderEntry pooled = PickPooledOrder(customer);
+                MilkTeaRecipe order = pooled != null ? pooled.order : customer.order;
+                if (order != null)
                 {
-                    Name = customer.order.displayName,
-                    Tea = customer.order.teaBase,
-                    Milk = customer.order.milkBase,
-                    Topping = customer.order.topping,
-                    IconLabel = string.IsNullOrEmpty(customer.order.iconLabel) ? "?" : customer.order.iconLabel,
-                    IconSprite = customer.order.icon,
-                    Portrait = customer.portrait != null ? customer.portrait : customer.order.customerPortrait,
-                    CustomerName = string.IsNullOrEmpty(customer.customerName) ? "顾客" : customer.customerName
-                };
-                orderSugar = Mathf.Clamp(customer.sugarLevel, 0, 2);
-                orderIce = Mathf.Clamp(customer.iceLevel, 0, 2);
-                manualIndex = FindManualIndex(activeRecipe.Name);
-                return;
+                    ApplyCustomerOrder(
+                        customer,
+                        order,
+                        pooled != null ? pooled.sugarLevel : customer.sugarLevel,
+                        pooled != null ? pooled.iceLevel : customer.iceLevel);
+                    return;
+                }
             }
         }
 
@@ -581,6 +656,117 @@ public sealed class MilkTeaDemoController : MonoBehaviour
         orderSugar = UnityEngine.Random.Range(1, 3); // 客人只点少糖或多糖
         orderIce = UnityEngine.Random.Range(0, 3);   // 去冰 / 少冰 / 多冰
         manualIndex = orderIndex;
+    }
+
+    /// <summary>是否处于章节日程模式：美术库配置了至少一个章节即接管出场。</summary>
+    private bool ScheduleMode
+    {
+        get { return art != null && art.chapters != null && art.chapters.Count > 0; }
+    }
+
+    private MilkTeaChapter CurrentChapter()
+    {
+        if (!ScheduleMode)
+        {
+            return null;
+        }
+
+        int index = Mathf.Clamp(scheduleChapterIndex, 0, art.chapters.Count - 1);
+        return art.chapters[index];
+    }
+
+    /// <summary>按日程出场表取当前条目并落单；条目无效时告警并返回 false（落到旧兑底链）。</summary>
+    private bool ResolveScheduleOrder()
+    {
+        MilkTeaChapter chapter = CurrentChapter();
+        if (chapter == null || chapter.days == null || chapter.days.Count == 0)
+        {
+            Debug.LogWarning("章节日程：当前章节无效或没有天，回退随机出场。");
+            return false;
+        }
+
+        int dayIndex = Mathf.Clamp(scheduleDayIndex, 0, chapter.days.Count - 1);
+        MilkTeaChapter.Day day = chapter.days[dayIndex];
+        if (day == null || day.appearances == null || day.appearances.Count == 0)
+        {
+            Debug.LogWarning("章节日程：当前天没有出场条目，回退随机出场。");
+            return false;
+        }
+
+        // 当天第 N 位客人（servedToday 从 0 起）对应出场表第 N 条
+        int appearanceIndex = Mathf.Clamp(servedToday, 0, day.appearances.Count - 1);
+        MilkTeaChapter.Appearance appearance = day.appearances[appearanceIndex];
+        if (appearance == null || appearance.customer == null)
+        {
+            Debug.LogWarning("章节日程：出场条目未填客人，回退随机出场。");
+            return false;
+        }
+
+        currentAppearance = appearance;
+        MilkTeaCustomer customer = appearance.customer;
+        if (appearance.orderOverride != null)
+        {
+            // 剧情指定点单：同一角色不同天点不同的单就靠这里
+            ApplyCustomerOrder(customer, appearance.orderOverride, appearance.sugarLevel, appearance.iceLevel);
+            return true;
+        }
+
+        MilkTeaCustomer.OrderEntry pooled = PickPooledOrder(customer);
+        MilkTeaRecipe order = pooled != null ? pooled.order : customer.order;
+        if (order == null)
+        {
+            Debug.LogWarning("章节日程：客人“" + customer.customerName + "”没有可用的点单，回退随机出场。");
+            currentAppearance = null;
+            return false;
+        }
+
+        ApplyCustomerOrder(
+            customer,
+            order,
+            pooled != null ? pooled.sugarLevel : customer.sugarLevel,
+            pooled != null ? pooled.iceLevel : customer.iceLevel);
+        return true;
+    }
+
+    /// <summary>把“客人 + 点单 + 糖冰”落到当前订单状态（日程/列表两条出场链共用）。</summary>
+    private void ApplyCustomerOrder(MilkTeaCustomer customer, MilkTeaRecipe order, int sugar, int ice)
+    {
+        currentCustomer = customer;
+        activeRecipe = new Recipe
+        {
+            Name = order.displayName,
+            Tea = order.teaBase,
+            Milk = order.milkBase,
+            Topping = order.topping,
+            IconLabel = string.IsNullOrEmpty(order.iconLabel) ? "?" : order.iconLabel,
+            IconSprite = order.icon,
+            Portrait = customer.portrait != null ? customer.portrait : order.customerPortrait,
+            CustomerName = string.IsNullOrEmpty(customer.customerName) ? "顾客" : customer.customerName
+        };
+        orderSugar = Mathf.Clamp(sugar, 0, 2);
+        orderIce = Mathf.Clamp(ice, 0, 2);
+        manualIndex = FindManualIndex(activeRecipe.Name);
+    }
+
+    /// <summary>从客人点单池随机抽一条；池为空或条目均无效时返回 null 走固定点单。</summary>
+    private static MilkTeaCustomer.OrderEntry PickPooledOrder(MilkTeaCustomer customer)
+    {
+        if (customer == null || customer.orderPool == null || customer.orderPool.Count == 0)
+        {
+            return null;
+        }
+
+        int start = UnityEngine.Random.Range(0, customer.orderPool.Count);
+        for (int i = 0; i < customer.orderPool.Count; i++)
+        {
+            MilkTeaCustomer.OrderEntry entry = customer.orderPool[(start + i) % customer.orderPool.Count];
+            if (entry != null && entry.order != null)
+            {
+                return entry;
+            }
+        }
+
+        return null;
     }
 
     private int FindManualIndex(string recipeName)
@@ -600,6 +786,7 @@ public sealed class MilkTeaDemoController : MonoBehaviour
     {
         dialogueScreen.SetActive(false);
         mixingScreen.SetActive(true);
+        PlayBgm(ResolveBgm(art != null ? art.bgmMixing : null));
         if (shakeButton != null)
         {
             shakeButton.interactable = true;
@@ -611,9 +798,12 @@ public sealed class MilkTeaDemoController : MonoBehaviour
 
     private void PlayOpeningDialogue()
     {
-        MilkTeaDialogue dialogue = currentCustomer != null && currentCustomer.openingDialogue != null
-            ? currentCustomer.openingDialogue
-            : (art != null ? art.defaultOpeningDialogue : null);
+        // 覆盖链：日程条目 > 客人资产 > 美术库默认
+        MilkTeaDialogue dialogue = currentAppearance != null && currentAppearance.openingOverride != null
+            ? currentAppearance.openingOverride
+            : (currentCustomer != null && currentCustomer.openingDialogue != null
+                ? currentCustomer.openingDialogue
+                : (art != null ? art.defaultOpeningDialogue : null));
         if (dialogue != null && dialogue.lines != null && dialogue.lines.Count > 0)
         {
             PlayDialogue(dialogue, EnterMixing);
@@ -629,10 +819,8 @@ public sealed class MilkTeaDemoController : MonoBehaviour
         mixingScreen.SetActive(false);
         dialogueScreen.SetActive(true);
         UpdateDialogueChibis();
-        UpdateDialoguePortrait(ProtagonistName());
-        MilkTeaDialogue dialogue = currentCustomer != null && currentCustomer.servingDialogue != null
-            ? currentCustomer.servingDialogue
-            : (art != null ? art.defaultServingDialogue : null);
+        UpdateDialoguePortrait(ProtagonistName(), null);
+        MilkTeaDialogue dialogue = ResolveServingDialogue();
         if (dialogue != null && dialogue.lines != null && dialogue.lines.Count > 0)
         {
             PlayDialogue(dialogue, AdvanceAfterServe);
@@ -641,6 +829,35 @@ public sealed class MilkTeaDemoController : MonoBehaviour
 
         ConfigureDialogue(ProtagonistName(), "您的奶茶做好了。", "继续",
             delegate { ConfigureDialogue(activeRecipe.CustomerName, "谢谢！", "下一位", AdvanceAfterServe); });
+    }
+
+    /// <summary>交付对话解析：本单做错过优先走失望对话；覆盖链 日程条目 > 客人资产 > 美术库默认。</summary>
+    private MilkTeaDialogue ResolveServingDialogue()
+    {
+        if (currentOrderHadMistake)
+        {
+            if (currentAppearance != null && currentAppearance.servingBadOverride != null)
+            {
+                return currentAppearance.servingBadOverride;
+            }
+
+            if (currentCustomer != null && currentCustomer.servingBadDialogue != null)
+            {
+                return currentCustomer.servingBadDialogue;
+            }
+        }
+
+        if (currentAppearance != null && currentAppearance.servingOverride != null)
+        {
+            return currentAppearance.servingOverride;
+        }
+
+        if (currentCustomer != null && currentCustomer.servingDialogue != null)
+        {
+            return currentCustomer.servingDialogue;
+        }
+
+        return art != null ? art.defaultServingDialogue : null;
     }
 
     private void PlayDialogue(MilkTeaDialogue dialogue, Action onComplete)
@@ -663,7 +880,10 @@ public sealed class MilkTeaDemoController : MonoBehaviour
             next = delegate { PlayDialogueLine(dialogue, nextIndex, onComplete); };
         }
 
-        ConfigureDialogue(Format(line.speaker), Format(line.text), button, next);
+        string formattedSpeaker = Format(line.speaker);
+        PlayVoice(line.voiceClip);
+        PlayLineEvents(line);
+        ConfigureDialogue(formattedSpeaker, Format(line.text), button, next, line.expression);
     }
 
     private string Format(string content)
@@ -690,7 +910,14 @@ public sealed class MilkTeaDemoController : MonoBehaviour
         customerCursor = -1;
         if (dayTitle != null)
         {
-            dayTitle.text = "第 " + dayNumber + " 天 · 营业中";
+            // 日程模式优先显示剧情天名（如“开端·雨天的初遇”）
+            MilkTeaChapter chapter = CurrentChapter();
+            MilkTeaChapter.Day day = chapter != null && chapter.days != null && chapter.days.Count > 0
+                ? chapter.days[Mathf.Clamp(scheduleDayIndex, 0, chapter.days.Count - 1)]
+                : null;
+            dayTitle.text = day != null && !string.IsNullOrEmpty(day.dayName)
+                ? day.dayName + " · 营业中"
+                : "第 " + dayNumber + " 天 · 营业中";
         }
 
         ShowOpeningDialogue();
@@ -698,6 +925,17 @@ public sealed class MilkTeaDemoController : MonoBehaviour
 
     private int CustomersToday()
     {
+        // 日程模式：当天出场表条目数决定今天接待几位
+        MilkTeaChapter chapter = CurrentChapter();
+        if (chapter != null && chapter.days != null && chapter.days.Count > 0)
+        {
+            MilkTeaChapter.Day day = chapter.days[Mathf.Clamp(scheduleDayIndex, 0, chapter.days.Count - 1)];
+            if (day != null && day.appearances != null && day.appearances.Count > 0)
+            {
+                return day.appearances.Count;
+            }
+        }
+
         if (art != null && art.customers != null && art.customers.Count > 0)
         {
             return art.customers.Count;
@@ -728,6 +966,7 @@ public sealed class MilkTeaDemoController : MonoBehaviour
         }
 
         settlementScreen.SetActive(true);
+        PlayBgm(ResolveBgm(art != null ? art.bgmSettlement : null));
         if (settlementTitle != null)
         {
             settlementTitle.text = "第 " + dayNumber + " 天 · 营业结算";
@@ -769,13 +1008,45 @@ public sealed class MilkTeaDemoController : MonoBehaviour
         {
             restPhoneClock.text = RestClockText;
         }
+
+        CloseRestApps();
+        PlayBgm(art != null ? art.bgmRest : null);
+        // 每天进入休息界面时自动存档，"读取存档"从此处继续
+        AutoSaveProgress();
     }
 
     private void GoNextDay()
     {
         // 休息界面点"返回"：天数推进，回到开始界面由玩家手动开始新一天
         dayNumber++;
+        if (ScheduleMode)
+        {
+            AdvanceScheduleDay();
+        }
+
         ShowStartScreen();
+    }
+
+    /// <summary>日程模式推进到下一天；跨章/通关循环回第一章（Demo 行为）。</summary>
+    private void AdvanceScheduleDay()
+    {
+        scheduleDayIndex++;
+        MilkTeaChapter chapter = CurrentChapter();
+        if (chapter == null || chapter.days == null || scheduleDayIndex >= chapter.days.Count)
+        {
+            scheduleDayIndex = 0;
+            scheduleChapterIndex++;
+            if (scheduleChapterIndex >= art.chapters.Count)
+            {
+                scheduleChapterIndex = 0;
+                Debug.Log("全部章节完成，回到第一章循环。");
+            }
+            else
+            {
+                MilkTeaChapter next = art.chapters[Mathf.Clamp(scheduleChapterIndex, 0, art.chapters.Count - 1)];
+                Debug.Log("进入章节：" + (next != null ? next.chapterName : "未命名"));
+            }
+        }
     }
 
     private void Stay()
@@ -788,10 +1059,336 @@ public sealed class MilkTeaDemoController : MonoBehaviour
 
     private void OnRestAppClicked(string appName)
     {
+        // 角色 App = 朋友圈；相册 App = CG 图鉴；其余暂开发中
+        if (appName == "角色")
+        {
+            OpenRestApp(appMomentsPanel, BuildMomentsContent);
+            return;
+        }
+
+        if (appName == "相册")
+        {
+            OpenRestApp(appAlbumPanel, BuildAlbumContent);
+            return;
+        }
+
         if (restHint != null)
         {
             restHint.text = "「" + appName + "」功能开发中，敬请期待！";
         }
+    }
+
+    private void OpenRestApp(GameObject panel, Action builder)
+    {
+        CloseRestApps();
+        if (panel == null)
+        {
+            if (restHint != null)
+            {
+                restHint.text = "手机面板尚未生成：请跑一次建场菜单「奶茶店 Demo/构建全部界面（保留手动调整）」。";
+            }
+
+            return;
+        }
+
+        panel.SetActive(true);
+        if (builder != null)
+        {
+            builder();
+        }
+    }
+
+    private void CloseRestApps()
+    {
+        if (appMomentsPanel != null)
+        {
+            appMomentsPanel.SetActive(false);
+        }
+
+        if (appAlbumPanel != null)
+        {
+            appAlbumPanel.SetActive(false);
+        }
+    }
+
+    /// <summary>绑定手机 App 面板的关闭按钮（节点由建场工具生成，默认隐藏所以 Awake 时要含隐藏查找）。</summary>
+    private void BindAppCloseButton(GameObject panel)
+    {
+        if (panel == null)
+        {
+            return;
+        }
+
+        Transform close = panel.transform.Find("App Close Button");
+        Button button = close != null ? close.GetComponent<Button>() : null;
+        if (button != null)
+        {
+            button.onClick.RemoveAllListeners();
+            button.onClick.AddListener(CloseRestApps);
+        }
+    }
+
+    // ======== 手机 App 内容：朋友圈与相册（运行时按数据动态生成条目） ========
+
+    private void BuildMomentsContent()
+    {
+        if (appMomentsContent == null)
+        {
+            return;
+        }
+
+        EnsureVerticalContent(appMomentsContent);
+        ClearChildren(appMomentsContent);
+        MilkTeaSocialContent content = art != null ? art.socialContent : null;
+        if (content == null || content.posts == null || content.posts.Count == 0)
+        {
+            CreateRuntimeLabel(appMomentsContent, "还没有任何动态。\n（把社交内容资产拖进美术库 socialContent 槽）");
+            return;
+        }
+
+        int shown = 0;
+        for (int i = content.posts.Count - 1; i >= 0; i--)
+        {
+            MilkTeaSocialContent.Post post = content.posts[i];
+            if (post == null || !IsPostUnlocked(post))
+            {
+                continue;
+            }
+
+            CreateRuntimePostEntry(appMomentsContent, post);
+            shown++;
+        }
+
+        if (shown == 0)
+        {
+            CreateRuntimeLabel(appMomentsContent, "还没有解锁任何动态，继续经营吧。");
+        }
+    }
+
+    private void BuildAlbumContent()
+    {
+        if (appAlbumContent == null)
+        {
+            return;
+        }
+
+        EnsureGridContent(appAlbumContent);
+        ClearChildren(appAlbumContent);
+        MilkTeaSocialContent content = art != null ? art.socialContent : null;
+        if (content == null || content.cgs == null || content.cgs.Count == 0)
+        {
+            CreateRuntimeLabel(appAlbumContent, "相册还是空的。\n（把社交内容资产拖进美术库 socialContent 槽）");
+            return;
+        }
+
+        for (int i = 0; i < content.cgs.Count; i++)
+        {
+            CreateRuntimeCgCell(appAlbumContent, content.cgs[i]);
+        }
+    }
+
+    /// <summary>朋友圈解锁判定：无日程时全显示；有日程时按“章·天”锚点。</summary>
+    private bool IsPostUnlocked(MilkTeaSocialContent.Post post)
+    {
+        if (!ScheduleMode)
+        {
+            return true;
+        }
+
+        return scheduleChapterIndex > post.unlockChapterIndex
+            || (scheduleChapterIndex == post.unlockChapterIndex && scheduleDayIndex >= post.unlockDayIndex);
+    }
+
+    private void CreateRuntimePostEntry(RectTransform parent, MilkTeaSocialContent.Post post)
+    {
+        GameObject entry = CreateAutoLayoutItem(parent, "Post", new Color(1f, 1f, 1f, 0.06f), 14, 8);
+
+        // 头像 + 作者行
+        GameObject header = CreateHorizontalLayoutItem(entry.transform, "Header", new Color(0f, 0f, 0f, 0f), 10f);
+
+        GameObject avatarHolder = CreateRuntimePanel(header.transform, "Avatar", new Color(0.35f, 0.42f, 0.5f, 1f));
+        Image avatar = avatarHolder.GetComponent<Image>();
+        avatar.sprite = post.author != null ? post.author.portrait : null;
+        avatar.color = post.author != null && post.author.portrait != null ? Color.white : new Color(0.55f, 0.62f, 0.7f, 1f);
+        avatar.preserveAspect = true;
+        LayoutElement avatarLayout = avatarHolder.AddComponent<LayoutElement>();
+        avatarLayout.preferredWidth = 52f;
+        avatarLayout.preferredHeight = 52f;
+        avatarLayout.minWidth = 52f;
+        avatarLayout.minHeight = 52f;
+
+        string authorName = post.author != null ? post.author.characterName : "匿名";
+        Text authorText = CreateRuntimeText(header.transform, authorName, 28, cream, TextAnchor.MiddleLeft);
+        LayoutElement authorLayout = authorText.GetComponent<LayoutElement>();
+        authorLayout.flexibleWidth = 1f;
+
+        CreateRuntimeText(entry.transform, Format(post.text), 26, new Color(0.92f, 0.94f, 0.98f, 1f), TextAnchor.UpperLeft);
+
+        if (post.image != null)
+        {
+            GameObject imageHolder = CreateAutoLayoutItem(entry.transform, "Photo", new Color(0f, 0f, 0f, 0f), 0, 0);
+            Image photo = imageHolder.AddComponent<Image>();
+            photo.sprite = post.image;
+            photo.color = Color.white;
+            photo.preserveAspect = true;
+            LayoutElement photoLayout = imageHolder.AddComponent<LayoutElement>();
+            photoLayout.preferredHeight = 220f;
+        }
+    }
+
+    private void CreateRuntimeCgCell(RectTransform parent, MilkTeaSocialContent.Cg cg)
+    {
+        bool unlocked = cg != null && !string.IsNullOrEmpty(cg.id) && unlockedContentIds.Contains("cg:" + cg.id);
+        GameObject cell = CreateRuntimePanel(parent, "Cg Cell",
+            unlocked ? new Color(1f, 1f, 1f, 0.1f) : new Color(0f, 0f, 0f, 0.4f));
+        Image image = cell.GetComponent<Image>();
+        if (unlocked && cg.image != null)
+        {
+            image.sprite = cg.image;
+            image.color = Color.white;
+            image.type = Image.Type.Simple;
+            image.preserveAspect = true;
+            return;
+        }
+
+        Text lockLabel = CreateRuntimeText(cell.transform, unlocked ? "未配图" : "?", 40,
+            new Color(1f, 1f, 1f, 0.5f), TextAnchor.MiddleCenter);
+        Stretch(lockLabel.rectTransform);
+    }
+
+    /// <summary>把 RectTransform 拉伸填满父节点（只用于运行时动态 UI）。</summary>
+    private static void Stretch(RectTransform rect)
+    {
+        if (rect == null)
+        {
+            return;
+        }
+
+        rect.anchorMin = Vector2.zero;
+        rect.anchorMax = Vector2.one;
+        rect.offsetMin = Vector2.zero;
+        rect.offsetMax = Vector2.zero;
+    }
+
+    // ======== 运行时动态 UI 的小工具（只用于手机 App 条目） ========
+
+    private static void ClearChildren(RectTransform container)
+    {
+        for (int i = container.childCount - 1; i >= 0; i--)
+        {
+            Destroy(container.GetChild(i).gameObject);
+        }
+    }
+
+    private static void EnsureVerticalContent(RectTransform content)
+    {
+        VerticalLayoutGroup layout = content.GetComponent<VerticalLayoutGroup>();
+        if (layout == null)
+        {
+            layout = content.gameObject.AddComponent<VerticalLayoutGroup>();
+        }
+
+        layout.spacing = 10f;
+        layout.padding = new RectOffset(8, 8, 8, 8);
+        layout.childAlignment = TextAnchor.UpperLeft;
+        layout.childControlWidth = true;
+        layout.childControlHeight = true;
+        layout.childForceExpandWidth = true;
+        layout.childForceExpandHeight = false;
+        ContentSizeFitter fitter = content.GetComponent<ContentSizeFitter>();
+        if (fitter == null)
+        {
+            fitter = content.gameObject.AddComponent<ContentSizeFitter>();
+        }
+
+        fitter.horizontalFit = ContentSizeFitter.FitMode.Unconstrained;
+        fitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+    }
+
+    private static void EnsureGridContent(RectTransform content)
+    {
+        GridLayoutGroup grid = content.GetComponent<GridLayoutGroup>();
+        if (grid == null)
+        {
+            grid = content.gameObject.AddComponent<GridLayoutGroup>();
+        }
+
+        grid.cellSize = new Vector2(140f, 140f);
+        grid.spacing = new Vector2(10f, 10f);
+        grid.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
+        grid.constraintCount = 3;
+        grid.childAlignment = TextAnchor.UpperLeft;
+        grid.padding = new RectOffset(8, 8, 8, 8);
+    }
+
+    private static GameObject CreateAutoLayoutItem(Transform parent, string name, Color background, int padding, int spacing)
+    {
+        GameObject item = CreateRuntimePanel(parent, name, background);
+        VerticalLayoutGroup layout = item.AddComponent<VerticalLayoutGroup>();
+        layout.padding = new RectOffset(padding, padding, padding, padding);
+        layout.spacing = spacing;
+        layout.childAlignment = TextAnchor.UpperLeft;
+        layout.childControlWidth = true;
+        layout.childControlHeight = true;
+        layout.childForceExpandWidth = true;
+        layout.childForceExpandHeight = false;
+        ContentSizeFitter fitter = item.AddComponent<ContentSizeFitter>();
+        fitter.horizontalFit = ContentSizeFitter.FitMode.Unconstrained;
+        fitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+        return item;
+    }
+
+    private static GameObject CreateHorizontalLayoutItem(Transform parent, string name, Color background, float spacing)
+    {
+        GameObject item = CreateRuntimePanel(parent, name, background);
+        HorizontalLayoutGroup layout = item.AddComponent<HorizontalLayoutGroup>();
+        layout.spacing = spacing;
+        layout.childAlignment = TextAnchor.MiddleLeft;
+        layout.childControlWidth = true;
+        layout.childControlHeight = true;
+        layout.childForceExpandWidth = false;
+        layout.childForceExpandHeight = false;
+        ContentSizeFitter fitter = item.AddComponent<ContentSizeFitter>();
+        fitter.horizontalFit = ContentSizeFitter.FitMode.Unconstrained;
+        fitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+        return item;
+    }
+
+    private static GameObject CreateRuntimePanel(Transform parent, string name, Color color)
+    {
+        GameObject panel = new GameObject(name, typeof(RectTransform), typeof(Image));
+        panel.transform.SetParent(parent, false);
+        panel.GetComponent<Image>().color = color;
+        panel.GetComponent<Image>().raycastTarget = false;
+        return panel;
+    }
+
+    private Text CreateRuntimeText(Transform parent, string content, int fontSize, Color color, TextAnchor anchor)
+    {
+        GameObject go = new GameObject("Text", typeof(RectTransform), typeof(Text));
+        go.transform.SetParent(parent, false);
+        Text text = go.GetComponent<Text>();
+        text.font = art != null && art.uiFont != null ? art.uiFont : CreateChineseFont();
+        if (text.font == null)
+        {
+            text.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+        }
+
+        text.fontSize = fontSize;
+        text.color = color;
+        text.alignment = anchor;
+        text.horizontalOverflow = HorizontalWrapMode.Wrap;
+        text.verticalOverflow = VerticalWrapMode.Overflow;
+        text.supportRichText = false;
+        text.text = content;
+        LayoutElement layout = go.AddComponent<LayoutElement>();
+        layout.minHeight = fontSize * 1.4f;
+        return text;
+    }
+
+    private void CreateRuntimeLabel(RectTransform parent, string content)
+    {
+        CreateRuntimeText(parent, content, 26, new Color(1f, 1f, 1f, 0.6f), TextAnchor.UpperLeft);
     }
 
     private void ShowStartScreen()
@@ -822,6 +1419,8 @@ public sealed class MilkTeaDemoController : MonoBehaviour
         {
             startScreen.SetActive(true);
         }
+
+        PlayBgm(art != null ? art.bgmStart : null);
     }
 
     private void OnStartGame()
@@ -831,12 +1430,37 @@ public sealed class MilkTeaDemoController : MonoBehaviour
             startScreen.SetActive(false);
         }
 
+        // 开场动画只在首次进入游戏时播一次，之后直接开始营业
+        if (PlayerPrefs.GetInt(IntroPlayedKey, 0) == 1)
+        {
+            BeginDay();
+            return;
+        }
+
         ShowIntro();
     }
 
     private void OnLoadGame()
     {
-        // 目前 Demo 不持久化每日进度，读取存档直接以已解锁配方继续营业，并跳过开场动画。
+        // 读取自动存档（0 号位）：恢复章/天/天数与已解锁内容；没有存档则从起始进度开始
+        MilkTeaSaveSystem.SaveData save = MilkTeaSaveSystem.Load(MilkTeaSaveSystem.AutoSaveSlot);
+        if (save != null)
+        {
+            scheduleChapterIndex = Mathf.Max(0, save.chapterIndex);
+            scheduleDayIndex = Mathf.Max(0, save.dayIndex);
+            dayNumber = Mathf.Max(1, save.dayNumber);
+            if (save.unlockedIds != null)
+            {
+                unlockedContentIds.UnionWith(save.unlockedIds);
+            }
+
+            Debug.Log("已读取存档：" + (string.IsNullOrEmpty(save.label) ? MilkTeaSaveSystem.GetPath(MilkTeaSaveSystem.AutoSaveSlot) : save.label));
+        }
+        else
+        {
+            Debug.Log("没有找到存档，从起始进度开始（" + MilkTeaSaveSystem.GetPath(MilkTeaSaveSystem.AutoSaveSlot) + "）");
+        }
+
         if (startScreen != null)
         {
             startScreen.SetActive(false);
@@ -952,6 +1576,9 @@ public sealed class MilkTeaDemoController : MonoBehaviour
         }
 
         introFinished = true;
+        // 无论播完还是手动跳过，都记住“已看过开场”，下次启动直接营业
+        PlayerPrefs.SetInt(IntroPlayedKey, 1);
+        PlayerPrefs.Save();
         if (introVideo != null)
         {
             introVideo.loopPointReached -= OnIntroVideoEnd;
@@ -1052,7 +1679,12 @@ public sealed class MilkTeaDemoController : MonoBehaviour
 
     private void ConfigureDialogue(string speaker, string line, string buttonText, Action action)
     {
-        UpdateDialoguePortrait(speaker);
+        ConfigureDialogue(speaker, line, buttonText, action, null);
+    }
+
+    private void ConfigureDialogue(string speaker, string line, string buttonText, Action action, string expression)
+    {
+        UpdateDialoguePortrait(speaker, expression);
         ApplyDialogueTextColors();
         dialogueSpeaker.text = speaker;
         dialogueLine.text = line;
@@ -1061,8 +1693,20 @@ public sealed class MilkTeaDemoController : MonoBehaviour
         dialogueButton.interactable = action != null;
         if (action != null)
         {
-            dialogueButton.onClick.AddListener(delegate { action(); });
+            // 统一走按钮分发：全屏 CG 开着时，第一次点击先关 CG 不推进行
+            dialogueButton.onClick.AddListener(delegate { OnDialogueButtonClicked(action); });
         }
+    }
+
+    private void OnDialogueButtonClicked(Action action)
+    {
+        if (cgOverlayOpen)
+        {
+            CloseCgOverlay();
+            return;
+        }
+
+        action();
     }
 
     private void ChangeCategory(int direction)
@@ -1378,18 +2022,277 @@ public sealed class MilkTeaDemoController : MonoBehaviour
             || speaker == protagonistName || speaker.StartsWith(protagonistName + "（", StringComparison.Ordinal);
     }
 
+    private void EnsureAudioChannels()
+    {
+        if (voiceSource == null)
+        {
+            voiceSource = gameObject.AddComponent<AudioSource>();
+            voiceSource.playOnAwake = false;
+        }
+
+        if (sfxSource == null)
+        {
+            sfxSource = gameObject.AddComponent<AudioSource>();
+            sfxSource.playOnAwake = false;
+        }
+
+        if (bgmSource == null)
+        {
+            bgmSource = gameObject.AddComponent<AudioSource>();
+            bgmSource.playOnAwake = false;
+            bgmSource.loop = true;
+        }
+    }
+
+    /// <summary>播语音：独占通道，新语音打断上一句。</summary>
+    private void PlayVoice(AudioClip clip)
+    {
+        if (clip == null)
+        {
+            return;
+        }
+
+        if (voiceSource == null)
+        {
+            voiceSource = gameObject.AddComponent<AudioSource>();
+            voiceSource.playOnAwake = false;
+        }
+
+        voiceSource.Stop();
+        voiceSource.clip = clip;
+        voiceSource.Play();
+    }
+
+    /// <summary>触发行内附加演出：音效/全屏CG/立绘序列帧动画。</summary>
+    private void PlayLineEvents(MilkTeaDialogue.Line line)
+    {
+        if (line == null || line.events == null)
+        {
+            return;
+        }
+
+        for (int i = 0; i < line.events.Count; i++)
+        {
+            MilkTeaDialogue.LineEvent lineEvent = line.events[i];
+            if (lineEvent == null)
+            {
+                continue;
+            }
+
+            switch (lineEvent.type)
+            {
+                case MilkTeaDialogue.LineEventType.PlaySfx:
+                    PlaySfx(lineEvent.audioClip);
+                    break;
+                case MilkTeaDialogue.LineEventType.ShowCg:
+                    ShowCgEvent(lineEvent.targetName);
+                    break;
+                case MilkTeaDialogue.LineEventType.PlayAnimation:
+                    PlayPortraitAnimation(lineEvent.targetName);
+                    break;
+            }
+        }
+    }
+
+    /// <summary>ShowCg 演出：按 targetName 解锁 CG 并弹全屏展示；点对话按钮先关浮层再推进行。</summary>
+    private void ShowCgEvent(string cgId)
+    {
+        if (string.IsNullOrEmpty(cgId))
+        {
+            return;
+        }
+
+        UnlockContent("cg:" + cgId);
+        MilkTeaSocialContent.Cg cg = art != null && art.socialContent != null
+            ? art.socialContent.FindCg(cgId)
+            : null;
+        if (cg == null || cg.image == null || cgOverlay == null || cgOverlayImage == null)
+        {
+            if (cg == null)
+            {
+                Debug.LogWarning("ShowCg：社交内容库里找不到 CG“" + cgId + "”，已解锁但未展示。");
+            }
+
+            return;
+        }
+
+        ApplySprite(cgOverlayImage, cg.image);
+        if (cgOverlayHint != null)
+        {
+            cgOverlayHint.gameObject.SetActive(true);
+        }
+
+        cgOverlay.SetActive(true);
+        cgOverlayOpen = true;
+    }
+
+    private void CloseCgOverlay()
+    {
+        if (cgOverlay != null)
+        {
+            cgOverlay.SetActive(false);
+        }
+
+        cgOverlayOpen = false;
+    }
+
+    /// <summary>PlayAnimation 演出：按名在动画库找序列帧，在立绘区播放；下一行说话时恢复立绘。</summary>
+    private void PlayPortraitAnimation(string animationName)
+    {
+        if (portraitAnimator == null || portraitImage == null || art == null || art.animations == null)
+        {
+            return;
+        }
+
+        for (int i = 0; i < art.animations.Count; i++)
+        {
+            MilkTeaArtLibrary.NamedFrames animation = art.animations[i];
+            if (animation == null || animation.name != animationName)
+            {
+                continue;
+            }
+
+            if (animation.frames == null || animation.frames.Count < 2)
+            {
+                Debug.LogWarning("PlayAnimation：动画“" + animationName + "”序列帧不足 2 帧。");
+                return;
+            }
+
+            portraitAnimator.enabled = true;
+            portraitAnimator.Play(animation.frames, animation.fps, animation.loop);
+            if (portraitLabel != null)
+            {
+                portraitLabel.gameObject.SetActive(false);
+            }
+
+            return;
+        }
+
+        Debug.LogWarning("PlayAnimation：动画库里找不到“" + animationName + "”。");
+    }
+
+    /// <summary>播一次性效果音。</summary>
+    private void PlaySfx(AudioClip clip)
+    {
+        if (clip == null)
+        {
+            return;
+        }
+
+        if (sfxSource == null)
+        {
+            sfxSource = gameObject.AddComponent<AudioSource>();
+            sfxSource.playOnAwake = false;
+        }
+
+        sfxSource.PlayOneShot(clip);
+    }
+
+    // ======== 背景音乐：切界面换曲，同曲不重播；章节 bgm 覆盖营业期默认曲 ========
+
+    private void PlayBgm(AudioClip clip)
+    {
+        if (clip == null)
+        {
+            return;
+        }
+
+        if (bgmSource == null)
+        {
+            EnsureAudioChannels();
+        }
+
+        if (currentBgm == clip && bgmSource.isPlaying)
+        {
+            return;
+        }
+
+        currentBgm = clip;
+        bgmSource.clip = clip;
+        bgmSource.Play();
+    }
+
+    /// <summary>营业期（对话/调配/结算/休息）BGM：当前章节配了 bgm 则优先。</summary>
+    private AudioClip ResolveBgm(AudioClip fallback)
+    {
+        MilkTeaChapter chapter = CurrentChapter();
+        if (chapter != null && chapter.bgm != null)
+        {
+            return chapter.bgm;
+        }
+
+        return fallback;
+    }
+
     private Coroutine portraitBounceRoutine;
     private Vector2 portraitBounceOrigin;
     private bool portraitBounceOriginReady;
 
-    private void UpdateDialoguePortrait(string speaker)
+    // 当前立绘所属说话人；用于“表情留空时保持现状”的判断
+    private string currentPortraitCharacter;
+
+    private void UpdateDialoguePortrait(string speaker, string expression)
     {
         if (portraitImage == null)
         {
             return;
         }
 
+        // 旁白/环境描写行：没有说话人，立绘区清空隐藏；下一行有说话人时由正常流程恢复
+        if (speaker == "旁白")
+        {
+            if (portraitAnimator != null)
+            {
+                portraitAnimator.Clear();
+            }
+
+            portraitImage.sprite = null;
+            portraitImage.color = new Color(0f, 0f, 0f, 0f);
+            if (portraitLabel != null)
+            {
+                portraitLabel.gameObject.SetActive(false);
+            }
+
+            currentPortraitCharacter = null;
+            return;
+        }
+
         StartPortraitBounce();
+
+        // 新链：说话人命中角色注册表时，按表情名切换差分立绘
+        MilkTeaCharacter character = FindCharacter(speaker);
+        if (character != null)
+        {
+            Sprite expressionPortrait = character.GetPortrait(expression);
+            if (expressionPortrait != null)
+            {
+                ApplyPortrait(expressionPortrait, null, 8f, speaker);
+                currentPortraitCharacter = speaker;
+                return;
+            }
+
+            // 表情留空且当前已显示该角色：保持现有表情不动
+            if (string.IsNullOrEmpty(expression) && currentPortraitCharacter == speaker)
+            {
+                return;
+            }
+
+            if (character.portrait != null)
+            {
+                // 表情名未命中差分时回退角色默认立绘
+                ApplyPortrait(character.portrait, null, 8f, speaker);
+                currentPortraitCharacter = speaker;
+                return;
+            }
+
+            // 角色未配任何立绘：继续走下方旧回退链
+        }
+        else if (string.IsNullOrEmpty(expression) && currentPortraitCharacter == speaker)
+        {
+            // 无角色资产但同名且无新表情：保持当前立绘
+            return;
+        }
+
         if (IsProtagonistSpeaker(speaker))
         {
             ApplyPortrait(
@@ -1397,6 +2300,7 @@ public sealed class MilkTeaDemoController : MonoBehaviour
                 art != null ? art.protagonistPortraitFrames : null,
                 art != null ? art.protagonistPortraitFps : 8f,
                 ProtagonistName());
+            currentPortraitCharacter = speaker;
             return;
         }
 
@@ -1410,6 +2314,37 @@ public sealed class MilkTeaDemoController : MonoBehaviour
             currentCustomer != null ? currentCustomer.portraitFrames : null,
             currentCustomer != null ? currentCustomer.portraitFps : 8f,
             activeRecipe != null ? activeRecipe.CustomerName : "顾客");
+        currentPortraitCharacter = speaker;
+    }
+
+    /// <summary>按说话人名在角色注册表中查找角色；主角台词优先用主角角色资产。</summary>
+    private MilkTeaCharacter FindCharacter(string speakerName)
+    {
+        if (art == null || string.IsNullOrEmpty(speakerName))
+        {
+            return null;
+        }
+
+        if (art.protagonistCharacter != null && IsProtagonistSpeaker(speakerName))
+        {
+            return art.protagonistCharacter;
+        }
+
+        if (art.characters == null)
+        {
+            return null;
+        }
+
+        for (int i = 0; i < art.characters.Count; i++)
+        {
+            MilkTeaCharacter candidate = art.characters[i];
+            if (candidate != null && candidate.characterName == speakerName)
+            {
+                return candidate;
+            }
+        }
+
+        return null;
     }
 
     /// <summary>说话人切换时立绘上下弹跳一下；连续说话重复触发会先复位再重新弹。</summary>
@@ -1512,9 +2447,13 @@ public sealed class MilkTeaDemoController : MonoBehaviour
         ApplyChibi(protagonistChibiImage, art != null ? art.protagonistChibi : null,
             ProtagonistName(), mint);
 
+        // 顾客小人链：客人资产 > 其角色资产 > 美术库默认
+        MilkTeaCharacter customerCharacter = currentCustomer != null ? currentCustomer.character : null;
         Sprite customerChibi = currentCustomer != null && currentCustomer.chibi != null
             ? currentCustomer.chibi
-            : (art != null ? art.customerChibi : null);
+            : (customerCharacter != null && customerCharacter.chibi != null
+                ? customerCharacter.chibi
+                : (art != null ? art.customerChibi : null));
         string customerName = activeRecipe != null ? activeRecipe.CustomerName : "顾客";
         ApplyChibi(customerChibiImage, customerChibi, customerName, coral);
     }
@@ -1643,6 +2582,48 @@ public sealed class MilkTeaDemoController : MonoBehaviour
     {
         PlayerPrefs.SetInt(UnlockPrefix + index, 1);
         PlayerPrefs.Save();
+    }
+
+    // ======== 进度存档与内容解锁 ========
+
+    /// <summary>把当前进度与已解锁内容写入自动存档（0 号位）。</summary>
+    private void AutoSaveProgress()
+    {
+        MilkTeaSaveSystem.Save(MilkTeaSaveSystem.AutoSaveSlot, CaptureProgress());
+    }
+
+    private MilkTeaSaveSystem.SaveData CaptureProgress()
+    {
+        MilkTeaChapter chapter = CurrentChapter();
+        return new MilkTeaSaveSystem.SaveData
+        {
+            chapterIndex = scheduleChapterIndex,
+            dayIndex = scheduleDayIndex,
+            dayNumber = dayNumber,
+            unlockedIds = new List<string>(unlockedContentIds),
+            label = ScheduleMode
+                ? (chapter != null && !string.IsNullOrEmpty(chapter.chapterName) ? chapter.chapterName : "第 " + (scheduleChapterIndex + 1) + " 章")
+                  + " · 第 " + (scheduleDayIndex + 1) + " 天"
+                : "第 " + dayNumber + " 天"
+        };
+    }
+
+    /// <summary>解锁一段内容并立即持久化，避免解锁后退出丢失。</summary>
+    private void UnlockContent(string contentId)
+    {
+        if (string.IsNullOrEmpty(contentId) || !unlockedContentIds.Add(contentId))
+        {
+            return;
+        }
+
+        AutoSaveProgress();
+    }
+
+    /// <summary>当前进度是否到达“某章某天”（朋友圈解锁锚点用）。</summary>
+    private bool IsProgressReached(int chapterIndex, int dayIndex)
+    {
+        return scheduleChapterIndex > chapterIndex
+            || (scheduleChapterIndex == chapterIndex && scheduleDayIndex >= dayIndex);
     }
 
     private string GetSelectedIngredient(IngredientCategory category)

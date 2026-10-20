@@ -3709,78 +3709,6 @@
             }
         },
         {
-            "path": "Milk Tea Demo Canvas/16:9 Content/Rest Screen/Apartment Overview",
-            "target": 0,
-            "positionField": "",
-            "sizeField": "",
-            "anchorMin": {
-                "x": 0.0,
-                "y": 0.0
-            },
-            "anchorMax": {
-                "x": 0.0,
-                "y": 0.0
-            },
-            "pivot": {
-                "x": 0.0,
-                "y": 0.0
-            },
-            "anchoredPosition": {
-                "x": 21.0,
-                "y": -1.0
-            },
-            "sizeDelta": {
-                "x": 1240.0,
-                "y": 990.0
-            },
-            "localScale": {
-                "x": 1.5260943174362183,
-                "y": 1.4536999464035035,
-                "z": 1.4536999464035035
-            },
-            "localEuler": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0
-            }
-        },
-        {
-            "path": "Milk Tea Demo Canvas/16:9 Content/Rest Screen/Apartment Overview/Rest Character",
-            "target": 0,
-            "positionField": "",
-            "sizeField": "",
-            "anchorMin": {
-                "x": 0.0,
-                "y": 0.0
-            },
-            "anchorMax": {
-                "x": 0.0,
-                "y": 0.0
-            },
-            "pivot": {
-                "x": 0.0,
-                "y": 0.0
-            },
-            "anchoredPosition": {
-                "x": 912.0,
-                "y": 212.0
-            },
-            "sizeDelta": {
-                "x": 220.0,
-                "y": 180.0
-            },
-            "localScale": {
-                "x": 1.0,
-                "y": 1.0,
-                "z": 1.0
-            },
-            "localEuler": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0
-            }
-        },
-        {
             "path": "Milk Tea Demo Canvas/16:9 Content/Rest Screen/Open Badge",
             "target": 0,
             "positionField": "",
@@ -4308,6 +4236,78 @@
             "sizeDelta": {
                 "x": 85.0,
                 "y": 90.0
+            },
+            "localScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Rest Screen/Apartment Overview",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 21.0,
+                "y": -1.0
+            },
+            "sizeDelta": {
+                "x": 1240.0,
+                "y": 990.0
+            },
+            "localScale": {
+                "x": 1.5260943174362183,
+                "y": 1.4536999464035035,
+                "z": 1.4536999464035035
+            },
+            "localEuler": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "path": "Milk Tea Demo Canvas/16:9 Content/Rest Screen/Apartment Overview/Rest Character",
+            "target": 0,
+            "positionField": "",
+            "sizeField": "",
+            "anchorMin": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchorMax": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "anchoredPosition": {
+                "x": 912.0,
+                "y": 212.0
+            },
+            "sizeDelta": {
+                "x": 220.0,
+                "y": 180.0
             },
             "localScale": {
                 "x": 1.0,
